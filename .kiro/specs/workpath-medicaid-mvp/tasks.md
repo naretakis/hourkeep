@@ -39,7 +39,7 @@ This is a **realistic task list for a new developer** learning to build PWAs. Th
 
 ---
 
-- [ ] Phase 2: Profile Setup (Week 1-2)
+- [x] Phase 2: Profile Setup (Week 1-2)
 
 - [ ] 2.1 Create TypeScript types
   - Define `UserProfile` and `Activity` interfaces
