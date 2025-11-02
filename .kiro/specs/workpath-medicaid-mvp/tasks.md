@@ -62,7 +62,7 @@ This is a **realistic task list for a new developer** learning to build PWAs. Th
 
 ---
 
-- [ ] Phase 3: Activity Tracking (Week 2-4)
+- [x] Phase 3: Activity Tracking (Week 2-4)
 
 - [ ] 3.1 Create tracking page
   - Create `app/tracking/page.tsx`

@@ -1,19 +1,173 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Alert } from "@mui/material";
+import { Calendar } from "@/components/Calendar";
+import { ActivityForm } from "@/components/ActivityForm";
+import { ActivityList } from "@/components/ActivityList";
+import { DateActivityMenu } from "@/components/DateActivityMenu";
+import { db } from "@/lib/db";
+import { Activity } from "@/types";
+import { format, startOfMonth, endOfMonth } from "date-fns";
 
 export default function TrackingPage() {
-  const [mounted, setMounted] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [currentMonthActivities, setCurrentMonthActivities] = useState<
+    Activity[]
+  >([]);
+  const [activeDates, setActiveDates] = useState<Set<string>>(new Set());
+  const [dateHours, setDateHours] = useState<Map<string, number>>(new Map());
+  const [dateActivityCount, setDateActivityCount] = useState<
+    Map<string, number>
+  >(new Map());
+  const [selectedDateActivities, setSelectedDateActivities] = useState<
+    Activity[]
+  >([]);
+  const [existingActivity, setExistingActivity] = useState<
+    Activity | undefined
+  >();
+  const [error, setError] = useState<string | null>(null);
 
+  const loadActivities = async () => {
+    try {
+      const allActivities = await db.activities.toArray();
+      setActivities(allActivities);
+
+      // Create set of dates that have activities
+      const dates = new Set(allActivities.map((a) => a.date));
+      setActiveDates(dates);
+
+      // Calculate hours per date
+      const hoursMap = new Map<string, number>();
+      const countMap = new Map<string, number>();
+      allActivities.forEach((activity) => {
+        const current = hoursMap.get(activity.date) || 0;
+        hoursMap.set(activity.date, current + activity.hours);
+
+        const currentCount = countMap.get(activity.date) || 0;
+        countMap.set(activity.date, currentCount + 1);
+      });
+      setDateHours(hoursMap);
+      setDateActivityCount(countMap);
+
+      // Filter activities for current month
+      const now = new Date();
+      const monthStart = format(startOfMonth(now), "yyyy-MM-dd");
+      const monthEnd = format(endOfMonth(now), "yyyy-MM-dd");
+      const currentMonth = allActivities.filter(
+        (a) => a.date >= monthStart && a.date <= monthEnd,
+      );
+      setCurrentMonthActivities(currentMonth);
+    } catch (err) {
+      console.error("Error loading activities:", err);
+      setError("Failed to load activities");
+    }
+  };
+
+  // Load activities on mount - this is intentional initialization
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
+    loadActivities();
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
+  const handleDateClick = async (
+    date: Date,
+    event: React.MouseEvent<HTMLElement>,
+  ) => {
+    setSelectedDate(date);
+
+    // Get activities for this date
+    const dateStr = format(date, "yyyy-MM-dd");
+    const dateActivities = activities.filter((a) => a.date === dateStr);
+    setSelectedDateActivities(dateActivities);
+
+    // Open menu to choose action
+    setMenuAnchor(event.currentTarget);
+  };
+
+  const handleAddNewActivity = () => {
+    setExistingActivity(undefined);
+    setFormOpen(true);
+  };
+
+  const handleEditActivity = (activity: Activity) => {
+    const date = new Date(activity.date + "T00:00:00");
+    setSelectedDate(date);
+    setExistingActivity(activity);
+    setFormOpen(true);
+  };
+
+  const handleDeleteActivityFromList = async (activity: Activity) => {
+    if (!activity.id) return;
+
+    // Confirm deletion
+    if (!window.confirm("Are you sure you want to delete this activity?")) {
+      return;
+    }
+
+    try {
+      await db.activities.delete(activity.id);
+      await loadActivities();
+      setError(null);
+    } catch (err) {
+      console.error("Error deleting activity:", err);
+      setError("Failed to delete activity");
+    }
+  };
+
+  const handleSaveActivity = async (
+    activityData: Omit<Activity, "id" | "createdAt" | "updatedAt">,
+  ) => {
+    try {
+      if (existingActivity) {
+        // Update existing activity
+        await db.activities.update(existingActivity.id!, {
+          ...activityData,
+          updatedAt: new Date(),
+        });
+      } else {
+        // Create new activity
+        await db.activities.add({
+          ...activityData,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+
+      // Reload activities
+      await loadActivities();
+      setError(null);
+    } catch (err) {
+      console.error("Error saving activity:", err);
+      setError("Failed to save activity");
+    }
+  };
+
+  const handleDeleteActivity = async () => {
+    if (!existingActivity?.id) return;
+
+    try {
+      await db.activities.delete(existingActivity.id);
+      await loadActivities();
+      setError(null);
+    } catch (err) {
+      console.error("Error deleting activity:", err);
+      setError("Failed to delete activity");
+    }
+  };
+
+  const handleCloseForm = () => {
+    setFormOpen(false);
+    setSelectedDate(null);
+    setExistingActivity(undefined);
+  };
+
+  const handleCloseMenu = () => {
+    setMenuAnchor(null);
+  };
 
   return (
     <Container maxWidth="lg">
@@ -21,9 +175,50 @@ export default function TrackingPage() {
         <Typography variant="h4" component="h1" gutterBottom>
           Activity Tracking
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Calendar and activity tracking will be implemented in Phase 3.
-        </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        )}
+
+        <Box sx={{ mt: 3 }}>
+          <Calendar
+            onDateClick={handleDateClick}
+            activeDates={activeDates}
+            dateHours={dateHours}
+            dateActivityCount={dateActivityCount}
+          />
+        </Box>
+
+        <Box sx={{ mt: 3 }}>
+          <ActivityList
+            activities={currentMonthActivities}
+            onEdit={handleEditActivity}
+            onDelete={handleDeleteActivityFromList}
+          />
+        </Box>
+
+        <DateActivityMenu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={handleCloseMenu}
+          activities={selectedDateActivities}
+          onAddNew={handleAddNewActivity}
+          onEditActivity={handleEditActivity}
+          selectedDateStr={
+            selectedDate ? format(selectedDate, "MMMM d, yyyy") : ""
+          }
+        />
+
+        <ActivityForm
+          open={formOpen}
+          onClose={handleCloseForm}
+          onSave={handleSaveActivity}
+          onDelete={existingActivity ? handleDeleteActivity : undefined}
+          selectedDate={selectedDate}
+          existingActivity={existingActivity}
+        />
       </Box>
     </Container>
   );
