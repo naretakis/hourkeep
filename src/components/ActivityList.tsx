@@ -11,7 +11,11 @@ import {
   Chip,
   Divider,
 } from "@mui/material";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  ContentCopy as ContentCopyIcon,
+} from "@mui/icons-material";
 import { Activity } from "@/types";
 import { format, parseISO } from "date-fns";
 
@@ -19,6 +23,7 @@ interface ActivityListProps {
   activities: Activity[];
   onEdit: (activity: Activity) => void;
   onDelete: (activity: Activity) => void;
+  onDuplicate: (activity: Activity) => void;
 }
 
 const activityTypeColors = {
@@ -37,6 +42,7 @@ export function ActivityList({
   activities,
   onEdit,
   onDelete,
+  onDuplicate,
 }: ActivityListProps) {
   if (activities.length === 0) {
     return (
@@ -66,19 +72,28 @@ export function ActivityList({
               secondaryAction={
                 <Box>
                   <IconButton
-                    edge="end"
+                    aria-label="duplicate"
+                    onClick={() => onDuplicate(activity)}
+                    sx={{ mr: 0.5 }}
+                    size="small"
+                  >
+                    <ContentCopyIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
                     aria-label="edit"
                     onClick={() => onEdit(activity)}
-                    sx={{ mr: 1 }}
+                    sx={{ mr: 0.5 }}
+                    size="small"
                   >
-                    <EditIcon />
+                    <EditIcon fontSize="small" />
                   </IconButton>
                   <IconButton
                     edge="end"
                     aria-label="delete"
                     onClick={() => onDelete(activity)}
+                    size="small"
                   >
-                    <DeleteIcon />
+                    <DeleteIcon fontSize="small" />
                   </IconButton>
                 </Box>
               }

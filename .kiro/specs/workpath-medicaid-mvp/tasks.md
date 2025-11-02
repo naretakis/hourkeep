@@ -64,53 +64,53 @@ This is a **realistic task list for a new developer** learning to build PWAs. Th
 
 - [x] Phase 3: Activity Tracking (Week 2-4)
 
-- [X] 3.1 Create tracking page
+- [x] 3.1 Create tracking page
   - Create `app/tracking/page.tsx`
   - _Requirements: 2, 3_
 
-- [X] 3.2 Build calendar component
+- [x] 3.2 Build calendar component
   - Create `src/components/Calendar.tsx`
   - Show current month
   - _Requirements: 2_
 
-- [X] 3.3 Create activity form
+- [x] 3.3 Create activity form
   - Create `src/components/ActivityForm.tsx`
   - Add type, hours, organization fields
   - _Requirements: 2_
 
-- [X] 3.4 Connect calendar to form
+- [x] 3.4 Connect calendar to form
   - Open form when date clicked
   - _Requirements: 2_
 
-- [X] 3.5 Save activities
+- [x] 3.5 Save activities
   - Save to IndexedDB
   - _Requirements: 2_
 
-- [X] 3.6 Show indicators on calendar
+- [x] 3.6 Show indicators on calendar
   - Mark dates with activities
   - _Requirements: 2_
 
-- [X] 3.7 Add edit/delete
+- [x] 3.7 Add edit/delete
   - Edit and delete activities
   - _Requirements: 4_
 
 ---
 
-- [ ] Phase 4: Monthly Dashboard (Week 4-5)
+- [x] Phase 4: Monthly Dashboard (Week 4-5)
 
-- [ ] 4.1 Create calculations utility
+- [x] 4.1 Create calculations utility
   - Calculate monthly totals
   - _Requirements: 3_
 
-- [ ] 4.2 Build dashboard component
+- [x] 4.2 Build dashboard component
   - Show total hours and compliance status
   - _Requirements: 3_
 
-- [ ] 4.3 Add dashboard to page
+- [x] 4.3 Add dashboard to page
   - Display above calendar
   - _Requirements: 3_
 
-- [ ] 4.4 Create activity list
+- [x] 4.4 Create activity list
   - List all activities
   - _Requirements: 2, 4_
 

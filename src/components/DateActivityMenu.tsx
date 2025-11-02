@@ -15,6 +15,8 @@ import {
   Work as WorkIcon,
   VolunteerActivism as VolunteerIcon,
   School as SchoolIcon,
+  Edit as EditIcon,
+  ContentCopy as ContentCopyIcon,
 } from "@mui/icons-material";
 import { Activity } from "@/types";
 
@@ -25,6 +27,7 @@ interface DateActivityMenuProps {
   activities: Activity[];
   onAddNew: () => void;
   onEditActivity: (activity: Activity) => void;
+  onDuplicateActivity: (activity: Activity) => void;
   selectedDateStr: string;
 }
 
@@ -47,6 +50,7 @@ export function DateActivityMenu({
   activities,
   onAddNew,
   onEditActivity,
+  onDuplicateActivity,
   selectedDateStr,
 }: DateActivityMenuProps) {
   const handleAddNew = () => {
@@ -58,6 +62,120 @@ export function DateActivityMenu({
     onEditActivity(activity);
     onClose();
   };
+
+  const handleDuplicate = (activity: Activity) => {
+    onDuplicateActivity(activity);
+    onClose();
+  };
+
+  const menuItems = [
+    <Box key="header" sx={{ px: 2, py: 1 }}>
+      <Typography variant="subtitle2" color="text.secondary">
+        {selectedDateStr}
+      </Typography>
+    </Box>,
+    <MenuItem key="add-new" onClick={handleAddNew}>
+      <ListItemIcon>
+        <AddIcon fontSize="small" />
+      </ListItemIcon>
+      <ListItemText>Add New Activity</ListItemText>
+    </MenuItem>,
+  ];
+
+  if (activities.length > 0) {
+    menuItems.push(
+      <Divider key="divider" sx={{ my: 1 }} />,
+      <Box key="activities-header" sx={{ px: 2, pt: 1, pb: 0.5 }}>
+        <Typography variant="caption" color="text.secondary">
+          Existing Activities:
+        </Typography>
+      </Box>,
+      <Box key="activities-list" sx={{ px: 2, pb: 1 }}>
+        {activities.map((activity, index) => (
+          <Box
+            key={activity.id}
+            sx={{
+              border: 1,
+              borderColor: "divider",
+              borderRadius: 1,
+              mb: index < activities.length - 1 ? 1.5 : 0,
+              overflow: "hidden",
+              backgroundColor: "background.paper",
+            }}
+          >
+            {/* Activity Info */}
+            <Box
+              sx={{
+                px: 2,
+                py: 1.5,
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                backgroundColor: "grey.50",
+              }}
+            >
+              <Box sx={{ color: "action.active" }}>
+                {activityIcons[activity.type]}
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    mb: 0.5,
+                  }}
+                >
+                  <Chip
+                    label={activity.type}
+                    color={activityColors[activity.type]}
+                    size="small"
+                    sx={{ textTransform: "capitalize" }}
+                  />
+                  <Typography variant="body2" fontWeight="medium">
+                    {activity.hours}h
+                  </Typography>
+                </Box>
+                {activity.organization && (
+                  <Typography variant="caption" color="text.secondary">
+                    {activity.organization}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+
+            {/* Action Buttons */}
+            <Box sx={{ display: "flex", borderTop: 1, borderColor: "divider" }}>
+              <MenuItem
+                onClick={() => handleEdit(activity)}
+                sx={{
+                  flex: 1,
+                  justifyContent: "center",
+                  py: 1,
+                  borderRight: 1,
+                  borderColor: "divider",
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <EditIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Edit" />
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleDuplicate(activity)}
+                sx={{ flex: 1, justifyContent: "center", py: 1 }}
+              >
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <ContentCopyIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Duplicate" />
+              </MenuItem>
+            </Box>
+          </Box>
+        ))}
+      </Box>,
+    );
+  }
 
   return (
     <Menu
@@ -73,48 +191,7 @@ export function DateActivityMenu({
         horizontal: "center",
       }}
     >
-      <Box sx={{ px: 2, py: 1 }}>
-        <Typography variant="subtitle2" color="text.secondary">
-          {selectedDateStr}
-        </Typography>
-      </Box>
-
-      <MenuItem onClick={handleAddNew}>
-        <ListItemIcon>
-          <AddIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Add New Activity</ListItemText>
-      </MenuItem>
-
-      {activities.length > 0 && (
-        <>
-          <Divider />
-          <Box sx={{ px: 2, py: 1 }}>
-            <Typography variant="caption" color="text.secondary">
-              Edit Existing:
-            </Typography>
-          </Box>
-          {activities.map((activity) => (
-            <MenuItem key={activity.id} onClick={() => handleEdit(activity)}>
-              <ListItemIcon>{activityIcons[activity.type]}</ListItemIcon>
-              <ListItemText
-                primary={
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Chip
-                      label={activity.type}
-                      color={activityColors[activity.type]}
-                      size="small"
-                      sx={{ textTransform: "capitalize" }}
-                    />
-                    <Typography variant="body2">{activity.hours}h</Typography>
-                  </Box>
-                }
-                secondary={activity.organization}
-              />
-            </MenuItem>
-          ))}
-        </>
-      )}
+      {menuItems}
     </Menu>
   );
 }

@@ -6,8 +6,11 @@ import { Calendar } from "@/components/Calendar";
 import { ActivityForm } from "@/components/ActivityForm";
 import { ActivityList } from "@/components/ActivityList";
 import { DateActivityMenu } from "@/components/DateActivityMenu";
+import { Dashboard } from "@/components/Dashboard";
+import { DuplicateActivityDialog } from "@/components/DuplicateActivityDialog";
 import { db } from "@/lib/db";
-import { Activity } from "@/types";
+import { Activity, MonthlySummary } from "@/types";
+import { calculateMonthlySummary } from "@/lib/calculations";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 
 export default function TrackingPage() {
@@ -30,6 +33,18 @@ export default function TrackingPage() {
     Activity | undefined
   >();
   const [error, setError] = useState<string | null>(null);
+  const [monthlySummary, setMonthlySummary] = useState<MonthlySummary>({
+    month: format(new Date(), "yyyy-MM"),
+    totalHours: 0,
+    workHours: 0,
+    volunteerHours: 0,
+    educationHours: 0,
+    isCompliant: false,
+    hoursNeeded: 80,
+  });
+  const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
+  const [activityToDuplicate, setActivityToDuplicate] =
+    useState<Activity | null>(null);
 
   const loadActivities = async () => {
     try {
@@ -61,6 +76,10 @@ export default function TrackingPage() {
         (a) => a.date >= monthStart && a.date <= monthEnd,
       );
       setCurrentMonthActivities(currentMonth);
+
+      // Calculate monthly summary
+      const summary = calculateMonthlySummary(allActivities);
+      setMonthlySummary(summary);
     } catch (err) {
       console.error("Error loading activities:", err);
       setError("Failed to load activities");
@@ -169,6 +188,42 @@ export default function TrackingPage() {
     setMenuAnchor(null);
   };
 
+  const handleDuplicateActivity = (activity: Activity) => {
+    setActivityToDuplicate(activity);
+    setDuplicateDialogOpen(true);
+  };
+
+  const handleDuplicateToMultipleDates = async (dates: string[]) => {
+    if (!activityToDuplicate) return;
+
+    try {
+      // Create a new activity for each selected date
+      const newActivities = dates.map((date) => ({
+        date,
+        type: activityToDuplicate.type,
+        hours: activityToDuplicate.hours,
+        organization: activityToDuplicate.organization,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+
+      // Add all activities to the database
+      await db.activities.bulkAdd(newActivities);
+
+      // Reload activities
+      await loadActivities();
+      setError(null);
+    } catch (err) {
+      console.error("Error duplicating activity:", err);
+      setError("Failed to duplicate activity");
+    }
+  };
+
+  const handleCloseDuplicateDialog = () => {
+    setDuplicateDialogOpen(false);
+    setActivityToDuplicate(null);
+  };
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>
@@ -181,6 +236,10 @@ export default function TrackingPage() {
             {error}
           </Alert>
         )}
+
+        <Box sx={{ mt: 3 }}>
+          <Dashboard summary={monthlySummary} />
+        </Box>
 
         <Box sx={{ mt: 3 }}>
           <Calendar
@@ -196,6 +255,7 @@ export default function TrackingPage() {
             activities={currentMonthActivities}
             onEdit={handleEditActivity}
             onDelete={handleDeleteActivityFromList}
+            onDuplicate={handleDuplicateActivity}
           />
         </Box>
 
@@ -206,6 +266,7 @@ export default function TrackingPage() {
           activities={selectedDateActivities}
           onAddNew={handleAddNewActivity}
           onEditActivity={handleEditActivity}
+          onDuplicateActivity={handleDuplicateActivity}
           selectedDateStr={
             selectedDate ? format(selectedDate, "MMMM d, yyyy") : ""
           }
@@ -218,6 +279,13 @@ export default function TrackingPage() {
           onDelete={existingActivity ? handleDeleteActivity : undefined}
           selectedDate={selectedDate}
           existingActivity={existingActivity}
+        />
+
+        <DuplicateActivityDialog
+          open={duplicateDialogOpen}
+          onClose={handleCloseDuplicateDialog}
+          onDuplicate={handleDuplicateToMultipleDates}
+          activity={activityToDuplicate}
         />
       </Box>
     </Container>
