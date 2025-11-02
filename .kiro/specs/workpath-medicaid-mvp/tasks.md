@@ -121,9 +121,7 @@ Each task produces working, integrated code. No orphaned implementations.
   - _Requirements: 2.3, 4.6, 6.4_
 
 ---
-
-## 3. Theme, Layout, and UI Foundation
-
+- [ ] 3. Theme, Layout, and UI Foundation
 - [ ] 3.1 Configure Material-UI theme with mobile-first approach
   - Create theme/theme.ts with mobile-first breakpoints (320px, 768px, 1024px)
   - Define theme/colors.ts with WCAG AA compliant color palette (4.5:1 contrast for text, 3:1 for interactive)
@@ -201,8 +199,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 4. State Management and Configuration
-
+- [ ] 4. State Management and Configuration
 - [ ] 4.1 Create state configuration system
   - Define configuration interfaces in types/config.ts (StateConfig, ExemptionRules, WorkRequirements, IncomeThresholds, AgencyContact)
   - Create public/config/federal-baseline.json with default rules:
@@ -235,8 +232,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 5. User Onboarding and Profile Management
-
+- [ ] 5. User Onboarding and Profile Management
 - [ ] 5.1 Build onboarding flow UI (mobile-first)
   - Create src/app/onboarding/page.tsx with multi-step form
   - Implement profile data collection form (name, DOB, state, Medicaid status)
@@ -272,8 +268,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 6. Exemption Screening System
-
+- [ ] 6. Exemption Screening System
 - [ ] 6.1 Create exemption screening data structures and logic
   - Define complete exemption question flow in lib/exemptions/questions.ts based on HR1 Section 71119
   - Create exemption category definitions (age, family-caregiving, health-disability, program-participation, other)
@@ -310,8 +305,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 7. Compliance Calculations and Utilities
-
+- [ ] 7. Compliance Calculations and Utilities
 - [ ] 7.1 Implement compliance calculation logic
   - Create lib/utils/calculations.ts with calculateMonthlyCompliance function
   - Build hour summation across activity types
@@ -330,8 +324,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 8. Monthly Compliance Tracking - Calendar and Activities
-
+- [ ] 8. Monthly Compliance Tracking - Calendar and Activities
 - [ ] 8.1 Build calendar component for activity tracking (mobile-first, touch-optimized)
   - Create components/tracking/Calendar.tsx with touch-optimized UI (44px+ touch targets)
   - Implement month navigation with swipe gestures for mobile
@@ -375,8 +368,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 9. Compliance Dashboard and Visualization
-
+- [ ] 9. Compliance Dashboard and Visualization
 - [ ] 9.1 Build compliance dashboard UI
   - Create components/tracking/ComplianceDashboard.tsx with status display
   - Implement progress indicators for hours and income using MUI components
@@ -409,8 +401,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 10. Hardship and Good Cause Reporting
-
+- [ ] 10. Hardship and Good Cause Reporting
 - [ ] 10.1 Create hardship event data model and storage
   - Define HardshipEvent interface in types/hardship.ts (id, userId, eventType, description, startDate, endDate, status)
   - Add hardship event types based on HR1 Section 71119 (medical emergency, family crisis, natural disaster, transportation failure, other)
@@ -444,8 +435,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 11. Document Management - Capture and Storage
-
+- [ ] 11. Document Management - Capture and Storage
 - [ ] 11.1 Create file upload component with image processing
   - Build components/forms/FileUpload.tsx with drag-and-drop zone
   - Implement file type validation (JPEG, PNG, HEIC)
@@ -489,8 +479,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 12. Document Management - Organization and Viewing
-
+- [ ] 12. Document Management - Organization and Viewing
 - [ ] 12.1 Create document list and viewer components
   - Build components/documents/DocumentList.tsx with thumbnail gallery
   - Create components/documents/DocumentCard.tsx with metadata display
@@ -526,8 +515,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 13. Storage Management and Monitoring
-
+- [ ] 13. Storage Management and Monitoring
 - [ ] 13.1 Implement storage quota monitoring
   - Enhance hooks/useStorageQuota.ts with periodic checking (every minute)
   - Build storage usage calculation using navigator.storage.estimate()
@@ -545,8 +533,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 14. Data Export Functionality
-
+- [ ] 14. Data Export Functionality
 - [ ] 14.1 Implement JSON export utility
   - Create lib/export/json.ts with complete data serialization
   - Build export data structure with clear schema
@@ -588,8 +575,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 15. Data Import Functionality
-
+- [ ] 15. Data Import Functionality
 - [ ] 15.1 Implement import file validation utility
   - Create lib/export/import.ts with JSON validation
   - Build schema validation for imported data structure using Zod
@@ -631,8 +617,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 16. Compliance Alerts and Proactive Features
-
+- [ ] 16. Compliance Alerts and Proactive Features
 - [ ] 16.1 Implement compliance prediction logic
   - Create lib/utils/predictions.ts with compliance forecasting
   - Calculate projected hours for current month based on historical patterns
@@ -657,8 +642,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 17. Agency Reporting and Verification Response
-
+- [ ] 17. Agency Reporting and Verification Response
 - [ ] 17.1 Create verification request data model
   - Define VerificationRequest interface in types/verification.ts (id, userId, requestDate, dueDate, requestedItems, status)
   - Add verification requests table to IndexedDB
@@ -690,8 +674,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 18. Help System and User Guidance
-
+- [ ] 18. Help System and User Guidance
 - [ ] 18.1 Create help content and FAQ
   - Create components/help/HelpCenter.tsx with searchable help topics
   - Write help content for each major feature (onboarding, exemptions, tracking, documents, export)
@@ -718,8 +701,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 19. Internationalization Preparation (i18n)
-
+- [ ] 19. Internationalization Preparation (i18n)
 - [ ] 19.1 Set up i18n infrastructure
   - Install next-intl or react-i18next for internationalization
   - Create locales directory structure (locales/en, locales/es)
@@ -738,8 +720,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 20. Polish - Loading States and Empty States
-
+- [ ] 20. Polish - Loading States and Empty States
 - [ ] 20.1 Enhance loading states across the application
   - Ensure LoadingSpinner is used consistently with appropriate messages
   - Add skeleton screens using MUI Skeleton for lists and cards
@@ -758,8 +739,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 21. Accessibility and Mobile Optimization (Final Polish)
-
+- [ ] 21. Accessibility and Mobile Optimization (Final Polish)
 - [ ] 21.1 Comprehensive accessibility audit and fixes
   - Audit all interactive elements and add ARIA labels where missing
   - Verify full keyboard navigation support with proper tab order
@@ -790,8 +770,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 22. Privacy, Security, and Data Management
-
+- [ ] 22. Privacy, Security, and Data Management
 - [ ] 22.1 Implement data encryption for sensitive fields
   - Enhance lib/storage/encryption.ts with encryption/decryption functions
   - Implement encryption on save for sensitive profile data (name, DOB)
@@ -816,9 +795,8 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 23. Testing Infrastructure (Optional)
-
-- [ ]* 23.1 Set up Jest and React Testing Library
+- [ ] 23. Testing Infrastructure (Optional)
+- [ ] 23.1 Set up Jest and React Testing Library
   - Configure Jest with TypeScript support in jest.config.js
   - Set up React Testing Library
   - Create tests/setup.ts with test utilities
@@ -827,7 +805,7 @@ Each task produces working, integrated code. No orphaned implementations.
   - Add test scripts to package.json
   - _Requirements: Testing strategy_
 
-- [ ]* 23.2 Write unit tests for core utilities
+- [ ] 23.2 Write unit tests for core utilities
   - Test compliance calculation functions in lib/utils/calculations.test.ts
   - Test income conversion utilities
   - Test date formatting and manipulation
@@ -835,7 +813,7 @@ Each task produces working, integrated code. No orphaned implementations.
   - Test encryption/decryption utilities
   - _Requirements: Testing strategy_
 
-- [ ]* 23.3 Write component unit tests
+- [ ] 23.3 Write component unit tests
   - Test major components for rendering (ComplianceDashboard, Calendar, ActivityEntry)
   - Test user interactions and form submissions
   - Test validation logic and error states
@@ -843,14 +821,14 @@ Each task produces working, integrated code. No orphaned implementations.
   - Aim for 80% code coverage
   - _Requirements: Testing strategy_
 
-- [ ]* 23.4 Set up Playwright for E2E testing
+- [ ] 23.4 Set up Playwright for E2E testing
   - Configure Playwright with TypeScript in playwright.config.ts
   - Create E2E test utilities in tests/e2e/utils
   - Set up test data fixtures
   - Configure test browsers (Chromium, WebKit)
   - _Requirements: Testing strategy_
 
-- [ ]* 23.5 Write integration and E2E tests
+- [ ] 23.5 Write integration and E2E tests
   - Test complete onboarding flow (profile creation → exemption screening)
   - Test activity entry and compliance calculation workflow
   - Test document capture, viewing, and linking
@@ -860,8 +838,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 24. Performance Optimization and PWA Enhancement
-
+- [ ] 24. Performance Optimization and PWA Enhancement
 - [ ] 24.1 Optimize build for production
   - Implement code splitting for routes (lazy loading)
   - Optimize bundle size (<5MB target)
@@ -893,8 +870,7 @@ Each task produces working, integrated code. No orphaned implementations.
 
 ---
 
-## 25. Final QA, Documentation, and Deployment
-
+- [ ] 25. Final QA, Documentation, and Deployment
 - [ ] 25.1 Run comprehensive accessibility audit
   - Run Lighthouse accessibility audit (target: 100 score)
   - Run axe DevTools audit
@@ -936,9 +912,7 @@ Each task produces working, integrated code. No orphaned implementations.
   - Create release notes
   - _Requirements: All requirements_
 
----
-
-## Implementation Notes
+# Implementation Notes
 
 ### Task Execution Guidelines
 - **Complete tasks in order** - Each task builds on previous work
