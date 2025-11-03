@@ -19,6 +19,9 @@ export default function Home() {
 
     const checkProfile = async () => {
       try {
+        // Wait a bit for IndexedDB to be ready
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         // Check if profile exists
         const profiles = await db.profiles.toArray();
 
@@ -31,7 +34,7 @@ export default function Home() {
         }
       } catch (error) {
         console.error("Error checking profile:", error);
-        // On error, go to onboarding
+        // On error, go to onboarding to set up profile
         router.push("/onboarding");
       }
     };

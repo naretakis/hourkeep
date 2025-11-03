@@ -14,8 +14,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // Set base path if deploying to a subdirectory (e.g., /workpath)
-  basePath: '/workpath',
+  // Set base path only for production (GitHub Pages deployment)
+  // In development, access at http://localhost:3000/
+  // In production, access at https://username.github.io/workpath/
+  basePath: process.env.NODE_ENV === "production" ? "/workpath" : "",
 };
 
 export default withPWA({

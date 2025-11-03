@@ -24,6 +24,7 @@ import { DuplicateActivityDialog } from "@/components/DuplicateActivityDialog";
 import { db } from "@/lib/db";
 import { Activity, MonthlySummary } from "@/types";
 import { calculateMonthlySummary } from "@/lib/calculations";
+import { deleteActivityWithDocuments } from "@/lib/storage/activities";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 
 export default function TrackingPage() {
@@ -140,19 +141,31 @@ export default function TrackingPage() {
   const handleDeleteActivityFromList = async (activity: Activity) => {
     if (!activity.id) return;
 
-    // Confirm deletion
-    if (!window.confirm("Are you sure you want to delete this activity?")) {
+    // Get document count for confirmation message
+    const { getDocumentsByActivity } = await import("@/lib/storage/documents");
+    const documents = await getDocumentsByActivity(activity.id);
+    const docCount = documents.length;
+
+    // Confirm deletion with document warning
+    const confirmMessage =
+      docCount > 0
+        ? `Are you sure you want to delete this activity?\n\nThis will also delete ${docCount} associated document${docCount > 1 ? "s" : ""}.`
+        : "Are you sure you want to delete this activity?";
+
+    if (!window.confirm(confirmMessage)) {
       return;
     }
 
     setSaving(true);
     try {
-      await db.activities.delete(activity.id);
+      await deleteActivityWithDocuments(activity.id);
       await loadActivities();
       setError(null);
     } catch (err) {
       console.error("Error deleting activity:", err);
-      setError("Failed to delete activity. Please try again.");
+      setError(
+        "Failed to delete activity. Please try again. If the problem persists, some documents may need to be deleted manually.",
+      );
     } finally {
       setSaving(false);
     }
@@ -160,18 +173,21 @@ export default function TrackingPage() {
 
   const handleSaveActivity = async (
     activityData: Omit<Activity, "id" | "createdAt" | "updatedAt">,
-  ) => {
+  ): Promise<number | void> => {
     try {
       setSaving(true);
+      let activityId: number | undefined;
+
       if (existingActivity) {
         // Update existing activity
         await db.activities.update(existingActivity.id!, {
           ...activityData,
           updatedAt: new Date(),
         });
+        activityId = existingActivity.id;
       } else {
-        // Create new activity
-        await db.activities.add({
+        // Create new activity and return its ID
+        activityId = await db.activities.add({
           ...activityData,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -181,6 +197,9 @@ export default function TrackingPage() {
       // Reload activities
       await loadActivities();
       setError(null);
+
+      // Return the activity ID for new activities
+      return activityId;
     } catch (err) {
       console.error("Error saving activity:", err);
       setError("Failed to save activity");
@@ -194,12 +213,14 @@ export default function TrackingPage() {
 
     setSaving(true);
     try {
-      await db.activities.delete(existingActivity.id);
+      await deleteActivityWithDocuments(existingActivity.id);
       await loadActivities();
       setError(null);
     } catch (err) {
       console.error("Error deleting activity:", err);
-      setError("Failed to delete activity. Please try again.");
+      setError(
+        "Failed to delete activity. Please try again. If the problem persists, some documents may need to be deleted manually.",
+      );
     } finally {
       setSaving(false);
     }

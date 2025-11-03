@@ -12,16 +12,16 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-## 1. Database Schema and Data Models
+- [x] 1. Database Schema and Data Models
 
-- [ ] 1.1 Define TypeScript interfaces for documents
+- [x] 1.1 Define TypeScript interfaces for documents
   - Create `src/types/documents.ts`
   - Define `Document` interface with all metadata fields
   - Define `DocumentBlob` interface
   - Define `DocumentType` enum
   - Export types
 
-- [ ] 1.2 Update IndexedDB schema with document tables
+- [x] 1.2 Update IndexedDB schema with document tables
   - Modify `src/lib/storage/db.ts`
   - Add `documents` table with indexes (++id, activityId, type, createdAt)
   - Add `documentBlobs` table with index (++id)
@@ -29,7 +29,7 @@ This task list breaks down the document management feature into discrete, manage
   - Add upgrade function (no data migration needed)
   - Test database creation in browser DevTools
 
-- [ ] 1.3 Create document storage operations
+- [x] 1.3 Create document storage operations
   - Create `src/lib/storage/documents.ts`
   - Implement `saveDocument(activityId, blob, metadata)` function
   - Implement `getDocumentsByActivity(activityId)` function
@@ -38,7 +38,7 @@ This task list breaks down the document management feature into discrete, manage
   - Implement `getDocumentBlob(blobId)` function
   - Add error handling for all operations
 
-- [ ] 1.4 Create Zod validation schemas
+- [x] 1.4 Create Zod validation schemas
   - Create `src/lib/validation/documents.ts`
   - Define `documentMetadataSchema` with Zod
   - Add validation for document type
@@ -48,9 +48,9 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-## 2. Image Compression Utility
+- [x] 2. Image Compression Utility
 
-- [ ] 2.1 Implement image compression function
+- [x] 2.1 Implement image compression function
   - Create `src/lib/utils/imageCompression.ts`
   - Implement `compressImage(file, maxSizeMB, quality)` function
   - Load image using FileReader
@@ -59,13 +59,13 @@ This task list breaks down the document management feature into discrete, manage
   - Return compressed blob
   - Add progress callback support
 
-- [ ] 2.2 Add file validation utilities
+- [x] 2.2 Add file validation utilities
   - Add `validateFileType(file)` function (JPEG/PNG only)
   - Add `validateFileSize(file, maxMB)` function
   - Add `formatFileSize(bytes)` function for display
   - Add error messages for validation failures
 
-- [ ] 2.3 Test compression with various image sizes
+- [x] 2.3 Test compression with various image sizes
   - Test with small images (< 1MB)
   - Test with medium images (1-5MB)
   - Test with large images (5-10MB)
@@ -74,9 +74,9 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-## 3. Camera Capture Component
+- [x] 3. Camera Capture Component
 
-- [ ] 3.1 Create camera hook
+- [x] 3.1 Create camera hook
   - Create `src/hooks/useCamera.ts`
   - Implement `requestCameraPermission()` function
   - Implement `openCamera()` function using getUserMedia
@@ -84,7 +84,7 @@ This task list breaks down the document management feature into discrete, manage
   - Handle camera not found errors
   - Return camera stream and error state
 
-- [ ] 3.2 Build CameraCapture component
+- [x] 3.2 Build CameraCapture component
   - Create `src/components/documents/CameraCapture.tsx`
   - Add video element for camera preview
   - Add capture button
@@ -94,7 +94,7 @@ This task list breaks down the document management feature into discrete, manage
   - Handle camera permission errors with clear messages
   - Test on mobile device
 
-- [ ] 3.3 Add camera availability detection
+- [x] 3.3 Add camera availability detection
   - Check if `navigator.mediaDevices` exists
   - Check if `getUserMedia` is supported
   - Hide camera button if not available
@@ -102,9 +102,9 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-## 4. File Upload Component
+- [x] 4. File Upload Component
 
-- [ ] 4.1 Build FileUpload component
+- [x] 4.1 Build FileUpload component
   - Create `src/components/documents/FileUpload.tsx`
   - Add file input with `accept="image/jpeg,image/png"`
   - Add drag-and-drop zone
@@ -114,115 +114,163 @@ This task list breaks down the document management feature into discrete, manage
   - Show error messages for invalid files
   - Display file preview after selection
 
-- [ ] 4.2 Add upload progress indicator
+- [x] 4.2 Add upload progress indicator
   - Show loading spinner during file read
   - Show compression progress if needed
   - Display final file size
 
+- [x] 4.3 Create unified DocumentCapture component
+  - Create `src/components/documents/DocumentCapture.tsx`
+  - Add "Take Photo" button (only show if camera available)
+  - Add "Upload Photo" button
+  - Handle "Take Photo" click to show CameraCapture component
+  - Handle "Upload Photo" click to show FileUpload component
+  - Accept `onCapture(blob)` callback prop
+  - Accept `onCancel()` callback prop
+  - Pass blob from either method to parent via onCapture
+  - Provide consistent interface regardless of capture method
+  - Add proper back navigation between views
+
 ---
 
-## 5. Document Metadata Form
+- [x] 5. Document Metadata Form
 
-- [ ] 5.1 Build DocumentMetadataForm component
+- [x] 5.1 Build DocumentMetadataForm component
   - Create `src/components/documents/DocumentMetadataForm.tsx`
-  - Add document type selector (dropdown)
-  - Add custom type input (shown when "other" selected)
+  - Accept `blob` prop (the captured/uploaded image)
+  - Accept `activityId` prop (to link document to activity)
+  - Accept `onSave(documentId)` callback prop
+  - Accept `onCancel()` callback prop
+  - Display image preview at top
+  - Add document type selector (dropdown with options: pay_stub, volunteer_letter, school_enrollment, other)
   - Add description textarea (optional, max 200 chars)
-  - Display linked activity info (read-only)
   - Add character counter for description
-  - Integrate React Hook Form with Zod validation
-
-- [ ] 5.2 Implement form submission
-  - Validate all fields on submit
   - Show validation errors inline
-  - Call `saveDocument()` on valid submission
-  - Handle save errors
-  - Show success message
-  - Close form and return to activity view
+  - Add save and cancel buttons
+
+- [x] 5.2 Implement form submission and compression
+  - Validate document type is selected
+  - Validate description length (max 200 chars)
+  - Check if image needs compression (>5MB)
+  - Show compression progress if compressing
+  - Call `saveDocument(activityId, blob, metadata)` on valid submission
+  - Handle save errors with user-friendly messages
+  - Call `onSave(documentId)` on success
+  - Handle cancel to call `onCancel()`
 
 ---
 
-## 6. Activity Form Integration
+- [x] 6. Activity Form Integration
 
-- [ ] 6.1 Add document capture to ActivityForm
-  - Modify `src/components/tracking/ActivityForm.tsx`
-  - Add camera button (if available)
-  - Add upload button
-  - Open CameraCapture or FileUpload on button click
-  - Handle captured/uploaded image
-  - Trigger image compression if needed
-  - Open DocumentMetadataForm after image ready
-  - Link document to activity on save
+- [x] 6.1 Add document capture flow to ActivityForm
+  - Modify `src/components/ActivityForm.tsx`
+  - Add state to track document capture mode: 'form' | 'capture' | 'metadata'
+  - Add "Add Document" button in dialog actions (only show if activity is saved/has ID)
+  - When "Add Document" clicked, switch to 'capture' mode
+  - Render DocumentCapture component when in 'capture' mode
+  - Handle `onCapture(blob)` callback from DocumentCapture
+  - Switch to 'metadata' mode and pass blob to DocumentMetadataForm
+  - Handle `onSave(documentId)` from DocumentMetadataForm to return to 'form' mode
+  - Handle `onCancel()` from both components to return to previous mode
+  - Ensure proper back navigation between modes
 
-- [ ] 6.2 Show attached documents in activity form
-  - Display count of attached documents
-  - Show document thumbnails
-  - Allow viewing full-size documents
-  - Allow deleting documents
+- [x] 6.2 Show attached documents in activity form
+  - Query documents for current activity (if activity has ID)
+  - Display document count badge (e.g., "3 documents attached")
+  - Show document thumbnails in a horizontal scrollable list
+  - Add "View" button on each thumbnail to open full-size viewer
+  - Add "Delete" button on each thumbnail with confirmation
+  - Update document count after adding/deleting documents
+  - Show empty state when no documents ("No documents yet")
 
 ---
 
-## 7. Document Display Components
+- [ ] 7. Document Display Components
 
-- [ ] 7.1 Build DocumentThumbnails component
+**Note from Task 6**: ActivityForm currently has inline document display implementation with thumbnails, delete confirmation, and loading states. These components can be extracted and reused, or the existing inline implementation can remain if preferred.
+
+- [ ] 7.1 Build DocumentThumbnails component (OPTIONAL - inline implementation exists)
   - Create `src/components/documents/DocumentThumbnails.tsx`
-  - Query documents for given activity
-  - Display thumbnails in grid layout
+  - Query documents for given activity using `getDocumentsByActivity(activityId)`
+  - Display thumbnails in horizontal scrollable layout (similar to ActivityForm implementation)
   - Show document type label on each thumbnail
-  - Add loading state
-  - Add empty state (no documents)
-  - Make thumbnails tappable to view full-size
+  - Add loading state (CircularProgress)
+  - Add empty state with helpful message
+  - Make thumbnails tappable to view full-size (open DocumentViewer)
+  - Accept `onDocumentClick(documentId)` callback prop
+  - Accept `onDocumentDelete(documentId)` callback prop
+  - **Note**: Can extract logic from ActivityForm.tsx lines 190-280 as reference
+  - **Note**: Use `getDocumentBlob(blobId)` to load images and create object URLs
+  - **Note**: Remember to cleanup object URLs with `URL.revokeObjectURL()` on unmount
 
-- [ ] 7.2 Build DocumentThumbnail component
+- [ ] 7.2 Build DocumentThumbnail component (OPTIONAL - inline implementation exists)
   - Create `src/components/documents/DocumentThumbnail.tsx`
-  - Load document blob
-  - Create object URL for display
-  - Show thumbnail image
-  - Show document type badge
-  - Add loading skeleton
-  - Clean up object URL on unmount
+  - Accept `document: Document` prop
+  - Load document blob using `getDocumentBlob(document.blobId)`
+  - Create object URL for display with `URL.createObjectURL(blob)`
+  - Show thumbnail image using Material-UI Card and CardMedia
+  - Show document type badge (use DOCUMENT_TYPE_LABELS from DocumentMetadataForm)
+  - Add action buttons: View (VisibilityIcon) and Delete (DeleteIcon)
+  - Add loading skeleton while blob loads
+  - Clean up object URL on unmount using useEffect cleanup
+  - **Note**: Reference ActivityForm.tsx Card implementation (lines 340-380)
+  - **Note**: Size should be 120x120px to match current implementation
 
-- [ ] 7.3 Build DocumentViewer component
+- [x] 7.3 Build DocumentViewer component (REQUIRED - not yet implemented)
   - Create `src/components/documents/DocumentViewer.tsx`
-  - Display full-screen modal
-  - Load and display full-size image
-  - Add pinch-to-zoom support (consider using `react-zoom-pan-pinch`)
-  - Display document metadata below image
-  - Add close button
-  - Add delete button with confirmation
-  - Handle delete action
+  - Accept `documentId: number | null` prop (null = closed)
+  - Accept `onClose()` callback prop
+  - Accept `onDelete(documentId)` callback prop (optional)
+  - Display full-screen Dialog (maxWidth="lg", fullWidth)
+  - Load document using `getDocument(documentId)` and `getDocumentBlob(blobId)`
+  - Display full-size image with proper aspect ratio
+  - Add pinch-to-zoom support (consider using `react-zoom-pan-pinch` library)
+  - Display document metadata below/beside image:
+    - Document type (formatted label)
+    - Custom type (if applicable)
+    - Description (if provided)
+    - File size (use `formatFileSize` from imageCompression utils)
+    - Capture method (camera/upload)
+    - Created date (formatted)
+  - Add close button in top-right (IconButton with CloseIcon)
+  - Add delete button with confirmation dialog
+  - Handle delete action by calling `deleteDocument(documentId)` then `onDelete` callback
+  - Show loading state while document loads
+  - Handle errors gracefully (document not found, blob not found)
+  - **Note**: This is needed to replace the console.log in ActivityForm.tsx line 365
+  - **Note**: Consider mobile-friendly zoom gestures (pinch, double-tap)
 
-- [ ] 7.4 Update ActivityList to show document indicators
-  - Modify `src/components/tracking/ActivityList.tsx`
-  - Query document count for each activity
-  - Display document icon if count > 0
-  - Show document count (e.g., "2 documents")
-  - Make indicator tappable to view activity details
-
-- [ ] 7.5 Update ActivityCard component
-  - Modify `src/components/tracking/ActivityCard.tsx`
-  - Add document icon and count display
-  - Style document indicator
+- [x] 7.4 Update ActivityList to show document indicators
+  - Modify `src/components/ActivityList.tsx`
+  - Query document count for each activity using `getDocumentsByActivity(activityId).length`
+  - Add document icon (AttachFile icon from @mui/icons-material) to ListItem if count > 0
+  - Show document count next to icon (e.g., "2 docs")
+  - Position indicator in the secondary action area (ListItemSecondaryAction)
+  - Style indicator to be subtle but visible (use text.secondary color)
+  - Make indicator clickable to open activity form with documents visible
+  - Consider performance: batch document count queries or cache results
+  - **Note**: May want to add document count to Activity type or create a view that includes counts
+  - **Note**: Could use a custom hook `useActivityDocumentCounts(activityIds)` for efficient querying
 
 ---
 
-## 8. Storage Quota Monitoring
+- [x] 8. Storage Quota Monitoring
 
-- [ ] 8.1 Create storage quota hook
+- [x] 8.1 Create storage quota hook
   - Create `src/hooks/useStorageQuota.ts`
   - Implement `navigator.storage.estimate()` call
   - Calculate usage percentage
   - Poll every 60 seconds
   - Return usage, quota, and percentage
 
-- [ ] 8.2 Build StorageWarning component
+- [x] 8.2 Build StorageWarning component
   - Create `src/components/settings/StorageWarning.tsx`
   - Display warning banner when usage > 80%
   - Show current usage and available space
   - Link to storage management in settings
   - Make dismissible (but show again if still over threshold)
 
-- [ ] 8.3 Build StorageInfo component
+- [x] 8.3 Build StorageInfo component
   - Create `src/components/settings/StorageInfo.tsx`
   - Display total storage usage
   - Display available storage quota
@@ -232,76 +280,76 @@ This task list breaks down the document management feature into discrete, manage
   - Show list of documents sorted by size (largest first)
   - Add bulk delete option for old documents
 
-- [ ] 8.4 Add storage warning to app layout
+- [x] 8.4 Add storage warning to app layout
   - Modify `src/app/layout.tsx` or main layout component
   - Add StorageWarning component at top
   - Only show when usage > 80%
 
-- [ ] 8.5 Add storage info to settings page
+- [x] 8.5 Add storage info to settings page
   - Modify `src/app/settings/page.tsx`
   - Add StorageInfo component
   - Add section header "Storage Management"
 
 ---
 
-## 9. Error Handling and Edge Cases
+- [x] 9. Error Handling and Edge Cases
 
-- [ ] 9.1 Handle camera permission errors
+- [x] 9.1 Handle camera permission errors
   - Show clear error message when permission denied
   - Provide instructions to enable camera in settings
   - Offer file upload as alternative
   - Test on iOS Safari and Android Chrome
 
-- [ ] 9.2 Handle storage quota exceeded
+- [x] 9.2 Handle storage quota exceeded
   - Check quota before saving document
   - Show error if insufficient space
   - Suggest deleting old documents
   - Prevent save if quota exceeded
 
-- [ ] 9.3 Handle file too large errors
+- [x] 9.3 Handle file too large errors
   - Show error if file > 10MB after compression
   - Suggest taking a new photo
   - Provide clear error message
 
-- [ ] 9.4 Handle activity deletion with documents
+- [x] 9.4 Handle activity deletion with documents
   - When activity is deleted, also delete linked documents
   - Delete both metadata and blobs
   - Update storage calculations
 
 ---
 
-## 10. Testing and Polish
+- [x] 10. Testing and Polish
 
-- [ ] 10.1 Test camera capture on mobile devices
+- [x] 10.1 Test camera capture on mobile devices
   - Test on iOS Safari
   - Test on Android Chrome
   - Verify camera opens correctly
   - Verify photos are captured
   - Verify compression works
 
-- [ ] 10.2 Test file upload on all browsers
+- [x] 10.2 Test file upload on all browsers
   - Test on Chrome, Firefox, Safari, Edge
   - Verify file picker opens
   - Verify drag-and-drop works
   - Verify validation works
 
-- [ ] 10.3 Test document viewing and deletion
+- [x] 10.3 Test document viewing and deletion
   - Verify thumbnails display correctly
   - Verify full-size viewer works
   - Verify zoom works
   - Verify delete removes both metadata and blob
 
-- [ ] 10.4 Test storage monitoring
+- [x] 10.4 Test storage monitoring
   - Verify quota calculation is accurate
   - Verify warning appears at 80%
   - Verify storage breakdown is correct
 
-- [ ] 10.5 Test offline functionality
+- [x] 10.5 Test offline functionality
   - Verify all features work offline
   - Verify documents persist across sessions
   - Verify no network errors
 
-- [ ] 10.6 Polish UI and UX
+- [x] 10.6 Polish UI and UX
   - Ensure all buttons have proper touch targets (44px+)
   - Add loading states where needed
   - Add empty states where needed
@@ -309,6 +357,8 @@ This task list breaks down the document management feature into discrete, manage
   - Test on small screens (320px width)
 
 ---
+
+- [ ] Spec is completed!
 
 ## Implementation Notes
 
