@@ -51,11 +51,7 @@ export async function compressImage(
   file: File,
   options: CompressionOptions = {},
 ): Promise<CompressionResult> {
-  const {
-    quality = 0.8,
-    maxDimension = 1920,
-    onProgress,
-  } = options;
+  const { quality = 0.8, maxDimension = 1920, onProgress } = options;
 
   const originalSize = file.size;
 

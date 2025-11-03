@@ -74,9 +74,9 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-- [ ] 3. Camera Capture Component
+- [x] 3. Camera Capture Component
 
-- [ ] 3.1 Create camera hook
+- [x] 3.1 Create camera hook
   - Create `src/hooks/useCamera.ts`
   - Implement `requestCameraPermission()` function
   - Implement `openCamera()` function using getUserMedia
@@ -84,7 +84,7 @@ This task list breaks down the document management feature into discrete, manage
   - Handle camera not found errors
   - Return camera stream and error state
 
-- [ ] 3.2 Build CameraCapture component
+- [x] 3.2 Build CameraCapture component
   - Create `src/components/documents/CameraCapture.tsx`
   - Add video element for camera preview
   - Add capture button
@@ -94,7 +94,7 @@ This task list breaks down the document management feature into discrete, manage
   - Handle camera permission errors with clear messages
   - Test on mobile device
 
-- [ ] 3.3 Add camera availability detection
+- [x] 3.3 Add camera availability detection
   - Check if `navigator.mediaDevices` exists
   - Check if `getUserMedia` is supported
   - Hide camera button if not available
@@ -102,7 +102,7 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-## 4. File Upload Component
+- [ ] 4. File Upload Component
 
 - [ ] 4.1 Build FileUpload component
   - Create `src/components/documents/FileUpload.tsx`
