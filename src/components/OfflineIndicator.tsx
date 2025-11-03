@@ -5,15 +5,22 @@ import { Box, Typography } from "@mui/material";
 import WifiOffIcon from "@mui/icons-material/WifiOff";
 
 export function OfflineIndicator() {
-  const [isOnline, setIsOnline] = useState(() => {
-    // Initialize with navigator.onLine if available (client-side)
-    if (typeof navigator !== "undefined") {
-      return navigator.onLine;
-    }
-    return true;
-  });
+  const [isOnline, setIsOnline] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Set mounted state to avoid hydration mismatch
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Initialize online status
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsOnline(navigator.onLine);
+
     // Listen for online/offline events
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -25,9 +32,10 @@ export function OfflineIndicator() {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, []);
+  }, [mounted]);
 
-  if (isOnline) {
+  // Don't render until mounted to avoid hydration mismatch
+  if (!mounted || isOnline) {
     return null;
   }
 

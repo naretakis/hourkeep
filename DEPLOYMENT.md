@@ -1,71 +1,91 @@
 # Deployment Guide
 
-Deploy WorkPath to GitHub Pages using GitHub Actions.
+## GitHub Pages Deployment
 
-## Quick Start
+This project is configured to deploy to GitHub Pages with the following setup:
 
-### 1. Configure GitHub Pages
+### Configuration
 
-1. Go to your repository on GitHub
-2. Click **Settings** → **Pages**
-3. Under **Source**, select **GitHub Actions**
+- **Base Path**: `/workpath` (production only)
+- **Output**: Static export
+- **Build Directory**: `out/`
 
-### 2. Deploy
+### How It Works
 
-```bash
-git add .
-git commit -m "Deploy to GitHub Pages"
-git push origin main
-```
+#### Development (Local)
 
-The GitHub Actions workflow (`.github/workflows/deploy.yml`) will automatically build and deploy your app.
+- Access at: `http://localhost:3000/`
+- No base path prefix
+- Run: `npm run dev`
 
-### 3. Access Your App
+#### Production (GitHub Pages)
 
-After deployment completes (2-3 minutes):
+- Access at: `https://[username].github.io/workpath/`
+- Base path: `/workpath`
+- Build: `npm run build`
 
-- Go to **Settings → Pages** to see your URL
-- Your app will be at: `https://[username].github.io/workpath`
+### Automatic Deployment
 
-## Custom Repository Name
+The project uses GitHub Actions to automatically deploy on push to `main` branch:
 
-If your repo isn't named "workpath", update `next.config.ts`:
+1. **Build**: Runs `npm run build` which:
+   - Builds Next.js with `basePath: "/workpath"`
+   - Generates static files in `out/` directory
+   - Updates `manifest.json` with correct paths
 
-```typescript
-basePath: '/your-repo-name',
-```
+2. **Deploy**: Uploads `out/` directory to GitHub Pages
 
-## Updating Your App
+### Manual Deployment
 
-To deploy updates:
-
-```bash
-git add .
-git commit -m "Update app"
-git push origin main
-```
-
-GitHub Actions automatically rebuilds and redeploys.
-
-## Manual Deployment
-
-To deploy to other static hosts:
+To manually deploy:
 
 ```bash
-npm run build
-# Upload the 'out' directory to your hosting service
+# Build for production
+NODE_ENV=production npm run build
+
+# The out/ directory is ready to deploy
+# GitHub Actions will handle the deployment automatically
 ```
 
-## Troubleshooting
+### Configuration Files
 
-**Build fails**: Check the Actions tab for errors, ensure `npm run build` works locally
+- **next.config.ts**: Sets `basePath` based on environment
+- **scripts/update-manifest.js**: Updates manifest.json paths after build
+- **.github/workflows/deploy.yml**: GitHub Actions workflow
 
-**App doesn't load**: Check browser console, verify base path is correct
+### Verifying Deployment
 
-**Service worker issues**: Clear site data in DevTools → Application → Clear storage
+After deployment, verify:
 
-## Notes
+1. Visit: `https://[username].github.io/workpath/`
+2. Check that all pages load correctly
+3. Verify PWA manifest loads: `https://[username].github.io/workpath/manifest.json`
+4. Test offline functionality
 
-- Static export only - all data stays in the browser
-- PWA features work on GitHub Pages (HTTPS provided)
-- First deployment may take a few minutes to propagate
+### Troubleshooting
+
+**404 Errors in Development**
+
+- Make sure you're accessing `http://localhost:3000/` (no `/workpath` prefix)
+- Restart dev server: `npm run dev`
+
+**404 Errors in Production**
+
+- Verify GitHub Pages is enabled in repository settings
+- Check that source is set to "GitHub Actions"
+- Verify deployment workflow completed successfully
+
+**PWA Not Working**
+
+- Check manifest.json has correct paths with `/workpath` prefix
+- Verify service worker is registered
+- Check browser console for errors
+
+### Environment Variables
+
+The basePath is determined by `NODE_ENV`:
+
+- `development`: No base path
+- `production`: `/workpath` base path
+
+This is configured in `next.config.ts` and `src/app/layout.tsx`.

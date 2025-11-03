@@ -6,6 +6,11 @@ import { theme } from "@/theme/theme";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
 import "./globals.css";
 
+// Get the base path from the environment
+// In production (GitHub Pages), this will be "/workpath"
+// In development, this will be ""
+const basePath = process.env.NODE_ENV === "production" ? "/workpath" : "";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,9 +30,9 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#1976d2" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="manifest" href={`${basePath}/manifest.json`} />
+        <link rel="icon" href={`${basePath}/favicon.ico`} />
+        <link rel="apple-touch-icon" href={`${basePath}/icon-192x192.png`} />
       </head>
       <body suppressHydrationWarning>
         <ThemeProvider theme={theme}>

@@ -48,9 +48,9 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-- [ ] 2. Image Compression Utility
+- [x] 2. Image Compression Utility
 
-- [ ] 2.1 Implement image compression function
+- [x] 2.1 Implement image compression function
   - Create `src/lib/utils/imageCompression.ts`
   - Implement `compressImage(file, maxSizeMB, quality)` function
   - Load image using FileReader
@@ -59,13 +59,13 @@ This task list breaks down the document management feature into discrete, manage
   - Return compressed blob
   - Add progress callback support
 
-- [ ] 2.2 Add file validation utilities
+- [x] 2.2 Add file validation utilities
   - Add `validateFileType(file)` function (JPEG/PNG only)
   - Add `validateFileSize(file, maxMB)` function
   - Add `formatFileSize(bytes)` function for display
   - Add error messages for validation failures
 
-- [ ] 2.3 Test compression with various image sizes
+- [x] 2.3 Test compression with various image sizes
   - Test with small images (< 1MB)
   - Test with medium images (1-5MB)
   - Test with large images (5-10MB)
@@ -74,7 +74,7 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-## 3. Camera Capture Component
+- [ ] 3. Camera Capture Component
 
 - [ ] 3.1 Create camera hook
   - Create `src/hooks/useCamera.ts`
