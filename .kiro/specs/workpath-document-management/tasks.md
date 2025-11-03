@@ -160,9 +160,9 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-- [ ] 6. Activity Form Integration
+- [x] 6. Activity Form Integration
 
-- [ ] 6.1 Add document capture flow to ActivityForm
+- [x] 6.1 Add document capture flow to ActivityForm
   - Modify `src/components/ActivityForm.tsx`
   - Add state to track document capture mode: 'form' | 'capture' | 'metadata'
   - Add "Add Document" button in dialog actions (only show if activity is saved/has ID)
@@ -174,7 +174,7 @@ This task list breaks down the document management feature into discrete, manage
   - Handle `onCancel()` from both components to return to previous mode
   - Ensure proper back navigation between modes
 
-- [ ] 6.2 Show attached documents in activity form
+- [x] 6.2 Show attached documents in activity form
   - Query documents for current activity (if activity has ID)
   - Display document count badge (e.g., "3 documents attached")
   - Show document thumbnails in a horizontal scrollable list
@@ -187,46 +187,74 @@ This task list breaks down the document management feature into discrete, manage
 
 - [ ] 7. Document Display Components
 
-- [ ] 7.1 Build DocumentThumbnails component
+**Note from Task 6**: ActivityForm currently has inline document display implementation with thumbnails, delete confirmation, and loading states. These components can be extracted and reused, or the existing inline implementation can remain if preferred.
+
+- [ ] 7.1 Build DocumentThumbnails component (OPTIONAL - inline implementation exists)
   - Create `src/components/documents/DocumentThumbnails.tsx`
-  - Query documents for given activity
-  - Display thumbnails in grid layout
+  - Query documents for given activity using `getDocumentsByActivity(activityId)`
+  - Display thumbnails in horizontal scrollable layout (similar to ActivityForm implementation)
   - Show document type label on each thumbnail
-  - Add loading state
-  - Add empty state (no documents)
-  - Make thumbnails tappable to view full-size
+  - Add loading state (CircularProgress)
+  - Add empty state with helpful message
+  - Make thumbnails tappable to view full-size (open DocumentViewer)
+  - Accept `onDocumentClick(documentId)` callback prop
+  - Accept `onDocumentDelete(documentId)` callback prop
+  - **Note**: Can extract logic from ActivityForm.tsx lines 190-280 as reference
+  - **Note**: Use `getDocumentBlob(blobId)` to load images and create object URLs
+  - **Note**: Remember to cleanup object URLs with `URL.revokeObjectURL()` on unmount
 
-- [ ] 7.2 Build DocumentThumbnail component
+- [ ] 7.2 Build DocumentThumbnail component (OPTIONAL - inline implementation exists)
   - Create `src/components/documents/DocumentThumbnail.tsx`
-  - Load document blob
-  - Create object URL for display
-  - Show thumbnail image
-  - Show document type badge
-  - Add loading skeleton
-  - Clean up object URL on unmount
+  - Accept `document: Document` prop
+  - Load document blob using `getDocumentBlob(document.blobId)`
+  - Create object URL for display with `URL.createObjectURL(blob)`
+  - Show thumbnail image using Material-UI Card and CardMedia
+  - Show document type badge (use DOCUMENT_TYPE_LABELS from DocumentMetadataForm)
+  - Add action buttons: View (VisibilityIcon) and Delete (DeleteIcon)
+  - Add loading skeleton while blob loads
+  - Clean up object URL on unmount using useEffect cleanup
+  - **Note**: Reference ActivityForm.tsx Card implementation (lines 340-380)
+  - **Note**: Size should be 120x120px to match current implementation
 
-- [ ] 7.3 Build DocumentViewer component
+- [ ] 7.3 Build DocumentViewer component (REQUIRED - not yet implemented)
   - Create `src/components/documents/DocumentViewer.tsx`
-  - Display full-screen modal
-  - Load and display full-size image
-  - Add pinch-to-zoom support (consider using `react-zoom-pan-pinch`)
-  - Display document metadata below image
-  - Add close button
-  - Add delete button with confirmation
-  - Handle delete action
+  - Accept `documentId: number | null` prop (null = closed)
+  - Accept `onClose()` callback prop
+  - Accept `onDelete(documentId)` callback prop (optional)
+  - Display full-screen Dialog (maxWidth="lg", fullWidth)
+  - Load document using `getDocument(documentId)` and `getDocumentBlob(blobId)`
+  - Display full-size image with proper aspect ratio
+  - Add pinch-to-zoom support (consider using `react-zoom-pan-pinch` library)
+  - Display document metadata below/beside image:
+    - Document type (formatted label)
+    - Custom type (if applicable)
+    - Description (if provided)
+    - File size (use `formatFileSize` from imageCompression utils)
+    - Capture method (camera/upload)
+    - Created date (formatted)
+  - Add close button in top-right (IconButton with CloseIcon)
+  - Add delete button with confirmation dialog
+  - Handle delete action by calling `deleteDocument(documentId)` then `onDelete` callback
+  - Show loading state while document loads
+  - Handle errors gracefully (document not found, blob not found)
+  - **Note**: This is needed to replace the console.log in ActivityForm.tsx line 365
+  - **Note**: Consider mobile-friendly zoom gestures (pinch, double-tap)
 
 - [ ] 7.4 Update ActivityList to show document indicators
   - Modify `src/components/ActivityList.tsx`
-  - Query document count for each activity in the list
-  - Add document icon (AttachFile or Description icon) to ListItem if count > 0
-  - Show document count next to icon (e.g., "2")
-  - Position indicator in the secondary action area
-  - Style indicator to be subtle but visible
+  - Query document count for each activity using `getDocumentsByActivity(activityId).length`
+  - Add document icon (AttachFile icon from @mui/icons-material) to ListItem if count > 0
+  - Show document count next to icon (e.g., "2 docs")
+  - Position indicator in the secondary action area (ListItemSecondaryAction)
+  - Style indicator to be subtle but visible (use text.secondary color)
   - Make indicator clickable to open activity form with documents visible
+  - Consider performance: batch document count queries or cache results
+  - **Note**: May want to add document count to Activity type or create a view that includes counts
+  - **Note**: Could use a custom hook `useActivityDocumentCounts(activityIds)` for efficient querying
 
 ---
 
-## 8. Storage Quota Monitoring
+- [ ] 8. Storage Quota Monitoring
 
 - [ ] 8.1 Create storage quota hook
   - Create `src/hooks/useStorageQuota.ts`

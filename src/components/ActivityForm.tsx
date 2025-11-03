@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,9 +15,28 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Badge,
+  Card,
+  CardMedia,
+  CardActions,
+  IconButton,
+  Alert,
 } from "@mui/material";
+import {
+  AttachFile as AttachFileIcon,
+  Visibility as VisibilityIcon,
+  Delete as DeleteIcon,
+} from "@mui/icons-material";
 import { format } from "date-fns";
 import { Activity } from "@/types";
+import { Document } from "@/types/documents";
+import { DocumentCapture } from "@/components/documents/DocumentCapture";
+import { DocumentMetadataForm } from "@/components/documents/DocumentMetadataForm";
+import {
+  getDocumentsByActivity,
+  deleteDocument,
+  getDocumentBlob,
+} from "@/lib/storage/documents";
 
 interface ActivityFormProps {
   open: boolean;
@@ -29,6 +48,8 @@ interface ActivityFormProps {
   selectedDate: Date | null;
   existingActivity?: Activity;
 }
+
+type DocumentCaptureMode = "form" | "capture" | "metadata";
 
 function ActivityFormContent({
   onClose,
@@ -48,6 +69,18 @@ function ActivityFormContent({
   );
   const [errors, setErrors] = useState<{ hours?: string }>({});
   const [saving, setSaving] = useState(false);
+
+  // Document capture state
+  const [captureMode, setCaptureMode] = useState<DocumentCaptureMode>("form");
+  const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null);
+
+  // Document display state
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documentUrls, setDocumentUrls] = useState<Map<number, string>>(
+    new Map(),
+  );
+  const [loadingDocuments, setLoadingDocuments] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
   const validateHours = (value: string): boolean => {
     const num = parseFloat(value);
@@ -103,7 +136,118 @@ function ActivityFormContent({
     }
   };
 
+  // Document capture handlers
+  const handleAddDocument = () => {
+    setCaptureMode("capture");
+  };
+
+  const handleDocumentCapture = (blob: Blob) => {
+    setCapturedBlob(blob);
+    setCaptureMode("metadata");
+  };
+
+  const handleDocumentSave = async (documentId: number) => {
+    console.log("Document saved with ID:", documentId);
+    setCapturedBlob(null);
+    setCaptureMode("form");
+    // Reload documents
+    if (existingActivity?.id) {
+      await loadDocuments(existingActivity.id);
+    }
+  };
+
+  const handleDocumentCancel = () => {
+    setCapturedBlob(null);
+    setCaptureMode("form");
+  };
+
+  const handleDeleteDocument = async (documentId: number) => {
+    try {
+      await deleteDocument(documentId);
+      // Reload documents
+      if (existingActivity?.id) {
+        await loadDocuments(existingActivity.id);
+      }
+      setDeleteConfirm(null);
+    } catch (error) {
+      console.error("Error deleting document:", error);
+    }
+  };
+
+  // Load documents for the activity
+  const loadDocuments = async (activityId: number) => {
+    setLoadingDocuments(true);
+    try {
+      const docs = await getDocumentsByActivity(activityId);
+      setDocuments(docs);
+
+      // Load blob URLs for thumbnails
+      const urls = new Map<number, string>();
+      for (const doc of docs) {
+        try {
+          const blobData = await getDocumentBlob(doc.blobId);
+          if (blobData) {
+            const url = URL.createObjectURL(blobData.blob);
+            urls.set(doc.id!, url);
+          }
+        } catch (error) {
+          console.error("Error loading document blob:", error);
+        }
+      }
+      setDocumentUrls(urls);
+    } catch (error) {
+      console.error("Error loading documents:", error);
+    } finally {
+      setLoadingDocuments(false);
+    }
+  };
+
+  // Load documents when activity changes
+  useEffect(() => {
+    if (existingActivity?.id) {
+      loadDocuments(existingActivity.id);
+    }
+
+    // Cleanup blob URLs on unmount
+    return () => {
+      documentUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [existingActivity?.id]);
+
   if (!selectedDate) return null;
+
+  // Show document capture view
+  if (captureMode === "capture") {
+    return (
+      <>
+        <DialogTitle>Add Document</DialogTitle>
+        <DialogContent>
+          <DocumentCapture
+            onCapture={handleDocumentCapture}
+            onCancel={handleDocumentCancel}
+          />
+        </DialogContent>
+      </>
+    );
+  }
+
+  // Show document metadata form
+  if (captureMode === "metadata" && capturedBlob && existingActivity?.id) {
+    return (
+      <>
+        <DialogTitle>Document Details</DialogTitle>
+        <DialogContent>
+          <DocumentMetadataForm
+            blob={capturedBlob}
+            activityId={existingActivity.id}
+            captureMethod="camera"
+            onSave={handleDocumentSave}
+            onCancel={handleDocumentCancel}
+          />
+        </DialogContent>
+      </>
+    );
+  }
 
   return (
     <>
@@ -154,6 +298,123 @@ function ActivityFormContent({
             placeholder="Where did you work/volunteer/study?"
             fullWidth
           />
+
+          {/* Documents Section - Only show for existing activities */}
+          {existingActivity?.id && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                Documents
+                {documents.length > 0 && (
+                  <Badge
+                    badgeContent={documents.length}
+                    color="primary"
+                    sx={{ ml: 2 }}
+                  />
+                )}
+              </Typography>
+
+              {loadingDocuments ? (
+                <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
+                  <CircularProgress size={24} />
+                </Box>
+              ) : documents.length === 0 ? (
+                <Alert severity="info" sx={{ mt: 1 }}>
+                  No documents yet. Click &quot;Add Document&quot; below to
+                  attach verification documents.
+                </Alert>
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    overflowX: "auto",
+                    py: 1,
+                    "&::-webkit-scrollbar": {
+                      height: 8,
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "rgba(0,0,0,0.2)",
+                      borderRadius: 4,
+                    },
+                  }}
+                >
+                  {documents.map((doc) => (
+                    <Card
+                      key={doc.id}
+                      sx={{
+                        minWidth: 120,
+                        maxWidth: 120,
+                        flexShrink: 0,
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        height="120"
+                        image={documentUrls.get(doc.id!) || ""}
+                        alt={doc.type}
+                        sx={{
+                          objectFit: "cover",
+                          backgroundColor: "grey.200",
+                        }}
+                      />
+                      <CardActions
+                        sx={{
+                          p: 0.5,
+                          justifyContent: "space-between",
+                          minHeight: "auto",
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          onClick={() => {
+                            // TODO: Implement full-size viewer in task 7
+                            console.log("View document:", doc.id);
+                          }}
+                          title="View"
+                        >
+                          <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => setDeleteConfirm(doc.id!)}
+                          title="Delete"
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  ))}
+                </Box>
+              )}
+
+              {/* Delete Confirmation */}
+              {deleteConfirm !== null && (
+                <Alert
+                  severity="warning"
+                  sx={{ mt: 2 }}
+                  action={
+                    <Box>
+                      <Button
+                        size="small"
+                        onClick={() => handleDeleteDocument(deleteConfirm)}
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        size="small"
+                        onClick={() => setDeleteConfirm(null)}
+                      >
+                        Cancel
+                      </Button>
+                    </Box>
+                  }
+                >
+                  Delete this document?
+                </Alert>
+              )}
+            </Box>
+          )}
         </Box>
       </DialogContent>
 
@@ -166,6 +427,16 @@ function ActivityFormContent({
             disabled={saving}
           >
             Delete
+          </Button>
+        )}
+        {existingActivity?.id && (
+          <Button
+            onClick={handleAddDocument}
+            startIcon={<AttachFileIcon />}
+            disabled={saving}
+            sx={{ mr: "auto" }}
+          >
+            Add Document
           </Button>
         )}
         <Button onClick={onClose} disabled={saving}>
