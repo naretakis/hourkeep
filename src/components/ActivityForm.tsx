@@ -14,6 +14,7 @@ import {
   MenuItem,
   Box,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { format } from "date-fns";
 import { Activity } from "@/types";
@@ -21,7 +22,9 @@ import { Activity } from "@/types";
 interface ActivityFormProps {
   open: boolean;
   onClose: () => void;
-  onSave: (activity: Omit<Activity, "id" | "createdAt" | "updatedAt">) => void;
+  onSave: (
+    activity: Omit<Activity, "id" | "createdAt" | "updatedAt">,
+  ) => Promise<void>;
   onDelete?: () => void;
   selectedDate: Date | null;
   existingActivity?: Activity;
@@ -44,6 +47,7 @@ function ActivityFormContent({
     existingActivity?.organization || "",
   );
   const [errors, setErrors] = useState<{ hours?: string }>({});
+  const [saving, setSaving] = useState(false);
 
   const validateHours = (value: string): boolean => {
     const num = parseFloat(value);
@@ -59,7 +63,7 @@ function ActivityFormContent({
     return true;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!selectedDate) return;
 
     if (!validateHours(hours)) return;
@@ -71,8 +75,16 @@ function ActivityFormContent({
       organization: organization.trim() || undefined,
     };
 
-    onSave(activity);
-    onClose();
+    setSaving(true);
+    try {
+      await onSave(activity);
+      onClose();
+    } catch (error) {
+      console.error("Error saving activity:", error);
+      setErrors({ hours: "Failed to save. Please try again." });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = () => {
@@ -147,13 +159,25 @@ function ActivityFormContent({
 
       <DialogActions sx={{ px: 3, pb: 2 }}>
         {existingActivity && onDelete && (
-          <Button onClick={handleDelete} color="error" sx={{ mr: "auto" }}>
+          <Button
+            onClick={handleDelete}
+            color="error"
+            sx={{ mr: "auto" }}
+            disabled={saving}
+          >
             Delete
           </Button>
         )}
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSave} variant="contained" disabled={!hours}>
-          Save
+        <Button onClick={onClose} disabled={saving}>
+          Cancel
+        </Button>
+        <Button
+          onClick={handleSave}
+          variant="contained"
+          disabled={!hours || saving}
+          startIcon={saving ? <CircularProgress size={16} /> : null}
+        >
+          {saving ? "Saving..." : "Save"}
         </Button>
       </DialogActions>
     </>
@@ -180,6 +204,12 @@ export function ActivityForm({
       maxWidth="sm"
       fullWidth
       key={dialogKey}
+      PaperProps={{
+        sx: {
+          m: { xs: 2, sm: 3 },
+          maxHeight: { xs: "calc(100% - 32px)", sm: "calc(100% - 64px)" },
+        },
+      }}
     >
       {open && (
         <ActivityFormContent

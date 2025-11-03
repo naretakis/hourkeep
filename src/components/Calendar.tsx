@@ -83,7 +83,7 @@ export function Calendar({
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <Paper sx={{ p: { xs: 1, sm: 2 } }}>
       {/* Header with month navigation */}
       <Box
         sx={{
@@ -96,7 +96,10 @@ export function Calendar({
         <IconButton onClick={handlePrevMonth} size="small">
           <ChevronLeftIcon />
         </IconButton>
-        <Typography variant="h6">
+        <Typography
+          variant="h6"
+          sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+        >
           {format(currentMonth, "MMMM yyyy")}
         </Typography>
         <IconButton onClick={handleNextMonth} size="small">
@@ -109,7 +112,7 @@ export function Calendar({
         sx={{
           display: "grid",
           gridTemplateColumns: "repeat(7, 1fr)",
-          gap: 1,
+          gap: { xs: 0.5, sm: 1 },
           mb: 1,
         }}
       >
@@ -122,6 +125,7 @@ export function Calendar({
               textAlign: "center",
               fontWeight: "bold",
               color: "text.secondary",
+              fontSize: { xs: "0.65rem", sm: "0.75rem" },
             }}
           >
             {day}
@@ -131,7 +135,11 @@ export function Calendar({
 
       {/* Calendar days */}
       <Box
-        sx={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 1 }}
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: { xs: 0.5, sm: 1 },
+        }}
       >
         {days.map((day) => {
           const dateStr = format(day, "yyyy-MM-dd");

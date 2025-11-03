@@ -10,6 +10,7 @@ import {
   Typography,
   Paper,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { db } from "@/lib/db";
 import { UserProfile } from "@/types";
@@ -74,6 +75,7 @@ export default function OnboardingPage() {
   const [name, setName] = useState("");
   const [state, setState] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -84,10 +86,12 @@ export default function OnboardingPage() {
     e.preventDefault();
 
     if (!name.trim() || !state) {
+      setError("Please fill in all fields");
       return;
     }
 
     setLoading(true);
+    setError(null);
 
     try {
       // Create profile
@@ -105,6 +109,7 @@ export default function OnboardingPage() {
       router.push("/tracking");
     } catch (error) {
       console.error("Error saving profile:", error);
+      setError("Failed to save profile. Please try again.");
       setLoading(false);
     }
   };
@@ -138,6 +143,16 @@ export default function OnboardingPage() {
           <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
             Track your work hours to maintain your Medicaid benefits
           </Typography>
+
+          {error && (
+            <Alert
+              severity="error"
+              sx={{ mb: 3 }}
+              onClose={() => setError(null)}
+            >
+              {error}
+            </Alert>
+          )}
 
           <form onSubmit={handleSubmit}>
             <TextField

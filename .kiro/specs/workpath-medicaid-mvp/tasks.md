@@ -160,21 +160,21 @@ This is a **realistic task list for a new developer** learning to build PWAs. Th
 
 ---
 
-- [ ] Phase 7: Polish & Deploy (Week 8)
+- [x] Phase 7: Polish & Deploy (Week 8)
 
-- [ ] 7.1 Improve mobile styling
+- [x] 7.1 Improve mobile styling
   - Test and fix mobile issues
   - _Requirements: Mobile_
 
-- [ ] 7.2 Add loading states
+- [x] 7.2 Add loading states
   - Show loading indicators
   - _Requirements: UX_
 
-- [ ] 7.3 Add error handling
+- [x] 7.3 Add error handling
   - Handle errors gracefully
   - _Requirements: UX_
 
-- [ ] 7.4 Set up GitHub Actions deployment
+- [x] 7.4 Set up GitHub Actions deployment
   - Create `.github/workflows/deploy.yml` with build and deploy jobs
   - Configure Next.js for static export in `next.config.js`
   - Set up GitHub Pages in repository settings (Settings → Pages → Source: GitHub Actions)

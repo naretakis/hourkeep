@@ -30,9 +30,13 @@ export function Dashboard({ summary }: DashboardProps) {
   const monthDisplay = format(monthDate, "MMMM yyyy");
 
   return (
-    <Paper sx={{ p: 3 }}>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" gutterBottom>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+      <Box sx={{ mb: { xs: 2, sm: 3 } }}>
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
+        >
           Monthly Progress - {monthDisplay}
         </Typography>
       </Box>
@@ -108,29 +112,69 @@ export function Dashboard({ summary }: DashboardProps) {
         <Typography variant="subtitle2" gutterBottom color="text.secondary">
           Hours by Activity Type
         </Typography>
-        <Box sx={{ display: "flex", gap: 2, justifyContent: "space-around" }}>
-          <Box sx={{ textAlign: "center", flex: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: { xs: 1, sm: 2 },
+            justifyContent: "space-around",
+            flexWrap: { xs: "wrap", sm: "nowrap" },
+          }}
+        >
+          <Box
+            sx={{
+              textAlign: "center",
+              flex: 1,
+              minWidth: { xs: "80px", sm: "auto" },
+            }}
+          >
             <Chip label="Work" color="primary" size="small" sx={{ mb: 1 }} />
-            <Typography variant="h6">{workHours}</Typography>
+            <Typography
+              variant="h6"
+              sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+            >
+              {workHours}
+            </Typography>
             <Typography variant="caption" color="text.secondary">
               hours
             </Typography>
           </Box>
-          <Box sx={{ textAlign: "center", flex: 1 }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              flex: 1,
+              minWidth: { xs: "80px", sm: "auto" },
+            }}
+          >
             <Chip
               label="Volunteer"
               color="success"
               size="small"
               sx={{ mb: 1 }}
             />
-            <Typography variant="h6">{volunteerHours}</Typography>
+            <Typography
+              variant="h6"
+              sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+            >
+              {volunteerHours}
+            </Typography>
             <Typography variant="caption" color="text.secondary">
               hours
             </Typography>
           </Box>
-          <Box sx={{ textAlign: "center", flex: 1 }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              flex: 1,
+              minWidth: { xs: "80px", sm: "auto" },
+            }}
+          >
             <Chip label="Education" color="info" size="small" sx={{ mb: 1 }} />
-            <Typography variant="h6">{educationHours}</Typography>
+            <Typography
+              variant="h6"
+              sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+            >
+              {educationHours}
+            </Typography>
             <Typography variant="caption" color="text.secondary">
               hours
             </Typography>

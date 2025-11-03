@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   // Add empty turbopack config to silence warning
   turbopack: {},
+  // Configure for static export (GitHub Pages)
+  output: "export",
+  // Disable image optimization for static export
+  images: {
+    unoptimized: true,
+  },
+  // Set base path if deploying to a subdirectory (e.g., /workpath)
+  // Uncomment and modify if needed:
+  // basePath: '/workpath',
 };
 
 export default withPWA({

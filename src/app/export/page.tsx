@@ -26,6 +26,7 @@ export default function ExportPage() {
   const [activityCount, setActivityCount] = useState(0);
   const [profileExists, setProfileExists] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,6 +37,7 @@ export default function ExportPage() {
         setActivityCount(activities.length);
       } catch (error) {
         console.error("Error loading data:", error);
+        setError("Failed to load data. Please refresh the page.");
       } finally {
         setLoading(false);
       }
@@ -78,7 +80,7 @@ export default function ExportPage() {
       setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
       console.error("Error exporting data:", error);
-      alert("Failed to export data. Please try again.");
+      setError("Failed to export data. Please try again.");
     }
   };
 
@@ -166,7 +168,7 @@ export default function ExportPage() {
       setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
       console.error("Error exporting readable format:", error);
-      alert("Failed to export data. Please try again.");
+      setError("Failed to export data. Please try again.");
     }
   };
 
@@ -210,6 +212,12 @@ export default function ExportPage() {
       {success && (
         <Alert severity="success" sx={{ mb: 3 }}>
           Export successful! Check your downloads folder.
+        </Alert>
+      )}
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
+          {error}
         </Alert>
       )}
 

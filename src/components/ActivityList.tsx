@@ -60,21 +60,31 @@ export function ActivityList({
   );
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
+    <Paper sx={{ p: { xs: 1, sm: 2 } }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          fontSize: { xs: "1.1rem", sm: "1.25rem" },
+          px: { xs: 1, sm: 0 },
+        }}
+      >
         Activity Log
       </Typography>
-      <List>
+      <List sx={{ px: { xs: 0, sm: 0 } }}>
         {sortedActivities.map((activity, index) => (
           <Box key={activity.id}>
             {index > 0 && <Divider />}
             <ListItem
+              sx={{
+                px: { xs: 1, sm: 2 },
+                py: { xs: 1.5, sm: 2 },
+              }}
               secondaryAction={
-                <Box>
+                <Box sx={{ display: "flex", gap: { xs: 0, sm: 0.5 } }}>
                   <IconButton
                     aria-label="duplicate"
                     onClick={() => onDuplicate(activity)}
-                    sx={{ mr: 0.5 }}
                     size="small"
                   >
                     <ContentCopyIcon fontSize="small" />
@@ -82,7 +92,6 @@ export function ActivityList({
                   <IconButton
                     aria-label="edit"
                     onClick={() => onEdit(activity)}
-                    sx={{ mr: 0.5 }}
                     size="small"
                   >
                     <EditIcon fontSize="small" />
@@ -99,28 +108,38 @@ export function ActivityList({
               }
             >
               <ListItemText
+                sx={{ pr: { xs: 1, sm: 2 } }}
                 primary={
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 1,
+                      gap: { xs: 0.5, sm: 1 },
                       mb: 0.5,
+                      flexWrap: "wrap",
                     }}
                   >
-                    <Typography variant="subtitle1">
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ fontSize: { xs: "0.95rem", sm: "1rem" } }}
+                    >
                       {format(parseISO(activity.date), "MMM d, yyyy")}
                     </Typography>
                     <Chip
                       label={activityTypeLabels[activity.type]}
                       color={activityTypeColors[activity.type]}
                       size="small"
+                      sx={{ fontSize: { xs: "0.7rem", sm: "0.75rem" } }}
                     />
                   </Box>
                 }
                 secondary={
                   <>
-                    <Typography variant="body2" component="span">
+                    <Typography
+                      variant="body2"
+                      component="span"
+                      sx={{ fontSize: { xs: "0.85rem", sm: "0.875rem" } }}
+                    >
                       {activity.hours} {activity.hours === 1 ? "hour" : "hours"}
                     </Typography>
                     {activity.organization && (
@@ -128,6 +147,7 @@ export function ActivityList({
                         variant="body2"
                         color="text.secondary"
                         component="span"
+                        sx={{ fontSize: { xs: "0.85rem", sm: "0.875rem" } }}
                       >
                         {" • "}
                         {activity.organization}

@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Container, Typography, Box, Alert, IconButton } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  Alert,
+  IconButton,
+  CircularProgress,
+  Backdrop,
+} from "@mui/material";
 import {
   Settings as SettingsIcon,
   Download as DownloadIcon,
@@ -39,6 +47,8 @@ export default function TrackingPage() {
     Activity | undefined
   >();
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [monthlySummary, setMonthlySummary] = useState<MonthlySummary>({
     month: format(new Date(), "yyyy-MM"),
     totalHours: 0,
@@ -54,6 +64,7 @@ export default function TrackingPage() {
 
   const loadActivities = async () => {
     try {
+      setLoading(true);
       const allActivities = await db.activities.toArray();
       setActivities(allActivities);
 
@@ -89,12 +100,13 @@ export default function TrackingPage() {
     } catch (err) {
       console.error("Error loading activities:", err);
       setError("Failed to load activities");
+    } finally {
+      setLoading(false);
     }
   };
 
   // Load activities on mount - this is intentional initialization
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadActivities();
   }, []);
 
@@ -133,13 +145,16 @@ export default function TrackingPage() {
       return;
     }
 
+    setSaving(true);
     try {
       await db.activities.delete(activity.id);
       await loadActivities();
       setError(null);
     } catch (err) {
       console.error("Error deleting activity:", err);
-      setError("Failed to delete activity");
+      setError("Failed to delete activity. Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -147,6 +162,7 @@ export default function TrackingPage() {
     activityData: Omit<Activity, "id" | "createdAt" | "updatedAt">,
   ) => {
     try {
+      setSaving(true);
       if (existingActivity) {
         // Update existing activity
         await db.activities.update(existingActivity.id!, {
@@ -168,19 +184,24 @@ export default function TrackingPage() {
     } catch (err) {
       console.error("Error saving activity:", err);
       setError("Failed to save activity");
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDeleteActivity = async () => {
     if (!existingActivity?.id) return;
 
+    setSaving(true);
     try {
       await db.activities.delete(existingActivity.id);
       await loadActivities();
       setError(null);
     } catch (err) {
       console.error("Error deleting activity:", err);
-      setError("Failed to delete activity");
+      setError("Failed to delete activity. Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -202,6 +223,7 @@ export default function TrackingPage() {
   const handleDuplicateToMultipleDates = async (dates: string[]) => {
     if (!activityToDuplicate) return;
 
+    setSaving(true);
     try {
       // Create a new activity for each selected date
       const newActivities = dates.map((date) => ({
@@ -221,7 +243,9 @@ export default function TrackingPage() {
       setError(null);
     } catch (err) {
       console.error("Error duplicating activity:", err);
-      setError("Failed to duplicate activity");
+      setError("Failed to duplicate activity. Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -234,9 +258,31 @@ export default function TrackingPage() {
     router.push("/export");
   };
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Container maxWidth="lg">
-      <Box sx={{ py: 4 }}>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={saving}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+      <Box sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2 } }}>
         <Box
           sx={{
             display: "flex",
@@ -245,10 +291,14 @@ export default function TrackingPage() {
             mb: 2,
           }}
         >
-          <Typography variant="h4" component="h1">
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" } }}
+          >
             Activity Tracking
           </Typography>
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: { xs: 0.5, sm: 1 } }}>
             <IconButton
               onClick={handleExport}
               aria-label="export data"
