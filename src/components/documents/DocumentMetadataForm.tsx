@@ -131,6 +131,17 @@ export function DocumentMetadataForm({
     setSaving(true);
 
     try {
+      // Pre-check storage quota before processing
+      const quota = await navigator.storage.estimate();
+      const available = (quota.quota || 0) - (quota.usage || 0);
+      const availableMB = Math.floor(available / (1024 * 1024));
+
+      if (available < 50 * 1024 * 1024) {
+        throw new Error(
+          `Insufficient storage space. Only ${availableMB}MB available. Please delete some old documents to free up space.\n\nGo to Settings > Storage Management to manage your documents.`,
+        );
+      }
+
       let finalBlob = blob;
       let compressedSize: number | undefined;
 
@@ -152,8 +163,9 @@ export function DocumentMetadataForm({
           // Check if still too large after compression
           const tenMB = 10 * 1024 * 1024;
           if (finalBlob.size > tenMB) {
+            const sizeMB = (finalBlob.size / (1024 * 1024)).toFixed(1);
             throw new Error(
-              "Image is too large (over 10MB even after compression). Please try a different photo.",
+              `Image is too large (${sizeMB}MB even after compression). The maximum size is 10MB.\n\nPlease try:\n• Taking a new photo with better lighting\n• Using a different camera\n• Uploading a smaller image`,
             );
           }
         } catch (compressionError) {
@@ -182,7 +194,18 @@ export function DocumentMetadataForm({
     } catch (err) {
       console.error("Error saving document:", err);
       if (err instanceof Error) {
-        setError(err.message);
+        // Check if it's a storage quota error
+        if (
+          err.message.includes("storage") ||
+          err.message.includes("quota") ||
+          err.message.includes("space")
+        ) {
+          setError(
+            `${err.message}\n\nGo to Settings > Storage Management to delete old documents.`,
+          );
+        } else {
+          setError(err.message);
+        }
       } else {
         setError("Failed to save document. Please try again.");
       }

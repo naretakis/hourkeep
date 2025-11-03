@@ -141,8 +141,18 @@ export default function TrackingPage() {
   const handleDeleteActivityFromList = async (activity: Activity) => {
     if (!activity.id) return;
 
-    // Confirm deletion
-    if (!window.confirm("Are you sure you want to delete this activity?")) {
+    // Get document count for confirmation message
+    const { getDocumentsByActivity } = await import("@/lib/storage/documents");
+    const documents = await getDocumentsByActivity(activity.id);
+    const docCount = documents.length;
+
+    // Confirm deletion with document warning
+    const confirmMessage =
+      docCount > 0
+        ? `Are you sure you want to delete this activity?\n\nThis will also delete ${docCount} associated document${docCount > 1 ? "s" : ""}.`
+        : "Are you sure you want to delete this activity?";
+
+    if (!window.confirm(confirmMessage)) {
       return;
     }
 
@@ -153,7 +163,9 @@ export default function TrackingPage() {
       setError(null);
     } catch (err) {
       console.error("Error deleting activity:", err);
-      setError("Failed to delete activity. Please try again.");
+      setError(
+        "Failed to delete activity. Please try again. If the problem persists, some documents may need to be deleted manually.",
+      );
     } finally {
       setSaving(false);
     }
@@ -206,7 +218,9 @@ export default function TrackingPage() {
       setError(null);
     } catch (err) {
       console.error("Error deleting activity:", err);
-      setError("Failed to delete activity. Please try again.");
+      setError(
+        "Failed to delete activity. Please try again. If the problem persists, some documents may need to be deleted manually.",
+      );
     } finally {
       setSaving(false);
     }

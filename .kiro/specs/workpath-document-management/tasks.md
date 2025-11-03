@@ -292,26 +292,26 @@ This task list breaks down the document management feature into discrete, manage
 
 ---
 
-- [ ] 9. Error Handling and Edge Cases
+- [x] 9. Error Handling and Edge Cases
 
-- [ ] 9.1 Handle camera permission errors
+- [x] 9.1 Handle camera permission errors
   - Show clear error message when permission denied
   - Provide instructions to enable camera in settings
   - Offer file upload as alternative
   - Test on iOS Safari and Android Chrome
 
-- [ ] 9.2 Handle storage quota exceeded
+- [x] 9.2 Handle storage quota exceeded
   - Check quota before saving document
   - Show error if insufficient space
   - Suggest deleting old documents
   - Prevent save if quota exceeded
 
-- [ ] 9.3 Handle file too large errors
+- [x] 9.3 Handle file too large errors
   - Show error if file > 10MB after compression
   - Suggest taking a new photo
   - Provide clear error message
 
-- [ ] 9.4 Handle activity deletion with documents
+- [x] 9.4 Handle activity deletion with documents
   - When activity is deleted, also delete linked documents
   - Delete both metadata and blobs
   - Update storage calculations
@@ -357,7 +357,7 @@ This task list breaks down the document management feature into discrete, manage
   - Test on small screens (320px width)
 
 ---
-
+- [ ] Spec is completed!
 ## Implementation Notes
 
 ### Order of Implementation

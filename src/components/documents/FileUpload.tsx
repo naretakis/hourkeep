@@ -55,6 +55,14 @@ export function FileUpload({
     setError(null);
 
     try {
+      // Check for extremely large files before compression
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > 50) {
+        throw new ValidationError(
+          `File is too large (${fileSizeMB.toFixed(1)}MB). Even with compression, files over 50MB are unlikely to work.\n\nPlease try:\n• Taking a new photo\n• Using a different image\n• Reducing the image quality in your camera settings`,
+        );
+      }
+
       validateFile(file, maxSizeMB);
       return true;
     } catch (err) {

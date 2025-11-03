@@ -17,10 +17,20 @@ export async function saveDocument(
     // Check storage quota
     const quota = await navigator.storage.estimate();
     const available = (quota.quota || 0) - (quota.usage || 0);
+    const availableMB = Math.floor(available / (1024 * 1024));
 
     if (available < 50 * 1024 * 1024) {
       // Less than 50MB available
-      throw new Error("Low storage space");
+      throw new Error(
+        `Insufficient storage space. Only ${availableMB}MB available. Please delete some old documents to free up space.`,
+      );
+    }
+
+    // Check if the blob itself would fit
+    if (blob.size > available) {
+      throw new Error(
+        `Document is too large for available storage (${availableMB}MB available). Please delete some old documents first.`,
+      );
     }
 
     // Store blob first

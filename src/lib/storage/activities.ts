@@ -4,6 +4,7 @@ import { getDocumentsByActivity, deleteDocument } from "./documents";
 /**
  * Delete an activity and all its associated documents
  * @param activityId - ID of the activity to delete
+ * @throws Error if deletion fails
  */
 export async function deleteActivityWithDocuments(
   activityId: number,
@@ -12,11 +13,26 @@ export async function deleteActivityWithDocuments(
     // Get all documents associated with this activity
     const documents = await getDocumentsByActivity(activityId);
 
+    // Track deletion failures
+    const failedDeletions: number[] = [];
+
     // Delete each document (this also deletes the blob)
     for (const doc of documents) {
       if (doc.id) {
-        await deleteDocument(doc.id);
+        try {
+          await deleteDocument(doc.id);
+        } catch (docError) {
+          console.error(`Failed to delete document ${doc.id}:`, docError);
+          failedDeletions.push(doc.id);
+        }
       }
+    }
+
+    // If some documents failed to delete, throw an error
+    if (failedDeletions.length > 0) {
+      throw new Error(
+        `Failed to delete ${failedDeletions.length} document(s). Activity not deleted.`,
+      );
     }
 
     // Delete the activity itself
