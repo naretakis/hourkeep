@@ -158,9 +158,18 @@ Built as an MVP learning project to understand:
 
 ## Documentation
 
+- [ROADMAP.md](ROADMAP.md) - Product roadmap and future features
 - [DEPLOYMENT.md](DEPLOYMENT.md) - How to deploy to GitHub Pages
 - [PWA-TESTING.md](PWA-TESTING.md) - Testing PWA features
 - [BRANDING.md](BRANDING.md) - Brand guidelines and messaging
+
+## What's Next?
+
+WorkPath is actively evolving. See our [ROADMAP.md](ROADMAP.md) to learn about:
+
+- 🚧 Features in development (document management, exemption screening, enhanced onboarding)
+- 💭 Future considerations (income tracking, hardship reporting, compliance alerts)
+- ❌ What we're explicitly not building (and why)
 
 ## Support
 
