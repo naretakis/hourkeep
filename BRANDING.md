@@ -4,22 +4,59 @@
 
 **App Name:** WorkPath
 
-**Tagline:** Your Work Requirements Assistant
+**Tagline:** Your Hours, Your Way
 
-**Description:** Track your work, volunteer, and education hours to maintain your Medicaid benefits
+**Description:** Keep track of your work, volunteer, and school hours in one simple place
 
 ## Brand Voice
 
 - **Supportive** - We're here to help, not judge
 - **Clear** - Plain language, no bureaucratic jargon
-- **Empowering** - You control your data and compliance
+- **Empowering** - You control your data and your story
 - **Respectful** - Dignity-focused, stigma-free language
+- **Encouraging** - Celebrate progress, not just completion
+
+### Tone Guidelines
+
+**Frame positively:**
+- Instead of: "You're not compliant"
+- Say: "You need 15 more hours this month"
+
+**Use encouraging language:**
+- "You're making progress!"
+- "You're on track for this month"
+- "Almost there - just 10 more hours"
+
+**Avoid judgment:**
+- Instead of: "You failed to meet requirements"
+- Say: "Looks like you need more hours for last month"
+
+**Respect autonomy:**
+- "When you're ready, you can..."
+- "If you'd like to..."
+- "You can choose to..."
 
 ### Language Guidelines
 
-✅ Use: "Track your hours", "Maintain your benefits", "Your data, your control"
+✅ **Use:**
+- "Keep track of your hours"
+- "Log your activities"
+- "You're on track" / "You're making progress"
+- "Your information stays with you"
+- "Your data, your control"
+- "Help you stay organized"
+- "Support your goals"
+- "Keep your coverage"
 
-❌ Avoid: "Welfare requirements", "Mandatory reporting", "Surveillance", "Monitoring"
+❌ **Avoid:**
+- "Compliance" (use "meeting your hours" instead)
+- "Requirements" (use "hours goal" or "monthly hours" instead)
+- "Mandatory", "Must", "Required"
+- "Tracking", "Monitoring", "Surveillance"
+- "Reporting", "Auditing", "Verification"
+- "Welfare", "Benefits" (use "coverage" or "health coverage" instead)
+- "Non-compliant" (use "need more hours" instead)
+- "Eligible/Ineligible" (use "qualify" or "meet the hours" instead)
 
 ## Visual Identity
 
@@ -40,15 +77,15 @@
 
 ### Short Description
 
-"Track work hours to maintain your Medicaid benefits. All data stays private on your device."
+"Keep track of your work, volunteer, and school hours in one simple place. All your information stays private on your device."
 
 ### Key Features
 
-- Track work, volunteer, and education hours
-- Visual calendar for easy logging
-- Automatic compliance calculations
-- Export reports for agency submission
-- 100% offline - all data stays on your device
+- Log your work, volunteer, and school hours
+- Visual calendar makes it easy
+- See your monthly total at a glance
+- Export your hours when you need them
+- 100% offline - all your information stays on your device
 
 ### Privacy Message
 
@@ -58,7 +95,7 @@
 
 ### Disclaimer
 
-"WorkPath is an independent tool to help you track work requirements. It is not affiliated with any government agency. Always verify requirements with your state Medicaid office."
+"WorkPath is an independent tool to help you keep track of your hours. It is not affiliated with any government agency. Always check with your state Medicaid office about your specific situation."
 
 ### Privacy Statement
 
