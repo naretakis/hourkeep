@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to WorkPath will be documented in this file.
+All notable changes to HourKeep will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -122,7 +122,7 @@ A complete document capture and management system that allows users to photograp
 
 ### v2.0.0 - Document Management
 
-This is a major release that adds comprehensive document capture and management capabilities to WorkPath. Users can now photograph or upload verification documents (pay stubs, volunteer letters, school enrollment forms) and link them directly to their logged activities.
+This is a major release that adds comprehensive document capture and management capabilities to HourKeep. Users can now photograph or upload verification documents (pay stubs, volunteer letters, school enrollment forms) and link them directly to their logged activities.
 
 **Key highlights:**
 
@@ -143,9 +143,9 @@ This release represents 10 completed tasks across 8 major implementation areas, 
 
 ### v0.1.0 - Initial MVP
 
-The first release of WorkPath, providing essential activity tracking and compliance monitoring for Medicaid work requirements. This MVP establishes the foundation with offline-first architecture, privacy-focused design, and mobile-optimized user experience.
+The first release of HourKeep, providing essential activity tracking and compliance monitoring for Medicaid work requirements. This MVP establishes the foundation with offline-first architecture, privacy-focused design, and mobile-optimized user experience.
 
 ---
 
-[2.0.0]: https://github.com/naretakis/workpath/compare/v0.1.0...v2.0.0
-[0.1.0]: https://github.com/naretakis/workpath/releases/tag/v0.1.0
+[2.0.0]: https://github.com/naretakis/hourkeep/compare/v0.1.0...v2.0.0
+[0.1.0]: https://github.com/naretakis/hourkeep/releases/tag/v0.1.0

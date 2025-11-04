@@ -1,6 +1,6 @@
-# WorkPath v2.0.0 - Document Management 📸
+# HourKeep v2.0.0 - Document Management 📸
 
-**A major release adding comprehensive document capture and management capabilities to WorkPath.**
+**A major release adding comprehensive document capture and management capabilities to HourKeep.**
 
 ---
 
@@ -116,7 +116,7 @@ Just like v1.0, all your documents stay on your device:
 
 - **[CHANGELOG.md](CHANGELOG.md)** - Complete version history
 - **[README.md](README.md)** - Updated with document features
-- **[ROADMAP.md](ROADMAP.md)** - What's next for WorkPath
+- **[ROADMAP.md](ROADMAP.md)** - What's next for HourKeep
 
 ---
 
@@ -146,13 +146,13 @@ This release represents weeks of careful design and implementation, guided by:
 
 ### For Users
 
-Visit **https://naretakis.github.io/workpath** to use WorkPath immediately. No installation required!
+Visit **https://naretakis.github.io/hourkeep** to use HourKeep immediately. No installation required!
 
 ### For Developers
 
 ```bash
-git clone https://github.com/naretakis/workpath.git
-cd workpath
+git clone https://github.com/naretakis/hourkeep.git
+cd hourkeep
 git checkout v2.0.0
 npm install
 npm run dev
@@ -162,7 +162,7 @@ npm run dev
 
 ## 🐛 Known Issues
 
-None at this time! If you encounter any issues, please [open an issue](https://github.com/naretakis/workpath/issues).
+None at this time! If you encounter any issues, please [open an issue](https://github.com/naretakis/hourkeep/issues).
 
 ---
 
@@ -178,4 +178,4 @@ Open an issue or discussion on GitHub!
 
 ---
 
-**Full Changelog**: https://github.com/naretakis/workpath/compare/v0.1.0...v2.0.0
+**Full Changelog**: https://github.com/naretakis/hourkeep/compare/v0.1.0...v2.0.0

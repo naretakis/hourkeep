@@ -1,6 +1,6 @@
 # Development Documentation
 
-This directory contains reference documentation for WorkPath development.
+This directory contains reference documentation for HourKeep development.
 
 ## For MVP Development
 

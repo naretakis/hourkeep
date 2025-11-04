@@ -1,6 +1,6 @@
 # Documentation Workflow
 
-This document provides a quick guide to maintaining documentation in the WorkPath project.
+This document provides a quick guide to maintaining documentation in the HourKeep project.
 
 ## Overview
 

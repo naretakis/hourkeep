@@ -1,6 +1,6 @@
 # How to Create a GitHub Release
 
-This guide will walk you through creating your first GitHub Release for WorkPath v2.0.0.
+This guide will walk you through creating your first GitHub Release for HourKeep v2.0.0.
 
 ---
 
@@ -8,7 +8,7 @@ This guide will walk you through creating your first GitHub Release for WorkPath
 
 ### 1. Navigate to Your Repository
 
-Go to: https://github.com/naretakis/workpath
+Go to: https://github.com/naretakis/hourkeep
 
 ### 2. Click on "Releases"
 
@@ -81,7 +81,7 @@ Click the green **"Publish release"** button at the bottom.
 ## What Happens After Publishing?
 
 1. **Release Page Created** - Your release will appear at:
-   `https://github.com/naretakis/workpath/releases/tag/v2.0.0`
+   `https://github.com/naretakis/hourkeep/releases/tag/v2.0.0`
 
 2. **Latest Release Badge** - The release will be marked as "Latest"
 
@@ -149,9 +149,9 @@ If you need to delete (rare):
 
 After publishing, your release will be at:
 
-- **Release page:** `https://github.com/naretakis/workpath/releases/tag/v2.0.0`
-- **All releases:** `https://github.com/naretakis/workpath/releases`
-- **Latest release:** `https://github.com/naretakis/workpath/releases/latest`
+- **Release page:** `https://github.com/naretakis/hourkeep/releases/tag/v2.0.0`
+- **All releases:** `https://github.com/naretakis/hourkeep/releases`
+- **Latest release:** `https://github.com/naretakis/hourkeep/releases/latest`
 
 ---
 

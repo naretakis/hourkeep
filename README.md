@@ -1,16 +1,16 @@
-# WorkPath
+# HourKeep
 
-**Your Work Requirements Assistant**
+**Keep Your Hours, Keep Your Coverage**
 
 A Progressive Web App (PWA) that helps you track work, volunteer, and education hours to maintain your Medicaid benefits.
 
-Start using WorkPath today: https://naretakis.github.io/workpath
+Start using HourKeep today: https://naretakis.github.io/hourkeep
 
-[Here's our development roadmap](ROADMAP.md) - WorkPath's current and future features
+[Here's our development roadmap](ROADMAP.md) - HourKeep's current and future features
 
 ## What It Does
 
-WorkPath is a simple, privacy-focused app that helps you:
+HourKeep is a simple, privacy-focused app that helps you:
 
 - **Track hours** - Log work, volunteer, and education activities daily
 - **Capture documents** - Photograph or upload pay stubs, volunteer letters, and other verification documents
@@ -54,8 +54,8 @@ WorkPath is a simple, privacy-focused app that helps you:
 
 ```bash
 # Clone the repository
-git clone https://github.com/[username]/workpath.git
-cd workpath
+git clone https://github.com/[username]/hourkeep.git
+cd hourkeep
 
 # Install dependencies
 npm install
@@ -83,7 +83,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 ## Project Structure
 
 ```
-workpath/
+hourkeep/
 ├── src/
 │   ├── app/              # Next.js app routes
 │   │   ├── onboarding/   # Initial profile setup
@@ -179,7 +179,7 @@ Built as an MVP learning project to understand:
 
 ## What's Next?
 
-WorkPath is actively evolving. See our [ROADMAP.md](ROADMAP.md) to learn about:
+HourKeep is actively evolving. See our [ROADMAP.md](ROADMAP.md) to learn about:
 
 - ✅ Recently shipped (v2.0: Document management)
 - 🚧 Features in development (exemption screening, enhanced onboarding)

@@ -1,8 +1,8 @@
-# WorkPath Roadmap
+# HourKeep Roadmap
 
-**Your Work Requirements Assistant**
+**Keep Your Hours, Keep Your Coverage**
 
-This roadmap outlines where WorkPath is today, what we're building next, and our vision for the future.
+This roadmap outlines where HourKeep is today, what we're building next, and our vision for the future.
 
 ---
 
@@ -10,7 +10,7 @@ This roadmap outlines where WorkPath is today, what we're building next, and our
 
 **Current Release - Available Today**
 
-WorkPath helps you track work, volunteer, and education hours to meet Medicaid work requirements, and now includes comprehensive document management.
+HourKeep helps you track work, volunteer, and education hours to meet Medicaid work requirements, and now includes comprehensive document management.
 
 ### Core Features (v1.0)
 
@@ -48,13 +48,13 @@ WorkPath helps you track work, volunteer, and education hours to meet Medicaid w
 
 **Two Major Features Coming Soon**
 
-We're building two independent features that you can use as they're completed. Each adds significant value to WorkPath.
+We're building two independent features that you can use as they're completed. Each adds significant value to HourKeep.
 
 ### 1. Exemption Screening (Priority 1) ✓
 
 **Status:** Spec complete, ready to build  
 **Estimated:** 2.5-3.5 weeks  
-**Spec:** `.kiro/specs/workpath-exemption-screening/`
+**Spec:** `.kiro/specs/hourkeep-exemption-screening/`
 
 Find out if you're exempt from work requirements before you start tracking.
 
@@ -87,7 +87,7 @@ Find out if you're exempt from work requirements before you start tracking.
 
 **Status:** Spec complete, ready to build  
 **Estimated:** 3-4 weeks  
-**Spec:** `.kiro/specs/workpath-enhanced-onboarding/`
+**Spec:** `.kiro/specs/hourkeep-enhanced-onboarding/`
 
 Better first impression with privacy notice and extended profile.
 
@@ -307,7 +307,7 @@ The current `next-pwa@5.6.0` library uses deprecated Workbox packages and hasn't
 
 ### SNAP Work Requirements Support 🍎
 
-Expand WorkPath to support SNAP (food assistance) work requirements in addition to Medicaid.
+Expand HourKeep to support SNAP (food assistance) work requirements in addition to Medicaid.
 
 **Context:**
 SNAP has its own work requirements for "Able-Bodied Adults Without Dependents" (ABAWDs). While similar to Medicaid requirements, there are important differences:
@@ -362,7 +362,7 @@ This is a major undertaking that would require:
 
 **User Feedback Needed:**
 
-- Would you use WorkPath for SNAP tracking?
+- Would you use HourKeep for SNAP tracking?
 - Do you receive both Medicaid and SNAP?
 - What's most confusing about SNAP work requirements?
 - Would combined tracking be helpful or confusing?
@@ -373,7 +373,7 @@ This is a major undertaking that would require:
 
 **Things We've Decided Against**
 
-To keep WorkPath simple, privacy-focused, and offline-first, we're explicitly NOT building:
+To keep HourKeep simple, privacy-focused, and offline-first, we're explicitly NOT building:
 
 - ❌ **Cloud sync or backup** - Conflicts with privacy-first approach
 - ❌ **User accounts or authentication** - Adds complexity, reduces privacy
@@ -401,7 +401,7 @@ To keep WorkPath simple, privacy-focused, and offline-first, we're explicitly NO
 **User Feedback Matters:**
 
 - We prioritize features based on real user needs
-- If you're using WorkPath, your feedback shapes the roadmap
+- If you're using HourKeep, your feedback shapes the roadmap
 - Open an issue on GitHub to suggest features or report problems
 
 ---

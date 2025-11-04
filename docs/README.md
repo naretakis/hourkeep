@@ -1,4 +1,4 @@
-# WorkPath Documentation
+# HourKeep Documentation
 
 ## User Documentation
 
@@ -20,7 +20,7 @@
 
 ## Project Specs
 
-See `.kiro/specs/workpath-medicaid-mvp/` for:
+See `.kiro/specs/hourkeep-medicaid-mvp/` for:
 
 - Requirements
 - Design

@@ -1,10 +1,10 @@
 # PWA Testing Guide
 
-This guide explains how to test the Progressive Web App features of WorkPath.
+This guide explains how to test the Progressive Web App features of HourKeep.
 
 ## PWA Features
 
-WorkPath includes the following PWA capabilities:
+HourKeep includes the following PWA capabilities:
 
 - **Service Worker** - Caches app files for offline use
 - **Web App Manifest** - Enables installation on mobile devices
@@ -137,7 +137,7 @@ Suggested icons:
 
 - PWA criteria must be met (manifest, service worker, HTTPS)
 - Some browsers don't show prompt automatically
-- Try manually: Chrome menu → "Install WorkPath"
+- Try manually: Chrome menu → "Install HourKeep"
 
 ### Offline mode not working
 
