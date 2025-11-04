@@ -9,11 +9,13 @@
 This specification covers the complete rebranding of the application from "WorkPath" to "HourKeep" with updated tagline and description. The rebrand includes updating all code references, configuration files, documentation, GitHub repository settings, and deployment URLs to ensure consistency across the entire project.
 
 **New Branding:**
+
 - **App Name:** HourKeep
 - **Tagline:** Keep Your Hours, Keep Your Coverage
 - **Description:** Keep track of your work, volunteer, and school hours in one simple place. When it's time, share them with your agency to keep your coverage and benefits.
 
 **Key Principles:**
+
 - Complete and thorough - no references to "WorkPath" should remain
 - Maintain all existing functionality - this is purely a branding change
 - Update deployment URLs to reflect new name
@@ -136,6 +138,7 @@ The database name will change from "WorkPathDB" to "HourKeepDB". Since the app i
 ### GitHub Repository Rename
 
 Renaming the GitHub repository will:
+
 - ✅ Automatically redirect old URLs to new URLs
 - ✅ Preserve all issues, PRs, and history
 - ✅ Update clone URLs
@@ -145,6 +148,7 @@ Renaming the GitHub repository will:
 ### Deployment URL Change
 
 Changing from `/workpath` to `/hourkeep` means:
+
 - Old bookmarks will break (users need to update)
 - Search engines will need to re-index
 - Any shared links will need updating

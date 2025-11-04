@@ -7,33 +7,40 @@ This guide will walk you through creating your first GitHub Release for WorkPath
 ## Step-by-Step Instructions
 
 ### 1. Navigate to Your Repository
+
 Go to: https://github.com/naretakis/workpath
 
 ### 2. Click on "Releases"
+
 - Look in the right sidebar
 - You'll see a section called "Releases"
 - Click on "Releases" or "Create a new release"
 
 ### 3. Click "Draft a new release"
+
 - This button is usually in the top right
 - Or click "Create a new release" if this is your first one
 
 ### 4. Fill in the Release Form
 
 #### Tag Version
+
 - **Tag:** `v2.0.0`
 - **Target:** `main` (should be selected by default)
 - The tag already exists, so GitHub will recognize it
 
 #### Release Title
+
 ```
 v2.0.0 - Document Management 📸
 ```
 
 #### Release Description
+
 Copy and paste the contents from `RELEASE_NOTES_v2.0.0.md` into the description box.
 
 The file contains:
+
 - What's new section
 - Why it matters
 - Technical highlights
@@ -41,26 +48,32 @@ The file contains:
 - And more!
 
 ### 5. Optional: Add Assets
+
 You can attach files to the release (though not necessary for a web app):
+
 - Build artifacts
 - Documentation PDFs
 - Screenshots
 
 GitHub automatically includes:
+
 - Source code (zip)
 - Source code (tar.gz)
 
 ### 6. Set Release Options
 
 #### Checkboxes:
+
 - ✅ **Set as the latest release** - Check this!
 - ⬜ **Set as a pre-release** - Leave unchecked (this is a stable release)
 - ⬜ **Create a discussion for this release** - Optional, but recommended!
 
 ### 7. Preview (Optional)
+
 Click the "Preview" tab to see how your release will look.
 
 ### 8. Publish Release
+
 Click the green **"Publish release"** button at the bottom.
 
 ---
@@ -81,12 +94,14 @@ Click the green **"Publish release"** button at the bottom.
 ## Tips for Future Releases
 
 ### Good Release Titles
+
 - ✅ `v2.0.0 - Document Management 📸`
 - ✅ `v3.0.0 - Exemption Screening ✓`
 - ❌ `Release 2.0.0`
 - ❌ `New version`
 
 ### Good Release Descriptions
+
 - Start with a summary of what's new
 - Use emojis to make it scannable
 - Include "Why this matters" section
@@ -96,7 +111,9 @@ Click the green **"Publish release"** button at the bottom.
 - Include "What's next" section
 
 ### Release Checklist
+
 Before publishing, make sure:
+
 - [ ] Tag is pushed to GitHub
 - [ ] CHANGELOG.md is updated
 - [ ] README.md reflects new features
@@ -109,6 +126,7 @@ Before publishing, make sure:
 ## Editing a Release
 
 If you need to edit after publishing:
+
 1. Go to the release page
 2. Click "Edit release" button
 3. Make your changes
@@ -119,6 +137,7 @@ If you need to edit after publishing:
 ## Deleting a Release
 
 If you need to delete (rare):
+
 1. Go to the release page
 2. Click "Delete" button
 3. Confirm deletion
@@ -129,6 +148,7 @@ If you need to delete (rare):
 ## Example Release URLs
 
 After publishing, your release will be at:
+
 - **Release page:** `https://github.com/naretakis/workpath/releases/tag/v2.0.0`
 - **All releases:** `https://github.com/naretakis/workpath/releases`
 - **Latest release:** `https://github.com/naretakis/workpath/releases/latest`
@@ -138,11 +158,13 @@ After publishing, your release will be at:
 ## Screenshots
 
 ### Where to Find Releases
+
 ```
 GitHub Repo → Right Sidebar → Releases
 ```
 
 ### Release Form
+
 ```
 Tag: v2.0.0
 Target: main
@@ -164,6 +186,7 @@ Description: [Paste from RELEASE_NOTES_v2.0.0.md]
 ## Quick Reference
 
 **Your release details:**
+
 - **Tag:** `v2.0.0` (already created and pushed)
 - **Title:** `v2.0.0 - Document Management 📸`
 - **Description:** Copy from `RELEASE_NOTES_v2.0.0.md`

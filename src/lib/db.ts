@@ -3,14 +3,14 @@ import { UserProfile, Activity } from "@/types";
 import { Document, DocumentBlob } from "@/types/documents";
 
 // Database class
-class WorkPathDB extends Dexie {
+class HourKeepDB extends Dexie {
   profiles!: Table<UserProfile>;
   activities!: Table<Activity>;
   documents!: Table<Document>;
   documentBlobs!: Table<DocumentBlob>;
 
   constructor() {
-    super("WorkPathDB");
+    super("HourKeepDB");
 
     // Version 1: Initial schema
     this.version(1).stores({
@@ -34,4 +34,4 @@ class WorkPathDB extends Dexie {
 }
 
 // Create database instance
-export const db = new WorkPathDB();
+export const db = new HourKeepDB();

@@ -7,18 +7,21 @@
 ## 🎉 What's New
 
 ### Document Capture & Upload
+
 - **📸 Camera Capture** - Take photos of verification documents directly from your phone
 - **📁 File Upload** - Upload existing photos from your device with drag-and-drop support
 - **🗜️ Smart Compression** - Automatic image compression for files over 5MB to save storage space
 - **✅ Validation** - File type and size validation with clear, helpful error messages
 
 ### Document Organization
+
 - **🔗 Activity Linking** - Documents automatically link to the activity you're logging
 - **🏷️ Document Types** - Categorize as pay stubs, volunteer letters, school enrollment, or other
 - **📝 Custom Descriptions** - Add optional notes to each document (up to 200 characters)
 - **📊 Metadata Tracking** - Track capture method, file sizes, and timestamps
 
 ### Viewing & Management
+
 - **👁️ Document Indicators** - See at a glance which activities have attached documents
 - **🖼️ Thumbnail Gallery** - View all documents for an activity in a scrollable grid
 - **🔍 Full-Size Viewer** - Open documents in full-screen with pinch-to-zoom support
@@ -26,6 +29,7 @@
 - **📈 Document Counts** - Track how many documents are attached to each activity
 
 ### Storage Management
+
 - **💾 Storage Monitoring** - Real-time tracking of storage usage and available space
 - **⚠️ Low Storage Warnings** - Automatic alerts when storage reaches 80% capacity
 - **📊 Storage Breakdown** - Detailed view of storage usage by document count and size
@@ -47,6 +51,7 @@
 ## 📱 Mobile-First Design
 
 Every feature is optimized for mobile devices:
+
 - Touch-friendly interfaces
 - Responsive layouts
 - Camera integration
@@ -58,6 +63,7 @@ Every feature is optimized for mobile devices:
 ## 🔒 Privacy-First
 
 Just like v1.0, all your documents stay on your device:
+
 - ✅ No cloud storage
 - ✅ No external servers
 - ✅ No data transmission
@@ -79,6 +85,7 @@ Just like v1.0, all your documents stay on your device:
 ## 🛠️ Technical Highlights
 
 ### New Components
+
 - `CameraCapture` - Device camera integration
 - `FileUpload` - File picker with drag-and-drop
 - `DocumentMetadataForm` - Document details and categorization
@@ -88,6 +95,7 @@ Just like v1.0, all your documents stay on your device:
 - `StorageWarning` - Low storage alerts
 
 ### New Utilities
+
 - Image compression with Canvas API
 - Camera permission handling
 - Storage quota monitoring
@@ -95,6 +103,7 @@ Just like v1.0, all your documents stay on your device:
 - Blob management and cleanup
 
 ### Database Updates
+
 - IndexedDB schema upgraded to v2
 - New `documents` table for metadata
 - New `documentBlobs` table for image data
@@ -125,6 +134,7 @@ See our [ROADMAP.md](ROADMAP.md) for details.
 ## 🙏 Acknowledgments
 
 This release represents weeks of careful design and implementation, guided by:
+
 - HR1 legislation requirements
 - Code for America Service Blueprint
 - Real-world Medicaid beneficiary needs
@@ -135,9 +145,11 @@ This release represents weeks of careful design and implementation, guided by:
 ## 📥 Installation
 
 ### For Users
+
 Visit **https://naretakis.github.io/workpath** to use WorkPath immediately. No installation required!
 
 ### For Developers
+
 ```bash
 git clone https://github.com/naretakis/workpath.git
 cd workpath
@@ -157,6 +169,7 @@ None at this time! If you encounter any issues, please [open an issue](https://g
 ## 💬 Feedback Welcome
 
 We'd love to hear from you:
+
 - What features are most useful?
 - What could be improved?
 - What should we build next?

@@ -19,19 +19,23 @@
 ### Tone Guidelines
 
 **Frame positively:**
+
 - Instead of: "You're not compliant"
 - Say: "You need 15 more hours this month"
 
 **Use encouraging language:**
+
 - "You're making progress!"
 - "You're on track for this month"
 - "Almost there - just 10 more hours"
 
 **Avoid judgment:**
+
 - Instead of: "You failed to meet requirements"
 - Say: "Looks like you need more hours for last month"
 
 **Respect autonomy:**
+
 - "When you're ready, you can..."
 - "If you'd like to..."
 - "You can choose to..."
@@ -39,6 +43,7 @@
 ### Language Guidelines
 
 ✅ **Use:**
+
 - "Keep track of your hours"
 - "Log your activities"
 - "You're on track" / "You're making progress"
@@ -49,6 +54,7 @@
 - "Keep your coverage"
 
 ❌ **Avoid:**
+
 - "Compliance" (use "meeting your hours" instead)
 - "Requirements" (use "hours goal" or "monthly hours" instead)
 - "Mandatory", "Must", "Required"

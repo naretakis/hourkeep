@@ -137,11 +137,12 @@ export default function OnboardingPage() {
           }}
         >
           <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 1 }}>
-            Welcome to WorkPath
+            Welcome to HourKeep
           </Typography>
 
           <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-            Track your work hours to maintain your Medicaid benefits
+            Keep track of your work, volunteer, and school hours in one simple
+            place
           </Typography>
 
           {error && (
