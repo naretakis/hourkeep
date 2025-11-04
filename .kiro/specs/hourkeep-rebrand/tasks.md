@@ -29,7 +29,7 @@ This implementation plan breaks down the rebrand into discrete, sequential tasks
   - Update all references in `BRANDING.md` including app name, tagline, description, disclaimers, and privacy statement
   - _Requirements: 4.1, 4.2, 4.3_
 
-- [ ] 5. Update steering documentation
+- [x] 5. Update steering documentation
   - Update references in `.kiro/steering/medicaid-domain-knowledge.md`
   - Update project name and commands in `.kiro/steering/getting-started.md`
   - _Requirements: 4.4, 4.5_

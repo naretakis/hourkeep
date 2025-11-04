@@ -1,4 +1,4 @@
-# Getting Started with WorkPath
+# Getting Started with HourKeep
 
 **A simplified guide for new developers**
 
@@ -40,10 +40,10 @@ A simple app to track work hours for Medicaid compliance. That's it!
 
 ```bash
 # Create the project
-npx create-next-app@latest workpath --typescript --app
+npx create-next-app@latest hourkeep --typescript --app
 
 # Go into the folder
-cd workpath
+cd hourkeep
 
 # Install dependencies
 npm install @mui/material @emotion/react @emotion/styled dexie date-fns

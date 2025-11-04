@@ -4,7 +4,7 @@ inclusion: always
 
 # Medicaid Work Requirements Domain Knowledge
 
-This document provides essential domain knowledge about Medicaid work requirements based on HR1 legislation and the Code for America Service Blueprint. This knowledge should inform all development decisions for the WorkPath application.
+This document provides essential domain knowledge about Medicaid work requirements based on HR1 legislation and the Code for America Service Blueprint. This knowledge should inform all development decisions for the HourKeep application.
 
 ## Legislative Context: HR1 Legislation (Section 71119)
 
@@ -247,7 +247,7 @@ Systems should integrate with:
 
 ## Application Design Implications
 
-### For WorkPath MVP
+### For HourKeep MVP
 
 1. **Exemption Screening**:
    - Implement all 5 exemption categories with specific sub-categories per HR1
