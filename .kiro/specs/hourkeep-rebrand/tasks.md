@@ -60,7 +60,7 @@ This implementation plan breaks down the rebrand into discrete, sequential tasks
   - Do NOT push yet
   - _Requirements: All code requirements_
 
-- [ ] 10. Rename GitHub repository
+- [x] 10. Rename GitHub repository
   - Go to repository Settings → General → Repository name
   - Change from "workpath" to "hourkeep"
   - Click "Rename" button
