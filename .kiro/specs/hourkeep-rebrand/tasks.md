@@ -67,7 +67,7 @@ This implementation plan breaks down the rebrand into discrete, sequential tasks
   - Update repository description and about section
   - _Requirements: 5.1, 5.2_
 
-- [ ] 11. Push changes and deploy
+- [-] 11. Push changes and deploy
   - Push committed changes to GitHub
   - Wait for GitHub Actions deployment to complete
   - Deployment will now go to new URL path
