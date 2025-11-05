@@ -28,6 +28,7 @@ import {
 } from "@/types/exemptions";
 import { StorageInfo } from "@/components/settings/StorageInfo";
 import { ExemptionHistory } from "@/components/exemptions/ExemptionHistory";
+import { RescreenDialog } from "@/components/exemptions/RescreenDialog";
 import {
   getLatestScreening,
   getScreeningHistory,
@@ -113,6 +114,7 @@ export default function SettingsPage() {
   const [exemptionHistory, setExemptionHistory] = useState<
     ExemptionHistoryType[]
   >([]);
+  const [rescreenDialogOpen, setRescreenDialogOpen] = useState(false);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -199,6 +201,19 @@ export default function SettingsPage() {
       console.error("Error updating profile:", err);
       setError("Failed to update profile. Please try again.");
     }
+  };
+
+  const handleRescreenClick = () => {
+    setRescreenDialogOpen(true);
+  };
+
+  const handleRescreenConfirm = () => {
+    setRescreenDialogOpen(false);
+    router.push("/exemptions");
+  };
+
+  const handleRescreenCancel = () => {
+    setRescreenDialogOpen(false);
   };
 
   if (loading) {
@@ -380,7 +395,7 @@ export default function SettingsPage() {
               </Button>
               <Button
                 variant="contained"
-                onClick={() => router.push("/exemptions")}
+                onClick={handleRescreenClick}
                 fullWidth
               >
                 Re-screen
@@ -449,6 +464,13 @@ export default function SettingsPage() {
           Version 2.0 - All data is stored locally on your device.
         </Typography>
       </Paper>
+
+      {/* Rescreen Confirmation Dialog */}
+      <RescreenDialog
+        open={rescreenDialogOpen}
+        onClose={handleRescreenCancel}
+        onConfirm={handleRescreenConfirm}
+      />
     </Container>
   );
 }

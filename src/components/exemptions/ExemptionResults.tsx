@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Box, Typography, Button, Paper, Alert } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
@@ -7,6 +8,7 @@ import {
 } from "@mui/icons-material";
 import { ExemptionResult } from "@/types/exemptions";
 import { format } from "date-fns";
+import { RescreenDialog } from "./RescreenDialog";
 
 interface ExemptionResultsProps {
   result: ExemptionResult;
@@ -21,6 +23,21 @@ export function ExemptionResults({
   onDone,
   onRescreen,
 }: ExemptionResultsProps) {
+  const [rescreenDialogOpen, setRescreenDialogOpen] = useState(false);
+
+  const handleRescreenClick = () => {
+    setRescreenDialogOpen(true);
+  };
+
+  const handleRescreenConfirm = () => {
+    setRescreenDialogOpen(false);
+    onRescreen();
+  };
+
+  const handleRescreenCancel = () => {
+    setRescreenDialogOpen(false);
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       {/* Status Header */}
@@ -135,7 +152,7 @@ export function ExemptionResults({
       >
         <Button
           variant="outlined"
-          onClick={onRescreen}
+          onClick={handleRescreenClick}
           fullWidth
           sx={{ minHeight: 48 }}
         >
@@ -150,6 +167,13 @@ export function ExemptionResults({
           Done
         </Button>
       </Box>
+
+      {/* Rescreen Confirmation Dialog */}
+      <RescreenDialog
+        open={rescreenDialogOpen}
+        onClose={handleRescreenCancel}
+        onConfirm={handleRescreenConfirm}
+      />
     </Box>
   );
 }

@@ -193,11 +193,11 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 8. Re-screening Functionality
+- [x] 8. Re-screening Functionality
 
 **Note:** Most re-screening functionality is already implemented. The core flow (archiving old results, saving new results, navigation) works. This task is now focused on adding a confirmation dialog for better UX.
 
-- [ ] 8.1 Build RescreenDialog component (Optional - UX Enhancement)
+- [x] 8.1 Build RescreenDialog component (Optional - UX Enhancement)
   - Create `src/components/exemptions/RescreenDialog.tsx`
   - Display confirmation dialog when user clicks "Re-screen" button
   - Explain that previous results will be replaced
@@ -206,7 +206,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Add "Cancel" button
   - Use Material-UI Dialog component for consistency
 
-- [ ] 8.2 Integrate RescreenDialog (Optional - UX Enhancement)
+- [x] 8.2 Integrate RescreenDialog (Optional - UX Enhancement)
   - Add dialog state to `ExemptionResults.tsx`
   - Show RescreenDialog when user taps "Re-screen" button
   - On "Continue", proceed with existing re-screening flow
@@ -214,6 +214,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Consider adding similar dialog in Settings page "Re-screen" button
 
 **Already Implemented:**
+
 - ✅ Archive existing screening to history before new screening
 - ✅ Delete current screening from exemptions table
 - ✅ Navigate to screening page and start fresh screening

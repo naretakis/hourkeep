@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Box, Typography, Paper, Button, Chip } from "@mui/material";
 import {
   CheckCircle as CheckCircleIcon,
@@ -8,6 +9,7 @@ import {
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { ExemptionScreening } from "@/types/exemptions";
+import { RescreenDialog } from "./RescreenDialog";
 
 interface ExemptionBadgeProps {
   screening: ExemptionScreening | null;
@@ -15,13 +17,25 @@ interface ExemptionBadgeProps {
 
 export function ExemptionBadge({ screening }: ExemptionBadgeProps) {
   const router = useRouter();
+  const [rescreenDialogOpen, setRescreenDialogOpen] = useState(false);
 
   const handleClick = () => {
     if (screening) {
-      router.push("/exemptions");
+      // If there's an existing screening, show confirmation dialog
+      setRescreenDialogOpen(true);
     } else {
+      // If no screening, go directly to exemptions page
       router.push("/exemptions");
     }
+  };
+
+  const handleRescreenConfirm = () => {
+    setRescreenDialogOpen(false);
+    router.push("/exemptions");
+  };
+
+  const handleRescreenCancel = () => {
+    setRescreenDialogOpen(false);
   };
 
   // Not screened yet
@@ -60,51 +74,103 @@ export function ExemptionBadge({ screening }: ExemptionBadgeProps) {
   // Exempt
   if (screening.result.isExempt) {
     return (
+      <>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2,
+            mb: 3,
+            backgroundColor: "success.50",
+            border: "1px solid",
+            borderColor: "success.main",
+            cursor: "pointer",
+            "&:hover": {
+              backgroundColor: "success.100",
+            },
+          }}
+          onClick={handleClick}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}>
+            <CheckCircleIcon sx={{ color: "success.main", fontSize: 32 }} />
+            <Box sx={{ flex: 1 }}>
+              <Typography
+                variant="body1"
+                sx={{ fontWeight: 600, color: "success.dark" }}
+              >
+                You Are Exempt
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                You don&apos;t need to track hours
+              </Typography>
+            </Box>
+          </Box>
+          {screening.result.exemptionCategory && (
+            <Box sx={{ mt: 1 }}>
+              <Chip
+                label={getCategoryLabel(screening.result.exemptionCategory)}
+                size="small"
+                sx={{
+                  backgroundColor: "success.main",
+                  color: "white",
+                  fontWeight: 600,
+                }}
+              />
+            </Box>
+          )}
+          <Button
+            size="small"
+            sx={{ mt: 1, color: "success.dark" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
+          >
+            View Details
+          </Button>
+        </Paper>
+
+        {/* Rescreen Confirmation Dialog */}
+        <RescreenDialog
+          open={rescreenDialogOpen}
+          onClose={handleRescreenCancel}
+          onConfirm={handleRescreenConfirm}
+        />
+      </>
+    );
+  }
+
+  // Not exempt - must track hours
+  return (
+    <>
       <Paper
         elevation={0}
         sx={{
           p: 2,
           mb: 3,
-          backgroundColor: "success.50",
+          backgroundColor: "warning.50",
           border: "1px solid",
-          borderColor: "success.main",
+          borderColor: "warning.main",
           cursor: "pointer",
           "&:hover": {
-            backgroundColor: "success.100",
+            backgroundColor: "warning.100",
           },
         }}
         onClick={handleClick}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}>
-          <CheckCircleIcon sx={{ color: "success.main", fontSize: 32 }} />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <InfoIcon sx={{ color: "warning.main", fontSize: 32 }} />
           <Box sx={{ flex: 1 }}>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 600, color: "success.dark" }}
-            >
-              You Are Exempt
+            <Typography variant="body1" sx={{ fontWeight: 600 }}>
+              Must Track Hours
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              You don&apos;t need to track hours
+              You need to track 80 hours/month or earn $580/month
             </Typography>
           </Box>
         </Box>
-        {screening.result.exemptionCategory && (
-          <Box sx={{ mt: 1 }}>
-            <Chip
-              label={getCategoryLabel(screening.result.exemptionCategory)}
-              size="small"
-              sx={{
-                backgroundColor: "success.main",
-                color: "white",
-                fontWeight: 600,
-              }}
-            />
-          </Box>
-        )}
         <Button
           size="small"
-          sx={{ mt: 1, color: "success.dark" }}
+          sx={{ mt: 1 }}
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -113,48 +179,14 @@ export function ExemptionBadge({ screening }: ExemptionBadgeProps) {
           View Details
         </Button>
       </Paper>
-    );
-  }
 
-  // Not exempt - must track hours
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 2,
-        mb: 3,
-        backgroundColor: "warning.50",
-        border: "1px solid",
-        borderColor: "warning.main",
-        cursor: "pointer",
-        "&:hover": {
-          backgroundColor: "warning.100",
-        },
-      }}
-      onClick={handleClick}
-    >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <InfoIcon sx={{ color: "warning.main", fontSize: 32 }} />
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="body1" sx={{ fontWeight: 600 }}>
-            Must Track Hours
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            You need to track 80 hours/month or earn $580/month
-          </Typography>
-        </Box>
-      </Box>
-      <Button
-        size="small"
-        sx={{ mt: 1 }}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClick();
-        }}
-      >
-        View Details
-      </Button>
-    </Paper>
+      {/* Rescreen Confirmation Dialog */}
+      <RescreenDialog
+        open={rescreenDialogOpen}
+        onClose={handleRescreenCancel}
+        onConfirm={handleRescreenConfirm}
+      />
+    </>
   );
 }
 
