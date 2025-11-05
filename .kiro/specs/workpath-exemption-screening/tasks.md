@@ -75,9 +75,9 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 3. Screening UI Components
+- [-] 3. Screening UI Components
 
-- [ ] 3.1 Build ExemptionQuestion component
+- [x] 3.1 Build ExemptionQuestion component
   - Create `src/components/exemptions/ExemptionQuestion.tsx`
   - Display question text
   - Display help text (if provided)
@@ -87,7 +87,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Style for mobile-first
   - Ensure 44px+ touch targets
 
-- [ ] 3.2 Build QuestionFlow component
+- [x] 3.2 Build QuestionFlow component
   - Create `src/components/exemptions/QuestionFlow.tsx`
   - Manage current question state
   - Store responses as user answers
@@ -97,7 +97,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Navigate to results when complete
   - Add progress indicator
 
-- [ ] 3.3 Build progress indicator
+- [x] 3.3 Build progress indicator
   - Show current category being screened
   - Show approximate progress (e.g., "2 of 5 categories")
   - Update as user progresses
@@ -105,9 +105,9 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 4. Results Display
+- [-] 4. Results Display
 
-- [ ] 4.1 Build ExemptionResults component
+- [x] 4.1 Build ExemptionResults component
   - Create `src/components/exemptions/ExemptionResults.tsx`
   - Display exempt or not exempt status
   - Show exemption category (if exempt)
@@ -118,7 +118,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Add "Re-screen" button
   - Style for mobile-first
 
-- [ ] 4.2 Create result variations
+- [x] 4.2 Create result variations
   - Design exempt result layout (green, checkmark)
   - Design not exempt result layout (informational, not negative)
   - Add appropriate icons
@@ -126,9 +126,9 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 5. Screening Page
+- [-] 5. Screening Page
 
-- [ ] 5.1 Build ExemptionScreeningPage
+- [x] 5.1 Build ExemptionScreeningPage
   - Create `src/app/exemptions/page.tsx`
   - Add welcome screen (first-time users)
   - Integrate QuestionFlow component
@@ -137,7 +137,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Save screening results on completion
   - Archive previous screening if exists
 
-- [ ] 5.2 Add welcome screen
+- [x] 5.2 Add welcome screen
   - Explain what exemption screening is
   - Explain it's optional and informational
   - Add disclaimer about unofficial determination
@@ -146,9 +146,9 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 6. Dashboard Integration
+- [x] 6. Dashboard Integration
 
-- [ ] 6.1 Build ExemptionBadge component
+- [x] 6.1 Build ExemptionBadge component
   - Create `src/components/exemptions/ExemptionBadge.tsx`
   - Display "Exempt" badge if user is exempt
   - Show exemption category
@@ -157,7 +157,7 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Make badge tappable (links to screening details)
   - Style with appropriate colors (green for exempt, neutral for not exempt)
 
-- [ ] 6.2 Integrate badge into Dashboard
+- [x] 6.2 Integrate badge into Dashboard
   - Modify `src/components/tracking/Dashboard.tsx`
   - Add ExemptionBadge at top of dashboard
   - Load latest screening result
@@ -167,9 +167,9 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 7. Settings Integration
+- [x] 7. Settings Integration
 
-- [ ] 7.1 Add exemption screening to settings
+- [x] 7.1 Add exemption screening to settings
   - Modify `src/app/settings/page.tsx`
   - Add "Exemption Screening" section
   - Show current status (Not Screened, Exempt, Must Track Hours)
@@ -178,14 +178,14 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Add "View Results" button (if screened)
   - Add "Re-screen" button (if screened)
 
-- [ ] 7.2 Build ExemptionHistory component
+- [x] 7.2 Build ExemptionHistory component
   - Create `src/components/exemptions/ExemptionHistory.tsx`
   - Display list of previous screenings
   - Show date and result for each
   - Format dates clearly
   - Add empty state (no history)
 
-- [ ] 7.3 Add history to settings
+- [x] 7.3 Add history to settings
   - Add "Screening History" section in settings
   - Integrate ExemptionHistory component
   - Show last 5 screenings
@@ -195,20 +195,30 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 - [ ] 8. Re-screening Functionality
 
-- [ ] 8.1 Build RescreenDialog component
+**Note:** Most re-screening functionality is already implemented. The core flow (archiving old results, saving new results, navigation) works. This task is now focused on adding a confirmation dialog for better UX.
+
+- [ ] 8.1 Build RescreenDialog component (Optional - UX Enhancement)
   - Create `src/components/exemptions/RescreenDialog.tsx`
-  - Display confirmation dialog
+  - Display confirmation dialog when user clicks "Re-screen" button
   - Explain that previous results will be replaced
   - Explain that old results will be saved in history
   - Add "Continue" button
   - Add "Cancel" button
+  - Use Material-UI Dialog component for consistency
 
-- [ ] 8.2 Implement re-screening flow
-  - Show RescreenDialog when user taps "Re-screen"
-  - On confirm, archive current screening to history
-  - Delete current screening from exemptions table
-  - Navigate to screening page
-  - Start fresh screening
+- [ ] 8.2 Integrate RescreenDialog (Optional - UX Enhancement)
+  - Add dialog state to `ExemptionResults.tsx`
+  - Show RescreenDialog when user taps "Re-screen" button
+  - On "Continue", proceed with existing re-screening flow
+  - On "Cancel", close dialog and stay on results page
+  - Consider adding similar dialog in Settings page "Re-screen" button
+
+**Already Implemented:**
+- ✅ Archive existing screening to history before new screening
+- ✅ Delete current screening from exemptions table
+- ✅ Navigate to screening page and start fresh screening
+- ✅ Warning message on welcome screen when existing screening detected
+- ✅ History tracking of previous screenings
 
 ---
 

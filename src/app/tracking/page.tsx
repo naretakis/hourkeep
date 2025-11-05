@@ -21,10 +21,13 @@ import { ActivityList } from "@/components/ActivityList";
 import { DateActivityMenu } from "@/components/DateActivityMenu";
 import { Dashboard } from "@/components/Dashboard";
 import { DuplicateActivityDialog } from "@/components/DuplicateActivityDialog";
+import { ExemptionBadge } from "@/components/exemptions/ExemptionBadge";
 import { db } from "@/lib/db";
 import { Activity, MonthlySummary } from "@/types";
+import { ExemptionScreening } from "@/types/exemptions";
 import { calculateMonthlySummary } from "@/lib/calculations";
 import { deleteActivityWithDocuments } from "@/lib/storage/activities";
+import { getLatestScreening } from "@/lib/storage/exemptions";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 
 export default function TrackingPage() {
@@ -62,6 +65,8 @@ export default function TrackingPage() {
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
   const [activityToDuplicate, setActivityToDuplicate] =
     useState<Activity | null>(null);
+  const [exemptionScreening, setExemptionScreening] =
+    useState<ExemptionScreening | null>(null);
 
   const loadActivities = async () => {
     try {
@@ -98,6 +103,14 @@ export default function TrackingPage() {
       // Calculate monthly summary
       const summary = calculateMonthlySummary(allActivities);
       setMonthlySummary(summary);
+
+      // Load exemption screening
+      const profiles = await db.profiles.toArray();
+      if (profiles.length > 0) {
+        const profile = profiles[0];
+        const screening = await getLatestScreening(profile.id);
+        setExemptionScreening(screening || null);
+      }
     } catch (err) {
       console.error("Error loading activities:", err);
       setError("Failed to load activities");
@@ -342,6 +355,10 @@ export default function TrackingPage() {
             {error}
           </Alert>
         )}
+
+        <Box sx={{ mt: 3 }}>
+          <ExemptionBadge screening={exemptionScreening} />
+        </Box>
 
         <Box sx={{ mt: 3 }}>
           <Dashboard summary={monthlySummary} />
