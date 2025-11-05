@@ -24,7 +24,8 @@ export const ageQuestions: ExemptionQuestion[] = [
     category: "age",
     text: "What is your date of birth?",
     type: "date",
-    helpText: "We use this to check if you're exempt based on age.",
+    helpText:
+      "We'll check if you're exempt based on your age. People 18 or younger and 65 or older are exempt.",
     required: true,
   },
 ];
@@ -34,26 +35,28 @@ export const familyCaregivingQuestions: ExemptionQuestion[] = [
   {
     id: "family-pregnant",
     category: "family-caregiving",
-    text: "Are you currently pregnant or postpartum?",
+    text: "Are you currently pregnant or recently gave birth?",
     type: "boolean",
-    helpText: "Postpartum means within 60 days after giving birth.",
+    helpText:
+      "If you're pregnant or gave birth within the last 60 days, you're exempt. Tap the info icon below for more details.",
     required: true,
   },
   {
     id: "family-child",
     category: "family-caregiving",
-    text: "Do you live in a household with a child age 13 or younger?",
+    text: "Do you live with a child age 13 or younger?",
     type: "boolean",
-    helpText: "This includes your own children or other dependents.",
+    helpText:
+      "This includes your own children, stepchildren, or children you care for. Tap the info icons below for more details.",
     required: true,
   },
   {
     id: "family-disabled-dependent",
     category: "family-caregiving",
-    text: "Are you a parent or guardian of someone with a disability?",
+    text: "Do you care for someone with a disability?",
     type: "boolean",
     helpText:
-      "This applies if you care for a child or adult with a disability.",
+      "This includes caring for a child or adult with a disability. Tap the info icons below for more details.",
     required: true,
   },
 ];
@@ -63,37 +66,37 @@ export const healthDisabilityQuestions: ExemptionQuestion[] = [
   {
     id: "health-medicare",
     category: "health-disability",
-    text: "Are you on Medicare or entitled to Medicare?",
+    text: "Do you have Medicare?",
     type: "boolean",
     helpText:
-      "Medicare is health insurance for people 65+ or with disabilities.",
+      "Medicare is health insurance for people 65 or older, or people with certain disabilities. Tap the info icon below for more details.",
     required: true,
   },
   {
     id: "health-non-magi",
     category: "health-disability",
-    text: "Are you eligible for non-MAGI Medicaid?",
+    text: "Do you get Medicaid because of a disability or long-term care needs (non-MAGI Medicaid)?",
     type: "boolean",
     helpText:
-      "Non-MAGI Medicaid is for people with disabilities or who are elderly. If you're not sure, select No.",
+      "This is different from regular Medicaid. If you're not sure, select No. Tap the info icon below for more details.",
     required: true,
   },
   {
     id: "health-disabled-veteran",
     category: "health-disability",
-    text: "Are you a disabled veteran?",
+    text: "Are you a veteran with a 100% disability rating from the VA?",
     type: "boolean",
     helpText:
-      "This applies if you're a veteran with a service-connected disability.",
+      "This means the VA determined you have a total service-connected disability. Tap the info icon below for more details.",
     required: true,
   },
   {
     id: "health-medically-frail",
     category: "health-disability",
-    text: "Are you medically frail or have special needs?",
+    text: "Do you have a serious health condition or disability (defined as medically frail or special needs)?",
     type: "boolean",
     helpText:
-      "This includes: blind, disabled, substance use disorder, disabling mental disorder, physical/intellectual/developmental disability, or serious/complex medical condition.",
+      "This includes being blind, disabled, having addiction issues, mental health conditions, or chronic illnesses. Tap the info icons below for detailed examples.",
     required: true,
   },
 ];
@@ -103,18 +106,19 @@ export const programParticipationQuestions: ExemptionQuestion[] = [
   {
     id: "program-snap-tanf",
     category: "program-participation",
-    text: "Are you on SNAP or TANF and meeting those work requirements?",
+    text: "Are you on food stamps (SNAP) or cash assistance (TANF) and meeting their work requirements?",
     type: "boolean",
     helpText:
-      "SNAP is food stamps. TANF is cash assistance. You must be meeting (not exempt from) their work requirements.",
+      "You must be meeting (not exempt from) their work requirements. Tap the info icons below for more details about these programs.",
     required: true,
   },
   {
     id: "program-rehab",
     category: "program-participation",
-    text: "Are you participating in drug or alcohol rehabilitation?",
+    text: "Are you in a drug or alcohol treatment program?",
     type: "boolean",
-    helpText: "This includes inpatient or outpatient treatment programs.",
+    helpText:
+      "This includes inpatient or outpatient treatment programs. Tap the info icon below for more details.",
     required: true,
   },
 ];
@@ -124,19 +128,19 @@ export const otherExemptionsQuestions: ExemptionQuestion[] = [
   {
     id: "other-incarcerated",
     category: "other",
-    text: "Are you currently incarcerated or within 3 months of release?",
+    text: "Are you currently in jail or prison, or were you released in the last 3 months?",
     type: "boolean",
     helpText:
-      "This applies if you're currently in jail or prison, or were released in the last 3 months.",
+      "If you're currently incarcerated or were recently released, you're exempt during this time. Tap the info icon below for more details.",
     required: true,
   },
   {
     id: "other-tribal",
     category: "other",
-    text: "Are you Indian, Urban Indian, California Indian, or IHS-eligible Indian?",
+    text: "Are you a member of a Native American tribe or eligible for Indian Health Service?",
     type: "boolean",
     helpText:
-      "This applies if you're a member of a federally recognized tribe or eligible for Indian Health Service.",
+      "This includes being Indian, Urban Indian, California Indian, or IHS-eligible. Tap the info icons below for more details.",
     required: true,
   },
 ];

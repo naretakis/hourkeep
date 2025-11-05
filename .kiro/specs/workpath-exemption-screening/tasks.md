@@ -225,19 +225,152 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 - [ ] 9. Plain Language Review
 
-- [ ] 9.1 Review all question text
+- [x] 9.1 Comprehensive Legislative and Domain Knowledge Review
+  - **Review HR1 Section 71119 (docs/domain/hr1/119hr1enr-title7-part3.md)**:
+    - Verify all 5 exemption categories are fully implemented (age, family, health, programs, other)
+    - Confirm "specified excluded individual" definition matches all sub-categories
+    - Check age ranges: 18 or younger, 19-64 (applicable), 65 or older
+    - Verify pregnant/postpartum exemption is included
+    - Confirm dependent child age threshold is 13 or younger (not 18)
+    - Verify disabled veteran exemption is included
+    - Check medically frail sub-categories: blind, disabled, substance use disorder, disabling mental disorder, physical/intellectual/developmental disability, serious/complex medical condition
+    - Confirm SNAP/TANF exemption requires meeting (not exempt from) those work requirements
+    - Verify drug/alcohol rehabilitation exemption is included
+    - Check inmate exemption includes "within last 3 months of release"
+    - Verify all Indian/IHS exemption categories are included
+    - Confirm Medicare/non-MAGI Medicaid exemption is included
+  - **Review Service Blueprint (docs/domain/medicaid-work-requirements-cfa-service-blueprint.md)**:
+    - Verify exemption screening addresses all pain points identified
+    - Check that plain language guidelines are followed throughout
+    - Confirm screening is optional and informational (not mandatory)
+    - Verify disclaimer about unofficial determination is included
+    - Check that screening doesn't require document submission (self-attestation)
+    - Confirm screening results are stored locally (privacy-first)
+    - Verify screening supports re-screening when circumstances change
+    - Check that exemption history is maintained
+  - **Review Domain Knowledge (medicaid-domain-knowledge.md)**:
+    - Verify all exemption categories match HR1 Section 71119 exactly
+    - Confirm plain language examples are used throughout
+    - Check that screening doesn't use legal/regulatory language
+    - Verify screening is mobile-first and offline-capable
+    - Confirm individual-level data storage (not household-level)
+    - Check that screening doesn't collect PII beyond what's necessary
+    - Verify accessibility requirements are met
+  - **Cross-Reference All Three Sources**:
+    - Create checklist of all exemption sub-categories from HR1
+    - Map each sub-category to questions in `src/lib/exemptions/questions.ts`
+    - Verify calculator logic in `src/lib/exemptions/calculator.ts` covers all cases
+    - Check for any exemption categories mentioned in one source but missing in implementation
+    - Verify terminology consistency across all questions and explanations
+    - Confirm no exemption categories are duplicated or contradictory
+  - **Identify Gaps and Missing Content**:
+    - Document any exemption sub-categories not yet implemented
+    - Note any questions that need clarification or additional help text
+    - Identify any plain language improvements needed
+    - Flag any legal/regulatory language that needs simplification
+    - Note any accessibility issues or mobile usability concerns
+  - **Create Action Items**:
+    - List specific questions to add or modify
+    - List specific calculator logic to update
+    - List specific UI/UX improvements needed
+    - Prioritize action items by importance (critical vs. nice-to-have)
+  - **Document Review Findings**:
+    - Create summary of review findings
+    - Note what's complete and accurate
+    - Note what needs to be added or changed
+    - Share findings with team for validation
+
+- [x] 9.2 Create plain language definitions for ambiguous terms
+  - **Identify all terms requiring definitions**:
+    - **From Legislation (HR1 Section 71119)**:
+      - "Non-MAGI Medicaid" (Medicaid for people with disabilities/elderly)
+      - "SNAP" (food assistance program)
+      - "TANF" (cash assistance for families)
+      - "Work program" (job training, workforce development)
+      - "Educational program - half-time" (what counts as half-time enrollment)
+      - "Disabled veteran" (veteran with total disability rating)
+      - "Substance use disorder" (drug or alcohol addiction)
+      - "Disabling mental disorder" (mental health condition that limits daily activities)
+      - "Physical/intellectual/developmental disability" (conditions that significantly impair abilities)
+      - "Serious or complex medical condition" (ongoing health issues requiring regular care)
+      - "Medically frail" (umbrella term for health/disability exemptions)
+      - "Indian/Urban Indian/California Indian" (Native American tribal affiliations)
+      - "IHS-eligible" (eligible for Indian Health Service)
+      - "Postpartum" (period after giving birth)
+      - "Caretaker relative" (family member caring for a child)
+    - **From Context**:
+      - "Community engagement" (work, volunteer, school, or work programs)
+      - "Dependent" (child or person you care for)
+      - "Inmate" (person in jail or prison)
+      - "Drug/alcohol rehabilitation program" (treatment program for addiction)
+      - "Medicare" (federal health insurance for 65+ or disabled)
+      - "Dependent child 13 or younger" (clarify age threshold)
+  - **Define source priority for each term**:
+    - Check HR1 legislation first (most authoritative)
+    - Check Service Blueprint second (implementation guidance)
+    - Check Domain Knowledge third (consolidated requirements)
+    - Use common knowledge/industry best practices if not defined in sources
+    - Document which source was used for each definition
+  - **Create plain language definitions**:
+    - Write at 8th grade reading level
+    - Use conversational tone ("you" and "your")
+    - Keep definitions concise (1-3 sentences)
+    - Include examples where helpful
+    - Add "what qualifies" vs "what doesn't qualify" if relevant
+    - Avoid legal/regulatory language
+    - Test readability with online tools (Hemingway, Readable.io)
+  - **Document definition sources**:
+    - Create `src/lib/exemptions/definitions.ts` file
+    - For each definition, add comment noting source:
+      - `// Source: HR1 Section 71119`
+      - `// Source: Service Blueprint`
+      - `// Source: Domain Knowledge`
+      - `// Source: Common knowledge/industry best practices (created by team)`
+    - Include date definitions were created/updated
+    - Add references to specific sections of source documents
+  - **Design UI/UX for definitions (mobile-first)**:
+    - Evaluate inline vs. tooltip vs. expandable section for each term
+    - Consider screen real estate on mobile (320px width)
+    - Ensure touch targets are 44px+ for interactive elements
+    - Test different approaches:
+      - Inline: Good for very short definitions (1 sentence)
+      - Tooltip: Good for medium definitions (2-3 sentences), triggered by info icon
+      - Expandable section: Good for longer definitions with examples
+    - Use consistent pattern across all questions
+    - Ensure definitions don't overwhelm the question itself
+    - Test on actual mobile devices
+  - **Implement definition components**:
+    - Create reusable `DefinitionTooltip` component (if using tooltips)
+    - Create reusable `DefinitionExpander` component (if using expandable sections)
+    - Ensure components work with screen readers
+    - Add appropriate ARIA labels
+    - Test keyboard navigation
+  - **Add definitions to questions**:
+    - Update `src/lib/exemptions/questions.ts` with definition references
+    - Link each ambiguous term to its definition
+    - Ensure definitions appear contextually (near the term)
+    - Test that definitions enhance understanding without cluttering UI
+  - **Review and refine**:
+    - Read all definitions aloud to check clarity
+    - Remove any remaining jargon
+    - Ensure consistency in tone and style
+    - Get feedback from non-technical users if possible
+    - Iterate based on feedback
+
+- [x] 9.3 Review all question text
   - Ensure all questions use plain language
   - Remove jargon and legal terms
   - Test readability (aim for 8th grade level)
+  - Verify definitions are properly integrated
   - Get feedback from non-technical users if possible
 
-- [ ] 9.2 Review all explanation text
+- [ ] 9.4 Review all explanation text
   - Ensure results are clear and actionable
   - Avoid negative language
   - Provide specific next steps
   - Test with sample users
 
-- [ ] 9.3 Add help text where needed
+- [ ] 9.5 Add help text where needed
   - Identify questions that may be confusing
   - Add clarifying help text
   - Use examples where helpful

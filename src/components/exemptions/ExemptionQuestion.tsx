@@ -15,6 +15,8 @@ import {
   ArrowBack as ArrowBackIcon,
   ArrowForward as ArrowForwardIcon,
 } from "@mui/icons-material";
+import { DefinitionsAccordion } from "./DefinitionsAccordion";
+import { getDefinitionsForQuestion } from "@/lib/exemptions/definitions";
 
 export interface Question {
   id: string;
@@ -43,6 +45,9 @@ export function ExemptionQuestion({
   isFirst,
 }: ExemptionQuestionProps) {
   const isAnswered = value !== null && value !== undefined && value !== "";
+
+  // Get definitions for this question
+  const definitions = getDefinitionsForQuestion(question.id);
 
   const handleBooleanChange = (newValue: string) => {
     onChange(newValue === "true");
@@ -89,6 +94,14 @@ export function ExemptionQuestion({
           <Alert severity="info" sx={{ mt: 2 }}>
             {question.helpText}
           </Alert>
+        )}
+
+        {/* Definitions Accordion */}
+        {definitions.length > 0 && (
+          <DefinitionsAccordion
+            definitions={definitions}
+            summaryText="What do these terms mean?"
+          />
         )}
       </Box>
 
