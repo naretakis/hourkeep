@@ -71,7 +71,7 @@
   - Integrate with existing results layout
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ]* 10. Add exemption documents to data export
+- [ ]\* 10. Add exemption documents to data export
   - Extend existing export functionality to include exemption documents
   - Include document metadata in export
   - Ensure document blobs are included in export

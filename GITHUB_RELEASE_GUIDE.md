@@ -7,15 +7,18 @@
 ## Step-by-Step Process
 
 ### Step 1: Review Changes
+
 ✅ Review all modified files (see `REVIEW_v3.0.0_CHANGES.md`)
 
 ### Step 2: Commit Changes
+
 ```bash
 git add .
 git commit -m "Release v3.0.0 - Exemption Screening"
 ```
 
 ### Step 3: Create Git Tag
+
 ```bash
 git tag -a v3.0.0 -m "Release v3.0.0 - Exemption Screening
 
@@ -25,6 +28,7 @@ See RELEASE_NOTES_v3.0.0.md for full details."
 ```
 
 ### Step 4: Push Everything
+
 ```bash
 # Push the commit
 git push origin main
@@ -53,7 +57,7 @@ git push origin v3.0.0
 
 Copy this into the GitHub release description field:
 
-```markdown
+````markdown
 # HourKeep v3.0.0 - Exemption Screening
 
 **Release Date:** November 5, 2025
@@ -80,7 +84,7 @@ A complete questionnaire covering all five exemption categories from HR1 legisla
 ✅ **Immediate results** - Know right away if you're exempt  
 ✅ **Dashboard integration** - See your exemption status prominently  
 ✅ **Screening history** - Track your status over time  
-✅ **Rescreen workflow** - Update when circumstances change  
+✅ **Rescreen workflow** - Update when circumstances change
 
 ### Why This Matters
 
@@ -116,6 +120,7 @@ git pull origin main
 npm install
 npm run dev
 ```
+````
 
 ## 💥 Breaking Changes
 
@@ -137,6 +142,7 @@ npm run dev
 ## 🎉 What's Next
 
 See our [Roadmap](ROADMAP.md) for upcoming features:
+
 - **v4.0** - Enhanced onboarding with privacy notice and extended profile
 - **v5.0+** - Income tracking, hardship reporting, compliance alerts
 
@@ -144,8 +150,9 @@ See our [Roadmap](ROADMAP.md) for upcoming features:
 
 **Thank you for using HourKeep!**
 
-*Keep Your Hours, Keep Your Coverage* 💙
-```
+_Keep Your Hours, Keep Your Coverage_ 💙
+
+````
 
 ---
 
@@ -186,15 +193,17 @@ git push origin :refs/tags/v3.0.0
 # Recreate tag
 git tag -a v3.0.0 -m "..."
 git push origin v3.0.0
-```
+````
 
 ### Need to update release
+
 - Go to the release page
 - Click "Edit release"
 - Make changes
 - Click "Update release"
 
 ### Deployment not working
+
 - Check GitHub Actions tab
 - Verify workflow ran successfully
 - Check for any error messages

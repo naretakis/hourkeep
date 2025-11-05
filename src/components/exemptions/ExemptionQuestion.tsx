@@ -153,6 +153,8 @@ export function ExemptionQuestion({
         {question.type === "date" && (
           <TextField
             type="date"
+            label="Select your date of birth"
+            placeholder="MM/DD/YYYY"
             value={getDateValue()}
             onChange={(e) => handleDateChange(e.target.value)}
             fullWidth
@@ -161,6 +163,12 @@ export function ExemptionQuestion({
             }}
             inputProps={{
               max: new Date().toISOString().split("T")[0], // Can't select future dates
+            }}
+            helperText="Tap the field to open the date picker"
+            sx={{
+              "& .MuiInputBase-root": {
+                minHeight: 56,
+              },
             }}
           />
         )}

@@ -55,6 +55,7 @@ Continue to next question or results
 **Location**: `src/components/exemptions/DocumentPrompt.tsx`
 
 **Props**:
+
 ```typescript
 interface DocumentPromptProps {
   exemptionType: ExemptionType; // Which exemption this is for
@@ -66,6 +67,7 @@ interface DocumentPromptProps {
 ```
 
 **Behavior**:
+
 - Displays exemption-specific guidance about helpful documentation
 - Shows examples of acceptable documents
 - Provides "Add Document" and "Skip" buttons
@@ -79,6 +81,7 @@ interface DocumentPromptProps {
 **Location**: `src/components/exemptions/ExemptionDocumentManager.tsx`
 
 **Props**:
+
 ```typescript
 interface ExemptionDocumentManagerProps {
   exemptionId: number;
@@ -90,6 +93,7 @@ interface ExemptionDocumentManagerProps {
 ```
 
 **Behavior**:
+
 - Displays list of documents associated with exemption
 - Allows adding new documents
 - Allows viewing existing documents
@@ -103,6 +107,7 @@ interface ExemptionDocumentManagerProps {
 **Location**: `src/components/exemptions/ExemptionDocumentViewer.tsx`
 
 **Props**:
+
 ```typescript
 interface ExemptionDocumentViewerProps {
   exemptionId: number;
@@ -112,6 +117,7 @@ interface ExemptionDocumentViewerProps {
 ```
 
 **Behavior**:
+
 - Displays documents in a read-only view
 - Shows document thumbnails or PDF previews
 - Allows full-screen document viewing
@@ -122,6 +128,7 @@ interface ExemptionDocumentViewerProps {
 **Modifications**: Add document management section
 
 **New Features**:
+
 - Display ExemptionDocumentManager for exemptions that may benefit from documentation
 - Show count of documents uploaded per exemption
 - Provide clear call-to-action for adding documents
@@ -145,11 +152,11 @@ export type DocumentType =
   | "volunteer-verification"
   | "school-enrollment"
   | "medical-documentation"
-  | "exemption-medical"           // NEW: Medical documentation for medically frail
-  | "exemption-rehab"             // NEW: Rehab program verification
-  | "exemption-veteran"           // NEW: VA disability documentation
+  | "exemption-medical" // NEW: Medical documentation for medically frail
+  | "exemption-rehab" // NEW: Rehab program verification
+  | "exemption-veteran" // NEW: VA disability documentation
   | "exemption-dependent-disability" // NEW: Dependent disability documentation
-  | "exemption-other"             // NEW: Other exemption documentation
+  | "exemption-other" // NEW: Other exemption documentation
   | "other";
 ```
 
@@ -160,8 +167,8 @@ Modify Document interface to support exemption associations:
 ```typescript
 export interface Document {
   id?: number;
-  activityId?: number;        // Optional now (for activity documents)
-  exemptionId?: number;       // NEW: For exemption documents
+  activityId?: number; // Optional now (for activity documents)
+  exemptionId?: number; // NEW: For exemption documents
   exemptionType?: ExemptionType; // NEW: Which exemption this supports
   type: DocumentType;
   customType?: string;
@@ -169,7 +176,7 @@ export interface Document {
   originalFileName?: string;
   fileSize: number;
   compressedSize?: number;
-  mimeType: string;           // Extend to support application/pdf
+  mimeType: string; // Extend to support application/pdf
   captureMethod: "camera" | "upload";
   createdAt: Date;
   blobId: number;
@@ -233,15 +240,19 @@ this.version(4)
 Configuration object mapping exemptions to document guidance:
 
 ```typescript
-export const exemptionDocumentGuidance: Record<ExemptionType, {
-  title: string;
-  description: string;
-  examples: string[];
-  isRecommended: boolean;
-}> = {
+export const exemptionDocumentGuidance: Record<
+  ExemptionType,
+  {
+    title: string;
+    description: string;
+    examples: string[];
+    isRecommended: boolean;
+  }
+> = {
   "medically-frail": {
     title: "Medical Documentation",
-    description: "Adding medical documentation may help verify your exemption faster. This is optional.",
+    description:
+      "Adding medical documentation may help verify your exemption faster. This is optional.",
     examples: [
       "Doctor's letter describing your condition",
       "Medical records showing diagnosis",
@@ -252,7 +263,8 @@ export const exemptionDocumentGuidance: Record<ExemptionType, {
   },
   "rehab-program": {
     title: "Program Verification",
-    description: "A letter from your program can help verify your participation. This is optional.",
+    description:
+      "A letter from your program can help verify your participation. This is optional.",
     examples: [
       "Letter from program director",
       "Enrollment confirmation",
@@ -263,7 +275,8 @@ export const exemptionDocumentGuidance: Record<ExemptionType, {
   },
   "disabled-veteran": {
     title: "VA Documentation",
-    description: "VA disability documentation can help verify your exemption. This is optional.",
+    description:
+      "VA disability documentation can help verify your exemption. This is optional.",
     examples: [
       "VA disability rating letter",
       "VA benefits summary",
@@ -273,7 +286,8 @@ export const exemptionDocumentGuidance: Record<ExemptionType, {
   },
   "parent-guardian-disabled": {
     title: "Dependent's Disability Documentation",
-    description: "Documentation of your dependent's disability may be helpful. This is optional.",
+    description:
+      "Documentation of your dependent's disability may be helpful. This is optional.",
     examples: [
       "Doctor's letter about dependent's condition",
       "Disability determination letter",
@@ -283,7 +297,7 @@ export const exemptionDocumentGuidance: Record<ExemptionType, {
     isRecommended: true,
   },
   // Other exemptions don't typically need documentation
-  "age": {
+  age: {
     title: "",
     description: "",
     examples: [],
@@ -344,7 +358,7 @@ const SUPPORTED_MIME_TYPES = [
   "image/png",
   "image/heic",
   "image/heif",
-  "application/pdf",  // NEW: PDF support
+  "application/pdf", // NEW: PDF support
 ];
 
 const MAX_FILE_SIZE_MB = 10;
@@ -369,7 +383,7 @@ async function saveExemptionDocument(
   exemptionId: number,
   exemptionType: ExemptionType,
   blob: Blob,
-  metadata: Partial<Document>
+  metadata: Partial<Document>,
 ): Promise<number> {
   // 1. Save blob
   const blobId = await db.documentBlobs.add({
@@ -399,22 +413,22 @@ async function saveExemptionDocument(
 ```typescript
 // Get all documents for an exemption
 async function getExemptionDocuments(
-  exemptionId: number
+  exemptionId: number,
 ): Promise<ExemptionDocument[]> {
-  return await db.documents
+  return (await db.documents
     .where("exemptionId")
     .equals(exemptionId)
-    .toArray() as ExemptionDocument[];
+    .toArray()) as ExemptionDocument[];
 }
 
 // Get documents by exemption type
 async function getDocumentsByExemptionType(
-  exemptionType: ExemptionType
+  exemptionType: ExemptionType,
 ): Promise<ExemptionDocument[]> {
-  return await db.documents
+  return (await db.documents
     .where("exemptionType")
     .equals(exemptionType)
-    .toArray() as ExemptionDocument[];
+    .toArray()) as ExemptionDocument[];
 }
 ```
 

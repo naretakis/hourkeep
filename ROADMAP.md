@@ -47,6 +47,7 @@ HourKeep helps you determine if you're exempt from Medicaid work requirements, a
 - ✅ **Rescreen Workflow** - Update status when circumstances change
 
 **Exemption Categories:**
+
 - Age-based (18 or younger, 65 or older)
 - Family/caregiving (pregnant, young children, disabled dependent)
 - Health/disability (Medicare, medically frail, disabled veteran)
