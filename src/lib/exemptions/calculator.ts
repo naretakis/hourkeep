@@ -37,7 +37,7 @@ export function calculateExemption(
         explanation:
           "You're exempt from work requirements because you're 18 or younger.",
         nextSteps:
-          "You don't need to track hours. You can still use this app if you want to track your activities.",
+          "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
       };
     }
 
@@ -49,7 +49,7 @@ export function calculateExemption(
         explanation:
           "You're exempt from work requirements because you're 65 or older.",
         nextSteps:
-          "You don't need to track hours. You can still use this app if you want to track your activities.",
+          "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
       };
     }
   }
@@ -63,7 +63,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you're pregnant or recently gave birth.",
       nextSteps:
-        "You don't need to track hours right now. You may need to check again after 60 days from giving birth.",
+        "You don't need to track hours for Medicaid during this time. If your situation changes after 60 days from giving birth, you can re-screen to check your status.",
     };
   }
 
@@ -75,7 +75,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you live with a child age 13 or younger.",
       nextSteps:
-        "You don't need to track hours. If your child turns 14 or your living situation changes, check again.",
+        "You don't need to track hours for Medicaid. If your child turns 14 or your living situation changes, you can re-screen to check your status.",
     };
   }
 
@@ -85,9 +85,9 @@ export function calculateExemption(
       exemptionCategory: "family-caregiving",
       exemptionReason: "Parent or guardian of someone with a disability",
       explanation:
-        "You are exempt from work requirements because you are a parent or guardian of someone with a disability.",
+        "You're exempt from work requirements because you're a parent or guardian of someone with a disability.",
       nextSteps:
-        "You don't need to track hours. You can still use this app if you want to track your activities.",
+        "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
     };
   }
 
@@ -100,7 +100,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you have Medicare.",
       nextSteps:
-        "You don't need to track hours. You can still use this app if you want to track your activities.",
+        "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
     };
   }
 
@@ -113,7 +113,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you get Medicaid for a disability or long-term care needs (non-MAGI Medicaid).",
       nextSteps:
-        "You don't need to track hours. You can still use this app if you want to track your activities.",
+        "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
     };
   }
 
@@ -125,7 +125,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you're a veteran with a 100% disability rating from the VA.",
       nextSteps:
-        "You don't need to track hours. You can still use this app if you want to track your activities.",
+        "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
     };
   }
 
@@ -137,7 +137,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you have a serious health condition or disability (defined as medically frail or special needs).",
       nextSteps:
-        "You don't need to track hours. You can still use this app if you want to track your activities.",
+        "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
     };
   }
 
@@ -149,9 +149,9 @@ export function calculateExemption(
       exemptionReason:
         "Meeting work requirements for food stamps (SNAP) or cash assistance (TANF)",
       explanation:
-        "You're exempt from Medicaid work requirements because you're already meeting work requirements for food stamps (SNAP) or cash assistance (TANF).",
+        "You're already meeting work requirements through food stamps (SNAP) or cash assistance (TANF), so you're exempt from Medicaid work requirements.",
       nextSteps:
-        "You don't need to track hours for Medicaid. Keep meeting your food stamps or cash assistance requirements.",
+        "You don't need to track hours for Medicaid. Just keep meeting your food stamps or cash assistance requirements, and you're all set.",
     };
   }
 
@@ -161,9 +161,9 @@ export function calculateExemption(
       exemptionCategory: "program-participation",
       exemptionReason: "In drug or alcohol treatment program",
       explanation:
-        "You're exempt from work requirements because you're in a drug or alcohol treatment program.",
+        "While you focus on your recovery, you're exempt from work requirements.",
       nextSteps:
-        "You don't need to track hours during treatment. Focus on your recovery.",
+        "You don't need to track hours for Medicaid during treatment. Focus on your recovery—that's what matters most right now.",
     };
   }
 
@@ -173,10 +173,9 @@ export function calculateExemption(
       isExempt: true,
       exemptionCategory: "other",
       exemptionReason: "In jail/prison or recently released",
-      explanation:
-        "You're exempt from work requirements because you're currently in jail or prison, or were released in the last 3 months.",
+      explanation: "During this time, you're exempt from work requirements.",
       nextSteps:
-        "You don't need to track hours during this time. You may need to check again 3 months after your release date.",
+        "You don't need to track hours for Medicaid during this time. If your situation changes after 3 months from your release date, you can re-screen to check your status.",
     };
   }
 
@@ -188,7 +187,7 @@ export function calculateExemption(
       explanation:
         "You're exempt from work requirements because you're a member of a Native American tribe or eligible for Indian Health Service.",
       nextSteps:
-        "You don't need to track hours. You can still use this app if you want to track your activities.",
+        "You don't need to track hours for Medicaid. Feel free to use this app if you'd like to keep track of your activities for other reasons.",
     };
   }
 
@@ -196,8 +195,8 @@ export function calculateExemption(
   return {
     isExempt: false,
     explanation:
-      "Based on your answers, you need to meet work requirements to keep your Medicaid.",
+      "Based on your answers, you'll need to meet work requirements to keep your Medicaid coverage.",
     nextSteps:
-      "You need to do 80 hours per month of work, volunteering, or school. Use this app to track your hours each month.",
+      "Track 80 hours per month of work, volunteering, or school (or earn $580 per month). This app makes it easy to log your hours and stay on track each month.",
   };
 }

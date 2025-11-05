@@ -45,28 +45,29 @@ export function RescreenDialog({
 
       <DialogContent>
         <Typography variant="body1" sx={{ mb: 2 }}>
-          Starting a new screening will replace your current exemption results.
+          Ready to check your exemption status again? Starting a new screening
+          will update your current results.
         </Typography>
 
         <Alert severity="info" icon={<HistoryIcon />} sx={{ mb: 2 }}>
           <Typography variant="body2">
             <strong>Don&apos;t worry:</strong> Your current results will be
-            saved in your screening history for future reference.
+            saved in your history, so you can always look back at them.
           </Typography>
         </Alert>
 
         <Typography variant="body2" color="text.secondary">
-          You should re-screen if your circumstances have changed, such as:
+          Re-screening is helpful when your situation changes, like:
         </Typography>
         <Box component="ul" sx={{ mt: 1, pl: 2 }}>
           <Typography component="li" variant="body2" color="text.secondary">
-            Your age, health, or family situation has changed
+            Your health, family, or caregiving situation changed
           </Typography>
           <Typography component="li" variant="body2" color="text.secondary">
-            You&apos;ve enrolled in new programs (SNAP, TANF, rehabilitation)
+            You joined a new program (like SNAP, TANF, or treatment)
           </Typography>
           <Typography component="li" variant="body2" color="text.secondary">
-            Your employment or caregiving status has changed
+            Your work or living situation changed
           </Typography>
         </Box>
       </DialogContent>

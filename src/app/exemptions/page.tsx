@@ -146,56 +146,57 @@ export default function ExemptionScreeningPage() {
             sx={{ p: 3, border: "1px solid", borderColor: "divider" }}
           >
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-              Check if you&apos;re exempt from work requirements
+              Find out if you need to track hours
             </Typography>
             <Typography variant="body1" paragraph>
-              This quick screening will help you determine if you qualify for an
-              exemption from Medicaid work requirements.
+              This quick screening helps you check if you qualify for an
+              exemption from Medicaid work requirements. If you&apos;re exempt,
+              you won&apos;t need to track hours.
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              The screening takes about 5 minutes and covers 5 categories:
+              The screening takes about 5 minutes and checks these areas:
             </Typography>
             <Box component="ul" sx={{ pl: 2, mt: 1 }}>
               <Typography component="li" variant="body2" color="text.secondary">
-                Age-based exemptions
+                Your age
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                Family and caregiving exemptions
+                Family and caregiving situations
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                Health and disability exemptions
+                Health and disability status
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                Program participation exemptions
+                Other programs you&apos;re in
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                Other exemptions
+                Other qualifying situations
               </Typography>
             </Box>
           </Paper>
 
           <Alert severity="info">
             <Typography variant="body2">
-              <strong>Optional & Informational:</strong> This screening is
-              completely optional. The results are for your own reference and
-              are not an official determination.
+              <strong>This is optional:</strong> You don&apos;t have to complete
+              this screening. The results are for your own information and help
+              you understand if you need to track hours.
             </Typography>
           </Alert>
 
           <Alert severity="warning">
             <Typography variant="body2">
-              <strong>Important:</strong> This is not an official exemption
-              determination. You should verify your status with your state
-              Medicaid agency.
+              <strong>Important:</strong> This screening gives you helpful
+              information, but it&apos;s not an official determination. Always
+              verify your exemption status with your state Medicaid agency.
             </Typography>
           </Alert>
 
           {hasExistingScreening && (
             <Alert severity="info">
               <Typography variant="body2">
-                You have completed a previous screening. Starting a new
-                screening will replace your current results (your old results
-                will be saved in history).
+                You&apos;ve already completed a screening. If you start a new
+                one, your current results will be replaced. Don&apos;t
+                worry—your old results will be saved in your history.
               </Typography>
             </Alert>
           )}

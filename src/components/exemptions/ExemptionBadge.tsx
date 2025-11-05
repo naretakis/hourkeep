@@ -60,10 +60,10 @@ export function ExemptionBadge({ screening }: ExemptionBadgeProps) {
           <HelpOutlineIcon sx={{ color: "info.main", fontSize: 32 }} />
           <Box sx={{ flex: 1 }}>
             <Typography variant="body1" sx={{ fontWeight: 600 }}>
-              Check if You&apos;re Exempt
+              Find Out if You Need to Track Hours
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Take a quick screening to see if you need to track hours
+              Take a quick 5-minute screening to check your status
             </Typography>
           </Box>
         </Box>

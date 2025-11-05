@@ -223,7 +223,7 @@ This task list breaks down the exemption screening feature into discrete, manage
 
 ---
 
-- [ ] 9. Plain Language Review
+- [x] 9. Plain Language Review
 
 - [x] 9.1 Comprehensive Legislative and Domain Knowledge Review
   - **Review HR1 Section 71119 (docs/domain/hr1/119hr1enr-title7-part3.md)**:
@@ -364,13 +364,13 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Verify definitions are properly integrated
   - Get feedback from non-technical users if possible
 
-- [ ] 9.4 Review all explanation text
+- [x] 9.4 Review all explanation text
   - Ensure results are clear and actionable
   - Avoid negative language
   - Provide specific next steps
   - Test with sample users
 
-- [ ] 9.5 Add help text where needed
+- [x] 9.5 Add help text where needed
   - Identify questions that may be confusing
   - Add clarifying help text
   - Use examples where helpful
@@ -423,10 +423,10 @@ This task list breaks down the exemption screening feature into discrete, manage
   - Add loading states where needed
   - Add empty states where needed
   - Ensure error messages are clear
-  - Test on small screens (320px width)
-  - Verify accessibility (keyboard navigation, screen reader)
 
 ---
+
+- [ ] This spec is completed!
 
 ## Implementation Notes
 

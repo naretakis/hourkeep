@@ -38,7 +38,7 @@ export const familyCaregivingQuestions: ExemptionQuestion[] = [
     text: "Are you currently pregnant or recently gave birth?",
     type: "boolean",
     helpText:
-      "If you're pregnant or gave birth within the last 60 days, you're exempt. Tap the info icon below for more details.",
+      "If you're pregnant or gave birth within the last 60 days, you're exempt. Select 'Yes' if either applies to you.",
     required: true,
   },
   {
@@ -47,16 +47,16 @@ export const familyCaregivingQuestions: ExemptionQuestion[] = [
     text: "Do you live with a child age 13 or younger?",
     type: "boolean",
     helpText:
-      "This includes your own children, stepchildren, or children you care for. Tap the info icons below for more details.",
+      "This includes your own children, stepchildren, or children you care for. The child must live in your household.",
     required: true,
   },
   {
     id: "family-disabled-dependent",
     category: "family-caregiving",
-    text: "Do you care for someone with a disability?",
+    text: "Are you a parent or guardian of someone with a disability?",
     type: "boolean",
     helpText:
-      "This includes caring for a child or adult with a disability. Tap the info icons below for more details.",
+      "This includes caring for a child or adult with a disability. You must be their parent or legal guardian.",
     required: true,
   },
 ];
@@ -69,7 +69,7 @@ export const healthDisabilityQuestions: ExemptionQuestion[] = [
     text: "Do you have Medicare?",
     type: "boolean",
     helpText:
-      "Medicare is health insurance for people 65 or older, or people with certain disabilities. Tap the info icon below for more details.",
+      "Medicare is federal health insurance, usually for people 65+ or with certain disabilities. This is different from Medicaid.",
     required: true,
   },
   {
@@ -78,7 +78,7 @@ export const healthDisabilityQuestions: ExemptionQuestion[] = [
     text: "Do you get Medicaid because of a disability or long-term care needs (non-MAGI Medicaid)?",
     type: "boolean",
     helpText:
-      "This is different from regular Medicaid. If you're not sure, select No. Tap the info icon below for more details.",
+      "This is a special type of Medicaid for people with disabilities or in nursing homes. If you're not sure, select 'No'.",
     required: true,
   },
   {
@@ -87,7 +87,7 @@ export const healthDisabilityQuestions: ExemptionQuestion[] = [
     text: "Are you a veteran with a 100% disability rating from the VA?",
     type: "boolean",
     helpText:
-      "This means the VA determined you have a total service-connected disability. Tap the info icon below for more details.",
+      "This means the VA determined you have a total (100%) service-connected disability. If you're not sure of your rating, select 'No'.",
     required: true,
   },
   {
@@ -96,7 +96,7 @@ export const healthDisabilityQuestions: ExemptionQuestion[] = [
     text: "Do you have a serious health condition or disability (defined as medically frail or special needs)?",
     type: "boolean",
     helpText:
-      "This includes being blind, disabled, having addiction issues, mental health conditions, or chronic illnesses. Tap the info icons below for detailed examples.",
+      "This includes being blind, disabled, having substance use disorder, mental health conditions, or chronic illnesses. Check the definitions below for detailed examples.",
     required: true,
   },
 ];
@@ -109,16 +109,16 @@ export const programParticipationQuestions: ExemptionQuestion[] = [
     text: "Are you on food stamps (SNAP) or cash assistance (TANF) and meeting their work requirements?",
     type: "boolean",
     helpText:
-      "You must be meeting (not exempt from) their work requirements. Tap the info icons below for more details about these programs.",
+      "Important: You must be actively meeting their work requirements (not exempt from them). If you're exempt from SNAP/TANF work requirements, select 'No'.",
     required: true,
   },
   {
     id: "program-rehab",
     category: "program-participation",
-    text: "Are you in a drug or alcohol treatment program?",
+    text: "Are you currently in a drug or alcohol treatment program?",
     type: "boolean",
     helpText:
-      "This includes inpatient or outpatient treatment programs. Tap the info icon below for more details.",
+      "This includes inpatient programs (where you stay at a facility) or outpatient programs (where you go for treatment but live at home).",
     required: true,
   },
 ];
@@ -131,7 +131,7 @@ export const otherExemptionsQuestions: ExemptionQuestion[] = [
     text: "Are you currently in jail or prison, or were you released in the last 3 months?",
     type: "boolean",
     helpText:
-      "If you're currently incarcerated or were recently released, you're exempt during this time. Tap the info icon below for more details.",
+      "Select 'Yes' if you're currently incarcerated or if you were released within the last 3 months. After 3 months, you'll need to re-screen.",
     required: true,
   },
   {
@@ -140,7 +140,7 @@ export const otherExemptionsQuestions: ExemptionQuestion[] = [
     text: "Are you a member of a Native American tribe or eligible for Indian Health Service?",
     type: "boolean",
     helpText:
-      "This includes being Indian, Urban Indian, California Indian, or IHS-eligible. Tap the info icons below for more details.",
+      "This includes being enrolled in a federally recognized tribe, being an Urban Indian, California Indian, or eligible for IHS services.",
     required: true,
   },
 ];

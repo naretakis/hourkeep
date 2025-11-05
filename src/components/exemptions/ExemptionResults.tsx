@@ -110,16 +110,20 @@ export function ExemptionResults({
         {!result.isExempt && (
           <Box sx={{ mt: 3 }}>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              <strong>Requirements:</strong>
+              <strong>How to meet the requirements:</strong>
             </Typography>
             <Box component="ul" sx={{ mt: 1, pl: 2 }}>
               <Typography component="li" variant="body2" color="text.secondary">
-                Track 80 hours per month of work, volunteer, or education
+                Do 80 hours per month of work, volunteering, or school
               </Typography>
               <Typography component="li" variant="body2" color="text.secondary">
-                OR earn $580 per month
+                OR earn $580 per month from working
               </Typography>
             </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+              This app helps you track your hours and stay organized. You can
+              log activities daily and see your monthly progress.
+            </Typography>
           </Box>
         )}
       </Paper>
