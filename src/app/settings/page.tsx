@@ -28,6 +28,7 @@ import {
   getScreeningHistory,
 } from "@/lib/storage/exemptions";
 import { format } from "date-fns";
+import { APP_CONFIG } from "@/config/app";
 
 // Helper function to get category label
 function getCategoryLabel(category: string): string {
@@ -308,18 +309,47 @@ export default function SettingsPage() {
       {/* About Section */}
       <Paper sx={{ p: 3, mt: 3 }}>
         <Typography variant="h6" gutterBottom>
-          About HourKeep
+          About {APP_CONFIG.name}
         </Typography>
         <Divider sx={{ mb: 2 }} />
         <Typography variant="body2" color="text.secondary" paragraph>
-          HourKeep helps you track work, volunteer, and education hours to meet
-          Medicaid work requirements (80 hours/month).
+          {APP_CONFIG.description} (80 hours/month).
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
           Keep your hours, keep your coverage.
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Version 2.0 - All data is stored locally on your device.
+        <Typography variant="body2" color="text.secondary" paragraph>
+          Version {APP_CONFIG.version} - All data is stored locally on your
+          device.
+        </Typography>
+        <Box sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+          <Button
+            variant="outlined"
+            href={APP_CONFIG.repository.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            fullWidth
+            sx={{ minHeight: 44 }}
+          >
+            View on GitHub
+          </Button>
+          <Button
+            variant="outlined"
+            href={APP_CONFIG.repository.issuesUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            fullWidth
+            sx={{ minHeight: 44 }}
+          >
+            Report an Issue
+          </Button>
+        </Box>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: "block", mt: 2, textAlign: "center" }}
+        >
+          Open source under {APP_CONFIG.license} license
         </Typography>
       </Paper>
 

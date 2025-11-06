@@ -5,6 +5,64 @@ All notable changes to HourKeep will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2025-11-06
+
+### Added - Settings About Section & Configuration 🔗
+
+Enhanced the Settings page About section with dynamic version display and community contribution links, plus centralized application configuration for easier maintenance and forking.
+
+#### Dynamic Version Management
+
+- **Automatic version display** - Version now reads directly from package.json
+- **Single source of truth** - Update version once, appears everywhere
+- **Build-time injection** - Version injected via Next.js environment variables
+- **No manual updates** - Version bumps automatically propagate to UI
+
+#### Community & Contribution
+
+- **View on GitHub button** - Direct link to repository for transparency
+- **Report an Issue button** - Easy access to GitHub Issues for bug reports and feature requests
+- **License display** - Shows GPL-3.0 license information
+- **Open source emphasis** - Clear messaging about open source nature
+
+#### Centralized Configuration
+
+- **App config file** - New `src/config/app.ts` for app-wide constants
+- **Repository URLs** - Centralized GitHub repository and issues URLs
+- **Type-safe config** - TypeScript ensures correct usage throughout app
+- **Easy forking** - Clear instructions for updating URLs when forking
+
+#### Developer Experience
+
+- **Configuration documentation** - Comprehensive guide in `docs/development/configuration.md`
+- **README updates** - Added configuration section with forking instructions
+- **Package.json metadata** - Added standard repository, bugs, and homepage fields
+- **Forking checklist** - Clear steps for customizing a fork
+
+### Changed
+
+- **Settings page** - Enhanced About section with dynamic content and new buttons
+- **Version display** - Changed from hardcoded "Version 2.0" to dynamic "Version 4.2.0"
+- **next.config.ts** - Added version injection from package.json
+- **package.json** - Added repository metadata fields
+
+### Technical Details
+
+- Created centralized config in `src/config/app.ts`
+- Enhanced `next.config.ts` to inject version as `NEXT_PUBLIC_APP_VERSION`
+- Added repository, bugs, and homepage fields to `package.json`
+- Updated Settings page to use `APP_CONFIG` for all About section content
+- Created comprehensive configuration guide in `docs/development/configuration.md`
+
+### Developer Experience
+
+- Clear forking instructions in README.md
+- Centralized configuration reduces duplication
+- Type-safe config usage prevents errors
+- Automatic version propagation simplifies releases
+
+---
+
 ## [4.0.0] - 2025-11-05
 
 ### Added - Enhanced Onboarding 🔐
@@ -338,6 +396,7 @@ This release represents the completion of the exemption screening spec, includin
 
 ---
 
+[4.2.0]: https://github.com/naretakis/hourkeep/compare/v4.0.0...v4.2.0
 [4.0.0]: https://github.com/naretakis/hourkeep/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/naretakis/hourkeep/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/naretakis/hourkeep/compare/v0.1.0...v2.0.0

@@ -1,8 +1,16 @@
 {
   "name": "hourkeep",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "private": true,
   "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naretakis/hourkeep.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naretakis/hourkeep/issues"
+  },
+  "homepage": "https://github.com/naretakis/hourkeep#readme",
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/update-manifest.js",

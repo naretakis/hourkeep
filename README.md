@@ -63,7 +63,7 @@ HourKeep is a simple, privacy-focused app that helps you:
 
 ```bash
 # Clone the repository
-git clone https://github.com/[username]/hourkeep.git
+git clone https://github.com/naretakis/hourkeep.git
 cd hourkeep
 
 # Install dependencies
@@ -74,6 +74,33 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+### Configuration
+
+If you fork this repository, update the GitHub repository URLs in two places:
+
+1. **package.json** - Update the `repository`, `bugs`, and `homepage` fields:
+
+   ```json
+   "repository": {
+     "type": "git",
+     "url": "https://github.com/YOUR_USERNAME/hourkeep.git"
+   },
+   "bugs": {
+     "url": "https://github.com/YOUR_USERNAME/hourkeep/issues"
+   },
+   "homepage": "https://github.com/YOUR_USERNAME/hourkeep#readme"
+   ```
+
+2. **src/config/app.ts** - Update the repository URLs:
+   ```typescript
+   repository: {
+     url: "https://github.com/YOUR_USERNAME/hourkeep",
+     issuesUrl: "https://github.com/YOUR_USERNAME/hourkeep/issues",
+   }
+   ```
+
+The app version is automatically read from `package.json` and displayed in the Settings page.
 
 ### Building for Production
 

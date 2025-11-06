@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 // @ts-expect-error - next-pwa doesn't have TypeScript definitions
 import withPWA from "next-pwa";
+
+// Read version from package.json
+const packageJson = JSON.parse(
+  readFileSync(join(process.cwd(), "package.json"), "utf8"),
+);
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -18,6 +25,10 @@ const nextConfig: NextConfig = {
   // In development, access at http://localhost:3000/
   // In production, access at https://username.github.io/hourkeep/
   basePath: process.env.NODE_ENV === "production" ? "/hourkeep" : "",
+  // Inject version as environment variable
+  env: {
+    NEXT_PUBLIC_APP_VERSION: packageJson.version,
+  },
 };
 
 export default withPWA({
