@@ -2,7 +2,7 @@
 
 ## Overview
 
-This design implements privacy-first analytics for HourKeep using Cloudflare Web Analytics. The implementation adds a single script tag to collect anonymous usage data while maintaining the app's core privacy principles. The design prioritizes simplicity, transparency, and future extensibility.
+This design implements privacy-first analytics for HourKeep using Plausible Analytics. The implementation adds a single script tag to collect anonymous usage data while maintaining the app's core privacy principles. The design prioritizes simplicity, transparency, and state-level geographic insights.
 
 **Key Design Principles:**
 
@@ -10,7 +10,7 @@ This design implements privacy-first analytics for HourKeep using Cloudflare Web
 - Zero impact on existing functionality
 - Complete transparency with users
 - Respect for Do Not Track settings
-- Future-proof for state-level tracking
+- State-level geographic data to understand where tool is needed most
 
 ## Architecture
 
@@ -29,7 +29,7 @@ This design implements privacy-first analytics for HourKeep using Cloudflare Web
 │  │  │  • Material-UI Theme                         │  │    │
 │  │  │  • Offline Indicator                         │  │    │
 │  │  │  • Storage Warning                           │  │    │
-│  │  │  • Cloudflare Analytics Script (NEW)         │  │    │
+│  │  │  • Plausible Analytics Script (NEW)          │  │    │
 │  │  └──────────────────────────────────────────────┘  │    │
 │  │                                                      │    │
 │  │  ┌──────────────────────────────────────────────┐  │    │
@@ -52,23 +52,24 @@ This design implements privacy-first analytics for HourKeep using Cloudflare Web
                            │
                            ▼
         ┌──────────────────────────────────────┐
-        │   Cloudflare Web Analytics CDN       │
+        │      Plausible Analytics CDN         │
         │                                       │
-        │  • Cookieless tracking                │
+        │  • Lightweight (< 1KB script)         │
         │  • GDPR compliant                     │
-        │  • No personal data                   │
+        │  • No cookies                         │
         │  • Respects DNT                       │
         └──────────────────────────────────────┘
                            │
                            │
                            ▼
         ┌──────────────────────────────────────┐
-        │    Cloudflare Analytics Dashboard    │
+        │    Plausible Analytics Dashboard     │
         │                                       │
         │  • Page views                         │
         │  • Device types                       │
         │  • Browsers/OS                        │
-        │  • Countries (not states)             │
+        │  • Regions/States (US states)         │
+        │  • Referrers                          │
         └──────────────────────────────────────┘
 ```
 
@@ -79,10 +80,11 @@ This design implements privacy-first analytics for HourKeep using Cloudflare Web
 1. Page URL (e.g., `/hourkeep/tracking`, `/hourkeep/settings`)
 2. Referrer (where user came from)
 3. Device type (mobile, desktop, tablet)
-4. Screen resolution
+4. Screen size
 5. Browser and OS
-6. Country (derived from IP, not stored)
-7. Timestamp
+6. Region/State (e.g., "California", "Texas", "Florida")
+7. Country
+8. Timestamp
 
 **What Does NOT Get Tracked:**
 
@@ -92,8 +94,9 @@ This design implements privacy-first analytics for HourKeep using Cloudflare Web
 - ❌ Exemption screening results
 - ❌ Any data stored in IndexedDB
 - ❌ Form inputs or user interactions
-- ❌ IP addresses (not stored by Cloudflare)
+- ❌ IP addresses (not stored by Plausible)
 - ❌ Cookies or persistent identifiers
+- ❌ City-level or more granular location data
 
 ## Components and Interfaces
 
@@ -103,8 +106,7 @@ This design implements privacy-first analytics for HourKeep using Cloudflare Web
 
 **Changes:**
 
-- Add Cloudflare Web Analytics script tag in `<head>`
-- Add conditional logic to respect Do Not Track
+- Add Plausible Analytics script tag in `<head>`
 - Add comment explaining analytics implementation
 
 **Implementation Approach:**
@@ -117,14 +119,14 @@ export default function RootLayout({ children }) {
       <head>
         {/* Existing meta tags */}
 
-        {/* Cloudflare Web Analytics - Privacy-first, cookieless analytics */}
+        {/* Plausible Analytics - Privacy-first, lightweight analytics */}
         {/* Respects Do Not Track browser setting */}
-        {/* Only tracks anonymous page views, device types, and countries */}
+        {/* Only tracks anonymous page views, device types, and regions/states */}
         {/* Does NOT track personal data, activities, or documents */}
         <script
           defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "CLOUDFLARE_TOKEN_HERE"}'
+          data-domain="naretakis.github.io"
+          src="https://plausible.io/js/script.js"
         />
       </head>
       <body>
@@ -137,7 +139,7 @@ export default function RootLayout({ children }) {
 
 **Do Not Track Handling:**
 
-Cloudflare Web Analytics automatically respects the DNT header. No additional code needed. The script checks `navigator.doNotTrack` and will not send data if DNT is enabled.
+Plausible Analytics automatically respects the DNT header. No additional code needed. The script checks `navigator.doNotTrack` and will not send data if DNT is enabled.
 
 ### 2. Privacy Notice Component (Modified)
 
@@ -149,6 +151,7 @@ Cloudflare Web Analytics automatically respects the DNT header. No additional co
 - Add new section explaining anonymous analytics
 - Maintain plain language and clear structure
 - Add Do Not Track information
+- Mention state-level geographic data
 
 **Content Structure:**
 
@@ -169,7 +172,7 @@ Welcome to HourKeep
 │   └── Exemption results
 │
 ├── Anonymous Usage Analytics (NEW SECTION)
-│   ├── What we collect (page views, device types, countries)
+│   ├── What we collect (page views, device types, states)
 │   ├── What we DON'T collect (no personal data)
 │   ├── Why we collect it (improve app, understand where it's needed)
 │   └── How to opt out (Do Not Track)
@@ -195,7 +198,7 @@ No cookies, no tracking, no analytics."
 ```
 "Anonymous usage analytics"
 "We collect anonymous usage statistics (page views, device types,
-countries) to understand where this tool is needed most and improve
+states) to understand where this tool is needed most and improve
 the app. This does NOT include any personal information, activity
 logs, or documents. Respects 'Do Not Track' browser settings."
 ```
@@ -208,7 +211,7 @@ logs, or documents. Respects 'Do Not Track' browser settings."
 
 - Update "Privacy & Data" section
 - Add "Analytics" subsection
-- Link to Cloudflare's privacy policy
+- Link to Plausible's privacy policy
 - Maintain consistency with Privacy Notice
 
 **New Section:**
@@ -219,21 +222,22 @@ logs, or documents. Respects 'Do Not Track' browser settings."
 - **All data stays on your device** - Nothing is sent to any server
 - **No account required** - No sign-up, no login
 - **Anonymous usage analytics** - We collect anonymous page views, device types,
-  and countries (not states) to understand where this tool is needed most.
+  and states (not cities) to understand where this tool is needed most.
   No personal data, activity logs, or documents are tracked.
   Respects "Do Not Track" browser settings.
 - **You control exports** - Only you decide when to share your data
 
 ### What Analytics We Collect
 
-We use [Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)
-(privacy-first, cookieless) to collect:
+We use [Plausible Analytics](https://plausible.io/)
+(privacy-first, open-source, lightweight) to collect:
 
 - ✅ Page views (which pages you visit)
 - ✅ Device type (mobile, desktop, tablet)
 - ✅ Browser and operating system
-- ✅ Country (not city or state)
-- ✅ Screen resolution
+- ✅ Region/State (e.g., "California", "Texas")
+- ✅ Country
+- ✅ Screen size
 
 We do NOT collect:
 
@@ -243,21 +247,22 @@ We do NOT collect:
 - ❌ Your exemption screening results
 - ❌ IP addresses or persistent identifiers
 - ❌ Cookies or tracking across websites
+- ❌ City-level or more granular location data
 
 **Opt Out:** Enable "Do Not Track" in your browser settings to opt out of analytics.
 
-Learn more: [Cloudflare Web Analytics Privacy](https://www.cloudflare.com/privacypolicy/)
+Learn more: [Plausible Privacy Policy](https://plausible.io/privacy)
 ```
 
 ## Data Models
 
-No new data models required. Analytics data is collected and stored entirely by Cloudflare, not in the app's IndexedDB.
+No new data models required. Analytics data is collected and stored entirely by Plausible, not in the app's IndexedDB.
 
 ## Error Handling
 
 ### Analytics Script Loading Failures
 
-**Scenario:** Cloudflare CDN is unreachable or script fails to load
+**Scenario:** Plausible CDN is unreachable or script fails to load
 
 **Handling:**
 
@@ -272,7 +277,7 @@ No new data models required. Analytics data is collected and stored entirely by 
 
 **Handling:**
 
-- Cloudflare's script handles DNT detection automatically
+- Plausible's script handles DNT detection automatically
 - Falls back to not tracking if DNT status is ambiguous
 - No custom code needed
 
@@ -284,7 +289,7 @@ No new data models required. Analytics data is collected and stored entirely by 
 
 1. Open HourKeep in browser
 2. Open DevTools → Network tab
-3. Verify `beacon.min.js` loads from Cloudflare CDN
+3. Verify `script.js` loads from plausible.io
 4. Verify no console errors
 
 **Test Case 2: Do Not Track Respected**
@@ -295,8 +300,8 @@ No new data models required. Analytics data is collected and stored entirely by 
    - Safari: Preferences → Privacy → Ask websites not to track me
 2. Open HourKeep
 3. Open DevTools → Network tab
-4. Verify `beacon.min.js` loads but sends no tracking requests
-5. Check Cloudflare dashboard - no new page views recorded
+4. Verify script loads but sends no tracking requests
+5. Check Plausible dashboard - no new page views recorded
 
 **Test Case 3: Privacy Notice Accuracy**
 
@@ -318,17 +323,25 @@ No new data models required. Analytics data is collected and stored entirely by 
 
 1. Open HourKeep
 2. Navigate to different pages (tracking, settings, exemptions)
-3. Check Cloudflare dashboard
+3. Check Plausible dashboard (may take a few minutes)
 4. Verify page views are recorded with correct paths
 
-### Verification in Cloudflare Dashboard
+**Test Case 6: State-Level Geographic Data**
+
+1. Open HourKeep from different locations (if possible)
+2. Navigate several pages
+3. Check Plausible dashboard → Locations
+4. Verify state/region data is showing (e.g., "California", "Texas")
+5. Verify no city-level data is displayed
+
+### Verification in Plausible Dashboard
 
 After deployment, verify:
 
 - Page views are being recorded
 - Device types are showing (mobile vs desktop)
 - Browser/OS data is accurate
-- Country data is showing (should see "United States")
+- Region/State data is showing (should see US states)
 - No personal data is visible in any reports
 
 ### Documentation Review
@@ -340,35 +353,36 @@ After deployment, verify:
 
 ## Implementation Notes
 
-### Cloudflare Web Analytics Setup
+### Plausible Analytics Setup
 
 **Prerequisites:**
 
-1. Cloudflare account (free tier is sufficient)
-2. Add site to Cloudflare Web Analytics
-3. Get analytics token
+1. Plausible account (30-day free trial, then $9/month)
+2. Add site to Plausible
+3. Get domain name for tracking
 
 **Setup Steps:**
 
-1. Log in to Cloudflare dashboard
-2. Navigate to Web Analytics
-3. Click "Add a site"
-4. Enter site URL: `https://naretakis.github.io/hourkeep`
-5. Copy the provided token
-6. Add script tag to `layout.tsx` with token
+1. Go to https://plausible.io/register
+2. Create account (30-day free trial)
+3. Click "Add a website"
+4. Enter domain: `naretakis.github.io`
+5. Copy the provided script tag
+6. Add script tag to `layout.tsx`
 
-**Token Management:**
+**Domain Configuration:**
 
-- Token is public (safe to commit to GitHub)
-- Token only allows sending data, not reading it
-- No environment variable needed
+- Domain is `naretakis.github.io` (the GitHub Pages domain)
+- Script automatically tracks all paths under this domain
+- No API key or token needed in the script tag
+- Script is public and safe to commit to GitHub
 
 ### Deployment Considerations
 
 **GitHub Pages:**
 
 - Static site - no server-side configuration needed
-- Script loads from Cloudflare CDN
+- Script loads from Plausible CDN
 - No CORS issues (script is designed for static sites)
 
 **Build Process:**
@@ -377,49 +391,14 @@ After deployment, verify:
 - Script tag is included in HTML output
 - Works with Next.js static export
 
-### Future Extensibility: State Tracking
+### Cost Considerations
 
-**When state-level tracking is needed:**
+**Plausible Pricing:**
 
-1. **Create Cloudflare Worker:**
-
-   ```javascript
-   // worker.js
-   export default {
-     async fetch(request, env) {
-       const { state } = await request.json();
-       const key = `state:${state}`;
-       const count = (await env.KV.get(key)) || 0;
-       await env.KV.put(key, count + 1);
-       return new Response("OK");
-     },
-   };
-   ```
-
-2. **Call from HourKeep:**
-
-   ```typescript
-   // After onboarding completion
-   if (userProfile.state) {
-     fetch("https://analytics.yourworker.workers.dev/state", {
-       method: "POST",
-       body: JSON.stringify({ state: userProfile.state }),
-     }).catch(() => {
-       // Silent failure - analytics shouldn't break app
-     });
-   }
-   ```
-
-3. **Update Privacy Notice:**
-   - Add bullet point about state-level tracking
-   - Explain it's anonymous (just state abbreviation)
-   - Maintain transparency
-
-**This design allows adding state tracking without:**
-
-- Changing the Cloudflare Web Analytics implementation
-- Breaking existing analytics
-- Requiring major code refactoring
+- 30-day free trial (no credit card required)
+- After trial: $9/month for up to 10,000 monthly pageviews
+- Can cancel anytime
+- Open-source alternative: Self-host Plausible for free (requires server)
 
 ## Security Considerations
 
@@ -428,8 +407,8 @@ After deployment, verify:
 If CSP is added in the future, allow:
 
 ```
-script-src 'self' https://static.cloudflareinsights.com;
-connect-src 'self' https://cloudflareinsights.com;
+script-src 'self' https://plausible.io;
+connect-src 'self' https://plausible.io;
 ```
 
 ### Privacy Compliance
@@ -450,57 +429,64 @@ connect-src 'self' https://cloudflareinsights.com;
 
 ### Data Retention
 
-Cloudflare Web Analytics:
+Plausible Analytics:
 
-- Retains data for 6 months
-- Aggregates older data
+- Retains data indefinitely (you control retention)
+- Can delete data anytime from dashboard
 - No raw logs stored
 - No IP addresses retained
 
 ## Alternatives Considered
 
-### Alternative 1: Vercel Analytics
+### Alternative 1: Cloudflare Web Analytics
 
-**Pros:** Free, built-in, one line of code
-**Cons:** Requires Vercel hosting (we use GitHub Pages)
-**Decision:** Not compatible with static GitHub Pages deployment
+**Pros:** Free, privacy-first, cookieless
+**Cons:** Requires domain ownership (doesn't work with GitHub Pages subdomains), no state-level data
+**Decision:** Cannot use with `naretakis.github.io` domain
 
-### Alternative 2: Plausible Analytics
+### Alternative 2: Google Analytics 4
 
-**Pros:** More detailed, better dashboard, state data possible
-**Cons:** $9/month, overkill for 50 users
-**Decision:** Too expensive for early-stage project
+**Pros:** Free, state-level data, widely used
+**Cons:** Less privacy-focused, uses cookies, owned by Google
+**Decision:** Not aligned with privacy-first values
 
-### Alternative 3: No Analytics
+### Alternative 3: Simple Analytics
+
+**Pros:** Similar to Plausible, privacy-first
+**Cons:** Same price as Plausible, less popular
+**Decision:** Plausible chosen for better documentation and community
+
+### Alternative 4: Umami (Self-hosted)
+
+**Pros:** Free, open-source, complete control
+**Cons:** Requires hosting server, more complex setup
+**Decision:** Too complex for initial implementation, can migrate later if needed
+
+### Alternative 5: No Analytics
 
 **Pros:** Simplest, most private
-**Cons:** No visibility into usage, can't improve based on data
-**Decision:** Some analytics needed to understand impact
-
-### Alternative 4: Custom Analytics (Cloudflare Worker + KV)
-
-**Pros:** Complete control, can track state data
-**Cons:** More complex, requires maintenance, premature optimization
-**Decision:** Start simple, add later if needed
+**Cons:** No visibility into usage, can't understand which states need tool most
+**Decision:** State-level data is valuable for understanding impact
 
 ## Success Criteria
 
 **Implementation is successful when:**
 
-1. ✅ Cloudflare Web Analytics script loads without errors
-2. ✅ Page views appear in Cloudflare dashboard
-3. ✅ Do Not Track is respected (verified by testing)
-4. ✅ Privacy Notice accurately describes analytics
-5. ✅ README documentation is updated and accurate
-6. ✅ App functionality is unaffected
-7. ✅ No console errors related to analytics
-8. ✅ Offline functionality still works
-9. ✅ All documentation is consistent
-10. ✅ CHANGELOG is updated
+1. ✅ Plausible Analytics script loads without errors
+2. ✅ Page views appear in Plausible dashboard
+3. ✅ State/region data appears in Plausible dashboard
+4. ✅ Do Not Track is respected (verified by testing)
+5. ✅ Privacy Notice accurately describes analytics
+6. ✅ README documentation is updated and accurate
+7. ✅ App functionality is unaffected
+8. ✅ No console errors related to analytics
+9. ✅ Offline functionality still works
+10. ✅ All documentation is consistent
+11. ✅ CHANGELOG is updated
 
 ## Timeline Estimate
 
-- **Setup Cloudflare account:** 5 minutes
+- **Setup Plausible account:** 5 minutes
 - **Add script to layout.tsx:** 2 minutes
 - **Update Privacy Notice:** 15 minutes
 - **Update README:** 10 minutes
@@ -514,7 +500,8 @@ None - design is straightforward and well-defined.
 
 ## References
 
-- [Cloudflare Web Analytics Documentation](https://developers.cloudflare.com/analytics/web-analytics/)
-- [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/)
+- [Plausible Analytics Documentation](https://plausible.io/docs)
+- [Plausible Privacy Policy](https://plausible.io/privacy)
+- [Plausible GitHub Repository](https://github.com/plausible/analytics)
 - [Do Not Track Specification](https://www.w3.org/TR/tracking-dnt/)
 - [GDPR Compliance for Analytics](https://gdpr.eu/cookies/)
