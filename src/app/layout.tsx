@@ -40,6 +40,21 @@ export default function RootLayout({
         <link rel="manifest" href={`${basePath}/manifest.json`} />
         <link rel="icon" href={`${basePath}/favicon.ico`} />
         <link rel="apple-touch-icon" href={`${basePath}/icon-192x192.png`} />
+
+        {/* Plausible Analytics - Privacy-first, lightweight analytics */}
+        {/* Tracks: anonymous page views, device types, browsers, and regions/states */}
+        {/* Does NOT track: personal data, activity logs, documents, or exemption data */}
+        {/* Automatically respects "Do Not Track" browser setting */}
+        {/* Learn more: https://plausible.io/privacy */}
+        <script
+          async
+          src="https://plausible.io/js/pa-64XPjrue2mBz6ntqkjaaZ.js"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`,
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         <CacheProvider value={clientSideEmotionCache}>

@@ -8,7 +8,7 @@ This implementation plan breaks down the analytics integration into discrete, ma
 
 ## Tasks
 
-- [ ] 1. Set up Plausible Analytics account and add site
+- [x] 1. Set up Plausible Analytics account and add site
   - Go to https://plausible.io/register
   - Create account (30-day free trial, no credit card required)
   - Click "Add a website"
@@ -17,8 +17,8 @@ This implementation plan breaks down the analytics integration into discrete, ma
   - Familiarize yourself with the Plausible dashboard
   - _Requirements: 1.1, 3.1_
 
-- [ ] 2. Add Plausible Analytics script to root layout
-  - [ ] 2.1 Add analytics script tag to layout.tsx head section
+- [x] 2. Add Plausible Analytics script to root layout
+  - [x] 2.1 Add analytics script tag to layout.tsx head section
     - Open `src/app/layout.tsx`
     - Add Plausible Analytics script tag in the `<head>` section
     - Use `defer` attribute to prevent blocking page load
@@ -28,7 +28,7 @@ This implementation plan breaks down the analytics integration into discrete, ma
     - Add comment noting that script automatically respects Do Not Track
     - _Requirements: 1.1, 1.2, 3.1, 3.2, 3.4, 3.5_
 
-  - [ ] 2.2 Verify script loads correctly in development
+  - [x] 2.2 Verify script loads correctly in development
     - Run `npm run dev`
     - Open browser DevTools → Network tab
     - Verify `script.js` loads from plausible.io

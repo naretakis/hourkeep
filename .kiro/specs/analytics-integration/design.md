@@ -143,7 +143,8 @@ Plausible Analytics automatically respects the DNT header. No additional code ne
 
 ### 2. Privacy Notice and Privacy Policy Components (Modified)
 
-**Files:** 
+**Files:**
+
 - `src/components/onboarding/PrivacyNotice.tsx`
 - `src/components/settings/PrivacyPolicy.tsx`
 
