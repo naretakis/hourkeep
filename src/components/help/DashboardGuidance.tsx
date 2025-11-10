@@ -81,7 +81,9 @@ export function DashboardGuidance({
   // Expose method to show and highlight the guidance
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      (window as Window & { showDashboardGuidance?: () => void }).showDashboardGuidance = () => {
+      (
+        window as Window & { showDashboardGuidance?: () => void }
+      ).showDashboardGuidance = () => {
         // If dismissed, un-dismiss it
         if (dismissed) {
           localStorage.removeItem(STORAGE_KEY);
@@ -108,7 +110,8 @@ export function DashboardGuidance({
 
     return () => {
       if (typeof window !== "undefined") {
-        delete (window as Window & { showDashboardGuidance?: () => void }).showDashboardGuidance;
+        delete (window as Window & { showDashboardGuidance?: () => void })
+          .showDashboardGuidance;
       }
     };
   }, [dismissed, collapsed]);

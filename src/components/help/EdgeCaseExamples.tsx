@@ -126,8 +126,8 @@ export function EdgeCaseExamples({
                     size="small"
                     color={status.chipColor}
                     sx={{
-                      height: 20,
-                      fontSize: "0.7rem",
+                      height: 22,
+                      fontSize: "0.75rem",
                       fontWeight: 600,
                     }}
                   />

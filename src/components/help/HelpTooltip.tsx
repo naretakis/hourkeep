@@ -142,7 +142,7 @@ export function HelpTooltip({
                   primary={`• ${example}`}
                   primaryTypographyProps={{
                     variant: "caption",
-                    sx: { fontSize: inModal ? "0.875rem" : "0.75rem" },
+                    sx: { fontSize: inModal ? "0.875rem" : "0.8125rem" },
                   }}
                 />
               </ListItem>
@@ -171,7 +171,7 @@ export function HelpTooltip({
                   primary={`• ${example}`}
                   primaryTypographyProps={{
                     variant: "caption",
-                    sx: { fontSize: inModal ? "0.875rem" : "0.75rem" },
+                    sx: { fontSize: inModal ? "0.875rem" : "0.8125rem" },
                   }}
                 />
               </ListItem>

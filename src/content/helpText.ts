@@ -303,7 +303,7 @@ export const incomeDefinitions: Record<string, IncomeDefinition> = {
     ],
     example: {
       scenario: "You earned $3,480 over the past 6 months",
-      calculation: "$3,480 ÷ 6 months = $580/month average",
+      calculation: "$3,480 ÷ 6 months = $580 per month average",
       result: "You meet work requirements as a seasonal worker",
     },
     edgeCases: [
@@ -391,12 +391,12 @@ export const dashboardGuidance: DashboardGuidance = {
     },
     {
       icon: "chart",
-      text: "Review your monthly totals at the bottom to see if you're on track",
+      text: "Review your monthly totals to see if you're on track",
       action: null,
     },
     {
       icon: "download",
-      text: "Export and share your data with your state Medicaid agency",
+      text: "Export and share your data with your state Medicaid agency.",
       action: "/export",
     },
   ],
@@ -430,22 +430,22 @@ export const documentVerificationHelp: DocumentVerificationHelp = {
     "Gig work app screenshots showing completed hours",
   ],
   volunteerExamples: [
-    "Volunteer verification letter from the organization",
+    "Letter from the organization where you volunteer",
     "Signed timesheet from volunteer coordinator",
     "Certificate of volunteer service",
     "Email confirmation of volunteer hours",
   ],
   educationExamples: [
-    "Class schedule showing enrollment",
-    "School enrollment verification letter",
+    "Class schedule showing you're enrolled",
+    "Letter from school saying you're enrolled",
     "Transcript or grade report",
-    "Tuition receipt or financial aid statement",
+    "Tuition receipt or financial aid papers",
   ],
   tips: [
-    "Take a clear photo of the entire document",
-    "Make sure all text is readable",
-    "Include the date and your name if visible",
-    "You can add multiple documents for one activity",
+    "Take a clear photo of the whole document",
+    "Make sure you can read all the text",
+    "Include the date and your name if you can see them",
+    "You can add more than one document for each activity",
   ],
-  note: "Documents are optional but highly recommended. They stay private on your device and are only shared when you export your data.",
+  note: "Documents are optional but we recommend them. They stay private on your device. You only share them when you export your data.",
 };

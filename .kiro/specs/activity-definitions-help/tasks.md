@@ -266,43 +266,43 @@ This implementation plan breaks down the activity definitions help text feature 
 
 ## Phase 5: Plain Language and Mobile Polish
 
-- [ ] Task 8: Plain language review
+- [x] Task 8: Plain language review
 
-- [ ] 8.1 Review all help text for plain language
+- [x] 8.1 Review all help text for plain language
   - Check reading level (use Hemingway Editor)
   - Ensure 8th grade level or below
   - Shorten sentences over 20 words
   - Replace jargon with plain terms
   - _Requirements: 6.1-6.3_
 
-- [ ] 8.2 Review for active voice
+- [x] 8.2 Review for active voice
   - Convert passive voice to active
   - Use "you" throughout
   - Use action verbs
   - _Requirements: 6.3_
 
-- [ ] Task 9: Mobile optimization
+- [x] Task 9: Mobile optimization
 
-- [ ] 9.1 Test all components at mobile breakpoints
+- [x] 9.1 Test all components at mobile breakpoints
   - Test at 320px width (iPhone SE)
   - Test at 375px width (iPhone 12)
   - Test at 414px width (iPhone 12 Pro Max)
   - Fix any layout issues
   - _Requirements: 8.1, 8.5_
 
-- [ ] 9.2 Verify touch targets
+- [x] 9.2 Verify touch targets
   - Measure all interactive elements
   - Ensure minimum 44px × 44px
   - Add padding if needed
   - _Requirements: 8.2_
 
-- [ ] 9.3 Test animations on mobile
+- [x] 9.3 Test animations on mobile
   - Verify smooth expand/collapse
   - Verify bottom sheet slide animation
   - Test on actual mobile device if possible
   - _Requirements: 8.3_
 
-- [ ] 9.4 Test text readability on mobile
+- [x] 9.4 Test text readability on mobile
   - Verify minimum 16px font size
   - Check line height and spacing
   - Ensure no horizontal scrolling
