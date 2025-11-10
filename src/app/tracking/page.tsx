@@ -14,6 +14,7 @@ import {
 import {
   Settings as SettingsIcon,
   Download as DownloadIcon,
+  HelpOutline as HelpOutlineIcon,
 } from "@mui/icons-material";
 import { Calendar } from "@/components/Calendar";
 import { ActivityForm } from "@/components/ActivityForm";
@@ -22,6 +23,7 @@ import { DateActivityMenu } from "@/components/DateActivityMenu";
 import { Dashboard } from "@/components/Dashboard";
 import { DuplicateActivityDialog } from "@/components/DuplicateActivityDialog";
 import { ExemptionBadge } from "@/components/exemptions/ExemptionBadge";
+import { DashboardGuidance } from "@/components/help/DashboardGuidance";
 import { db } from "@/lib/db";
 import { Activity, MonthlySummary } from "@/types";
 import { ExemptionScreening } from "@/types/exemptions";
@@ -334,6 +336,34 @@ export default function TrackingPage() {
           </Typography>
           <Box sx={{ display: "flex", gap: { xs: 0.5, sm: 1 } }}>
             <IconButton
+              onClick={() => {
+                // Call the global method to show and highlight the guidance
+                if (
+                  typeof window !== "undefined" &&
+                  (window as Window & { showDashboardGuidance?: () => void })
+                    .showDashboardGuidance
+                ) {
+                  (
+                    window as Window & { showDashboardGuidance?: () => void }
+                  ).showDashboardGuidance?.();
+                } else {
+                  // Fallback: reset and reload if method not available
+                  localStorage.removeItem(
+                    "hourkeep_dashboard_guidance_dismissed",
+                  );
+                  sessionStorage.removeItem(
+                    "hourkeep_dashboard_guidance_collapsed",
+                  );
+                  window.location.reload();
+                }
+              }}
+              aria-label="show help"
+              size="large"
+              title="Show help guide"
+            >
+              <HelpOutlineIcon />
+            </IconButton>
+            <IconButton
               onClick={handleExport}
               aria-label="export data"
               size="large"
@@ -355,6 +385,10 @@ export default function TrackingPage() {
             {error}
           </Alert>
         )}
+
+        <Box sx={{ mt: 3 }}>
+          <DashboardGuidance dismissible={true} />
+        </Box>
 
         <Box sx={{ mt: 3 }}>
           <ExemptionBadge screening={exemptionScreening} />

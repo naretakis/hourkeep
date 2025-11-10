@@ -29,6 +29,8 @@ import {
 import { format } from "date-fns";
 import { Activity } from "@/types";
 import { Document } from "@/types/documents";
+import { ActivityFormHelp } from "@/components/activities/ActivityFormHelp";
+import { DocumentVerificationHelpIcon } from "@/components/help/DocumentVerificationHelp";
 import { DocumentCapture } from "@/components/documents/DocumentCapture";
 import { DocumentViewer } from "@/components/documents/DocumentViewer";
 import { DocumentMetadataForm } from "@/components/documents/DocumentMetadataForm";
@@ -375,20 +377,25 @@ function ActivityFormContent({
               Activity Details
             </Typography>
 
-            <FormControl fullWidth>
-              <InputLabel>Activity Type</InputLabel>
-              <Select
-                value={type}
-                label="Activity Type"
-                onChange={(e) =>
-                  setType(e.target.value as "work" | "volunteer" | "education")
-                }
-              >
-                <MenuItem value="work">Work</MenuItem>
-                <MenuItem value="volunteer">Volunteer</MenuItem>
-                <MenuItem value="education">Education</MenuItem>
-              </Select>
-            </FormControl>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <FormControl fullWidth>
+                <InputLabel>Activity Type</InputLabel>
+                <Select
+                  value={type}
+                  label="Activity Type"
+                  onChange={(e) =>
+                    setType(
+                      e.target.value as "work" | "volunteer" | "education",
+                    )
+                  }
+                >
+                  <MenuItem value="work">Work</MenuItem>
+                  <MenuItem value="volunteer">Volunteer</MenuItem>
+                  <MenuItem value="education">Education</MenuItem>
+                </Select>
+              </FormControl>
+              <ActivityFormHelp activityType={type} inline={true} />
+            </Box>
 
             <TextField
               label="Hours"
@@ -426,18 +433,21 @@ function ActivityFormContent({
                 borderColor: "primary.100",
               }}
             >
-              <Typography
-                variant="caption"
-                sx={{
-                  fontWeight: 600,
-                  color: "primary.main",
-                  mb: 1,
-                  display: "block",
-                  textTransform: "uppercase",
-                }}
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}
               >
-                Verification Document (Optional)
-              </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: 600,
+                    color: "primary.main",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Verification Document (Optional)
+                </Typography>
+                <DocumentVerificationHelpIcon activityType={type} />
+              </Box>
               {pendingDocument ? (
                 <Card sx={{ position: "relative" }}>
                   <CardMedia
@@ -498,7 +508,7 @@ function ActivityFormContent({
                     display: "flex",
                     alignItems: "center",
                     flex: 1,
-                    gap: 1,
+                    gap: 0.5,
                   }}
                 >
                   <Typography
@@ -511,6 +521,7 @@ function ActivityFormContent({
                   >
                     Documents
                   </Typography>
+                  <DocumentVerificationHelpIcon activityType={type} />
                   {documents.length > 0 && (
                     <Badge
                       badgeContent={documents.length}

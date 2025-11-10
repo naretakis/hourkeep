@@ -80,7 +80,7 @@ export default function ExemptionScreeningPage() {
   };
 
   const handleCancel = () => {
-    router.push("/settings");
+    router.push("/tracking");
   };
 
   const handleComplete = async (
@@ -144,7 +144,7 @@ export default function ExemptionScreeningPage() {
           onClick={handleCancel}
           sx={{ mb: 2 }}
         >
-          Back to Settings
+          Back to Home
         </Button>
         <Typography variant="h4" component="h1" gutterBottom>
           Exemption Screening

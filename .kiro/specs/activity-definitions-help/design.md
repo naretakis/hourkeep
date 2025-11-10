@@ -40,18 +40,20 @@ src/
 **Purpose**: Reusable tooltip component for inline help text
 
 **Props Interface**:
+
 ```typescript
 interface HelpTooltipProps {
   content: string;
   title?: string;
   examples?: string[];
   counterExamples?: string[];
-  placement?: 'top' | 'bottom' | 'left' | 'right';
+  placement?: "top" | "bottom" | "left" | "right";
   ariaLabel: string;
 }
 ```
 
 **Behavior**:
+
 - Desktop: Shows on hover or click
 - Mobile: Shows in bottom sheet modal on tap
 - Includes close button for mobile
@@ -59,6 +61,7 @@ interface HelpTooltipProps {
 - Accessible via keyboard (Enter/Space to open, Escape to close)
 
 **Visual Design**:
+
 - Help icon: Info circle (ⓘ) with 44px minimum touch target
 - Tooltip: White background, subtle shadow, rounded corners
 - Mobile modal: Slides up from bottom, semi-transparent backdrop
@@ -68,23 +71,26 @@ interface HelpTooltipProps {
 **Purpose**: Expandable section for longer help content
 
 **Props Interface**:
+
 ```typescript
 interface HelpSectionProps {
   title: string;
   content: string | React.ReactNode;
   defaultExpanded?: boolean;
   icon?: React.ReactNode;
-  variant?: 'default' | 'info' | 'warning';
+  variant?: "default" | "info" | "warning";
 }
 ```
 
 **Behavior**:
+
 - Toggles between expanded/collapsed on click
 - Smooth animation (300ms ease-in-out)
 - Persists state in sessionStorage (optional)
 - Chevron icon rotates to indicate state
 
 **Visual Design**:
+
 - Header: Bold text with chevron icon
 - Content: Padded area with light background
 - Border: Subtle border to separate from surrounding content
@@ -94,9 +100,10 @@ interface HelpSectionProps {
 **Purpose**: Collapsible section showing scenario examples
 
 **Props Interface**:
+
 ```typescript
 interface EdgeCaseExamplesProps {
-  activityType: 'work' | 'volunteer' | 'education' | 'workProgram' | 'income';
+  activityType: "work" | "volunteer" | "education" | "workProgram" | "income";
   examples: EdgeCaseExample[];
 }
 
@@ -108,11 +115,13 @@ interface EdgeCaseExample {
 ```
 
 **Behavior**:
+
 - Collapsed by default to avoid clutter
 - Expands to show 2-4 scenario examples
 - Each example clearly marked with ✓ (counts) or ✗ (doesn't count)
 
 **Visual Design**:
+
 - Scenarios in card format
 - Green checkmark for "counts", red X for "doesn't count"
 - Clear visual separation between scenarios
@@ -122,6 +131,7 @@ interface EdgeCaseExample {
 **Purpose**: Main dashboard guidance card
 
 **Props Interface**:
+
 ```typescript
 interface DashboardGuidanceProps {
   onDismiss?: () => void;
@@ -130,12 +140,14 @@ interface DashboardGuidanceProps {
 ```
 
 **Behavior**:
+
 - Shows on first app load
 - Can be dismissed (stored in localStorage)
 - Can be re-shown from settings/help menu
 - Collapsible to save space
 
 **Visual Design**:
+
 - Card with light blue background
 - Icon for each step (exemption, calendar, review, export)
 - Numbered list for clarity
@@ -146,19 +158,22 @@ interface DashboardGuidanceProps {
 **Purpose**: Activity-specific help text in tracking form
 
 **Props Interface**:
+
 ```typescript
 interface ActivityFormHelpProps {
-  activityType: 'work' | 'volunteer' | 'education' | 'workProgram';
+  activityType: "work" | "volunteer" | "education" | "workProgram";
   inline?: boolean;
 }
 ```
 
 **Behavior**:
+
 - Shows help icon next to each activity type selector
 - Displays definition, examples, and counter-examples
 - Links to edge case examples
 
 **Visual Design**:
+
 - Inline with form fields
 - Minimal visual weight to avoid overwhelming form
 - Clear typography hierarchy
@@ -168,6 +183,7 @@ interface ActivityFormHelpProps {
 **Purpose**: Income tracking help text
 
 **Props Interface**:
+
 ```typescript
 interface IncomeHelpProps {
   showSeasonalWorkerInfo?: boolean;
@@ -175,12 +191,14 @@ interface IncomeHelpProps {
 ```
 
 **Behavior**:
+
 - Explains $580/month threshold
 - Shows calculation (80 hours × $7.25)
 - Conditionally shows seasonal worker info
 - Links to income types that count
 
 **Visual Design**:
+
 - Calculation shown in highlighted box
 - Clear distinction between regular and seasonal worker rules
 
@@ -193,258 +211,285 @@ interface IncomeHelpProps {
 
 export const activityDefinitions = {
   work: {
-    title: 'Work (Paid Employment)',
-    definition: 'Paid employment where you work at least 80 hours per month.',
+    title: "Work (Paid Employment)",
+    definition: "Paid employment where you work at least 80 hours per month.",
     examples: [
-      'Full-time or part-time job',
-      'Multiple part-time jobs that total 80+ hours',
-      'Gig work (Uber, DoorDash, etc.) if you work 80+ hours',
-      'Self-employment if you work 80+ hours'
+      "Full-time or part-time job",
+      "Multiple part-time jobs that total 80+ hours",
+      "Gig work (Uber, DoorDash, etc.) if you work 80+ hours",
+      "Self-employment if you work 80+ hours",
     ],
     counterExamples: [
-      'Job searching or applying for jobs',
-      'Unpaid internships',
-      'Work under 80 hours per month (unless combined with other activities)'
+      "Job searching or applying for jobs",
+      "Unpaid internships",
+      "Work under 80 hours per month (unless combined with other activities)",
     ],
     edgeCases: [
       {
-        scenario: 'I work 60 hours at one job and 20 hours at another',
+        scenario: "I work 60 hours at one job and 20 hours at another",
         counts: true,
-        explanation: 'Yes! You can combine hours from multiple jobs. 60 + 20 = 80 hours total.'
+        explanation:
+          "Yes! You can combine hours from multiple jobs. 60 + 20 = 80 hours total.",
       },
       {
-        scenario: 'I spend 80 hours per month looking for a job',
+        scenario: "I spend 80 hours per month looking for a job",
         counts: false,
-        explanation: 'No. Job searching does NOT count as a qualifying activity. You need to volunteer, go to school, or join a work program instead.'
+        explanation:
+          "No. Job searching does NOT count as a qualifying activity. You need to volunteer, go to school, or join a work program instead.",
       },
       {
-        scenario: 'I do gig work but my hours vary each month',
+        scenario: "I do gig work but my hours vary each month",
         counts: true,
-        explanation: 'Yes, as long as you work at least 80 hours in the month you\'re reporting. Track your hours carefully.'
-      }
+        explanation:
+          "Yes, as long as you work at least 80 hours in the month you're reporting. Track your hours carefully.",
+      },
     ],
-    source: 'HR1 Section 71119(xx)(2)(A)'
+    source: "HR1 Section 71119(xx)(2)(A)",
   },
-  
+
   volunteer: {
-    title: 'Volunteer (Community Service)',
-    definition: 'Unpaid community service where you volunteer at least 80 hours per month.',
+    title: "Volunteer (Community Service)",
+    definition:
+      "Unpaid community service where you volunteer at least 80 hours per month.",
     examples: [
-      'Volunteering at a food bank',
-      'Helping at a community center',
-      'Volunteering at a school or library',
-      'Community cleanup or service projects'
+      "Volunteering at a food bank",
+      "Helping at a community center",
+      "Volunteering at a school or library",
+      "Community cleanup or service projects",
     ],
     counterExamples: [
-      'Informal help for friends or family',
-      'Volunteering less than 80 hours per month (unless combined with other activities)'
+      "Informal help for friends or family",
+      "Volunteering less than 80 hours per month (unless combined with other activities)",
     ],
     edgeCases: [
       {
-        scenario: 'I volunteer 40 hours and work 40 hours',
+        scenario: "I volunteer 40 hours and work 40 hours",
         counts: true,
-        explanation: 'Yes! You can combine volunteer hours with work hours. 40 + 40 = 80 hours total.'
+        explanation:
+          "Yes! You can combine volunteer hours with work hours. 40 + 40 = 80 hours total.",
       },
       {
-        scenario: 'I help my neighbor with yard work',
+        scenario: "I help my neighbor with yard work",
         counts: false,
-        explanation: 'No. Informal help for friends or family doesn\'t count. You need to volunteer with an organization.'
-      }
+        explanation:
+          "No. Informal help for friends or family doesn't count. You need to volunteer with an organization.",
+      },
     ],
-    source: 'HR1 Section 71119(xx)(2)(B)'
+    source: "HR1 Section 71119(xx)(2)(B)",
   },
-  
+
   education: {
-    title: 'Education (School Enrollment)',
-    definition: 'Enrolled at least half-time in an educational program.',
+    title: "Education (School Enrollment)",
+    definition: "Enrolled at least half-time in an educational program.",
     examples: [
-      'Community college (6+ credit hours)',
-      'University or 4-year college (6+ credit hours)',
-      'Trade school or vocational training',
-      'Career and technical education programs',
-      'GED or adult education programs (half-time or more)'
+      "Community college (6+ credit hours)",
+      "University or 4-year college (6+ credit hours)",
+      "Trade school or vocational training",
+      "Career and technical education programs",
+      "GED or adult education programs (half-time or more)",
     ],
     counterExamples: [
-      'Online courses that aren\'t part of a formal program',
-      'Less than half-time enrollment',
-      'Informal learning or self-study'
+      "Online courses that aren't part of a formal program",
+      "Less than half-time enrollment",
+      "Informal learning or self-study",
     ],
     edgeCases: [
       {
-        scenario: 'I\'m taking 2 classes (6 credit hours) at community college',
+        scenario: "I'm taking 2 classes (6 credit hours) at community college",
         counts: true,
-        explanation: 'Yes! 6 credit hours is typically considered half-time enrollment.'
+        explanation:
+          "Yes! 6 credit hours is typically considered half-time enrollment.",
       },
       {
-        scenario: 'I\'m taking one online course for personal interest',
+        scenario: "I'm taking one online course for personal interest",
         counts: false,
-        explanation: 'No. The course must be part of a formal educational program and you must be enrolled at least half-time.'
-      }
+        explanation:
+          "No. The course must be part of a formal educational program and you must be enrolled at least half-time.",
+      },
     ],
-    source: 'HR1 Section 71119(xx)(2)(D) and (xx)(9)(B)'
+    source: "HR1 Section 71119(xx)(2)(D) and (xx)(9)(B)",
   },
-  
+
   workProgram: {
-    title: 'Work Program (Job Training)',
-    definition: 'Participating in a job training or workforce development program for at least 80 hours per month.',
+    title: "Work Program (Job Training)",
+    definition:
+      "Participating in a job training or workforce development program for at least 80 hours per month.",
     examples: [
-      'SNAP Employment & Training (E&T) program',
-      'TANF work program',
-      'Workforce development programs',
-      'Job training or apprenticeship programs',
-      'Vocational rehabilitation programs'
+      "SNAP Employment & Training (E&T) program",
+      "TANF work program",
+      "Workforce development programs",
+      "Job training or apprenticeship programs",
+      "Vocational rehabilitation programs",
     ],
     counterExamples: [
-      'Informal job training',
-      'Programs less than 80 hours per month (unless combined with other activities)'
+      "Informal job training",
+      "Programs less than 80 hours per month (unless combined with other activities)",
     ],
     edgeCases: [
       {
-        scenario: 'I\'m in a SNAP E&T program for 80 hours per month',
+        scenario: "I'm in a SNAP E&T program for 80 hours per month",
         counts: true,
-        explanation: 'Yes! SNAP E&T and similar workforce programs count as work programs.'
-      }
+        explanation:
+          "Yes! SNAP E&T and similar workforce programs count as work programs.",
+      },
     ],
-    source: 'HR1 Section 71119(xx)(2)(C) and (xx)(9)(D)'
-  }
+    source: "HR1 Section 71119(xx)(2)(C) and (xx)(9)(D)",
+  },
 };
 
 export const incomeDefinitions = {
   threshold: {
-    title: 'Income Threshold',
-    definition: 'If you earn at least $580 per month, you automatically meet work requirements without tracking hours.',
-    calculation: '$580 = 80 hours × $7.25 (federal minimum wage)',
+    title: "Income Threshold",
+    definition:
+      "If you earn at least $580 per month, you automatically meet work requirements without tracking hours.",
+    calculation: "$580 = 80 hours × $7.25 (federal minimum wage)",
     whatCounts: {
-      title: 'What Types of Income Count?',
-      description: 'Only earned income from working counts toward the $580 threshold.',
+      title: "What Types of Income Count?",
+      description:
+        "Only earned income from working counts toward the $580 threshold.",
       examples: [
-        'Wages from a job (W-2 income)',
-        'Self-employment income (1099 income)',
-        'Tips and commissions from work',
-        'Gig work earnings (Uber, DoorDash, etc.)',
-        'Freelance or contract work income'
-      ]
+        "Wages from a job (W-2 income)",
+        "Self-employment income (1099 income)",
+        "Tips and commissions from work",
+        "Gig work earnings (Uber, DoorDash, etc.)",
+        "Freelance or contract work income",
+      ],
     },
     whatDoesNotCount: {
-      title: 'What Types of Income Do NOT Count?',
-      description: 'Unearned income does not count toward the $580 threshold.',
+      title: "What Types of Income Do NOT Count?",
+      description: "Unearned income does not count toward the $580 threshold.",
       examples: [
-        'SSI (Supplemental Security Income)',
-        'SSDI (Social Security Disability Insurance)',
-        'Unemployment benefits',
-        'Child support payments',
-        'Gifts or loans from family/friends',
-        'Investment income or interest',
-        'Rental income (unless it\'s your business)'
-      ]
+        "SSI (Supplemental Security Income)",
+        "SSDI (Social Security Disability Insurance)",
+        "Unemployment benefits",
+        "Child support payments",
+        "Gifts or loans from family/friends",
+        "Investment income or interest",
+        "Rental income (unless it's your business)",
+      ],
     },
     edgeCases: [
       {
-        scenario: 'I earn $600 per month from my job',
+        scenario: "I earn $600 per month from my job",
         counts: true,
-        explanation: 'Yes! Since you earn more than $580/month, you automatically meet work requirements. You don\'t need to track hours.'
+        explanation:
+          "Yes! Since you earn more than $580/month, you automatically meet work requirements. You don't need to track hours.",
       },
       {
-        scenario: 'I earn $400 from work and $200 from unemployment',
+        scenario: "I earn $400 from work and $200 from unemployment",
         counts: false,
-        explanation: 'No. Only the $400 from work counts. Unemployment benefits don\'t count. Since $400 is less than $580, you need to track your work hours or do other activities.'
+        explanation:
+          "No. Only the $400 from work counts. Unemployment benefits don't count. Since $400 is less than $580, you need to track your work hours or do other activities.",
       },
       {
-        scenario: 'I do gig work and my income varies. Some months I earn $700, other months $400',
-        counts: 'varies',
-        explanation: 'It depends on the month. In months where you earn $580 or more, you meet requirements. In months under $580, you need to track hours or qualify as a seasonal worker.'
-      }
+        scenario:
+          "I do gig work and my income varies. Some months I earn $700, other months $400",
+        counts: "varies",
+        explanation:
+          "It depends on the month. In months where you earn $580 or more, you meet requirements. In months under $580, you need to track hours or qualify as a seasonal worker.",
+      },
     ],
-    note: 'Only earned income from work counts toward the $580 threshold. If you earn less than $580/month, you need to track your hours.',
-    source: 'HR1 Section 71119(xx)(2)(F)'
+    note: "Only earned income from work counts toward the $580 threshold. If you earn less than $580/month, you need to track your hours.",
+    source: "HR1 Section 71119(xx)(2)(F)",
   },
-  
+
   seasonalWorker: {
-    title: 'Seasonal Workers',
-    definition: 'If you\'re a seasonal worker, your income is averaged over the past 6 months instead of just one month.',
-    whoQualifies: 'You may be a seasonal worker if your income varies significantly by season (e.g., farm work, holiday retail, summer tourism).',
-    calculation: 'Average monthly income over past 6 months must be at least $580',
+    title: "Seasonal Workers",
+    definition:
+      "If you're a seasonal worker, your income is averaged over the past 6 months instead of just one month.",
+    whoQualifies:
+      "You may be a seasonal worker if your income varies significantly by season (e.g., farm work, holiday retail, summer tourism).",
+    calculation:
+      "Average monthly income over past 6 months must be at least $580",
     howToCalculate: [
-      'Add up your total income from the past 6 months',
-      'Divide by 6 to get your average monthly income',
-      'If the average is $580 or more, you meet requirements'
+      "Add up your total income from the past 6 months",
+      "Divide by 6 to get your average monthly income",
+      "If the average is $580 or more, you meet requirements",
     ],
     example: {
-      scenario: 'You earned $3,480 over the past 6 months',
-      calculation: '$3,480 ÷ 6 months = $580/month average',
-      result: 'You meet work requirements as a seasonal worker'
+      scenario: "You earned $3,480 over the past 6 months",
+      calculation: "$3,480 ÷ 6 months = $580/month average",
+      result: "You meet work requirements as a seasonal worker",
     },
     edgeCases: [
       {
-        scenario: 'I work at a ski resort and only earn income 4 months per year',
+        scenario:
+          "I work at a ski resort and only earn income 4 months per year",
         counts: true,
-        explanation: 'Yes! As a seasonal worker, your income is averaged over 6 months. If your 6-month average is $580 or more, you meet requirements.'
+        explanation:
+          "Yes! As a seasonal worker, your income is averaged over 6 months. If your 6-month average is $580 or more, you meet requirements.",
       },
       {
-        scenario: 'I earned $4,000 in the summer but nothing the rest of the year',
-        counts: 'depends',
-        explanation: 'It depends on your 6-month average. If $4,000 ÷ 6 = $667/month average, you meet requirements. But you need to recalculate every 6 months.'
-      }
+        scenario:
+          "I earned $4,000 in the summer but nothing the rest of the year",
+        counts: "depends",
+        explanation:
+          "It depends on your 6-month average. If $4,000 ÷ 6 = $667/month average, you meet requirements. But you need to recalculate every 6 months.",
+      },
     ],
-    source: 'HR1 Section 71119(xx)(2)(G)'
+    source: "HR1 Section 71119(xx)(2)(G)",
   },
-  
+
   incomeVsHours: {
-    title: 'Income OR Hours - You Choose',
-    definition: 'You can meet work requirements in two ways: earn $580/month OR track 80 hours/month of activities.',
+    title: "Income OR Hours - You Choose",
+    definition:
+      "You can meet work requirements in two ways: earn $580/month OR track 80 hours/month of activities.",
     options: [
       {
-        option: 'Option 1: Income',
-        description: 'Earn at least $580 per month from work',
-        benefit: 'No need to track hours'
+        option: "Option 1: Income",
+        description: "Earn at least $580 per month from work",
+        benefit: "No need to track hours",
       },
       {
-        option: 'Option 2: Hours',
-        description: 'Track 80 hours per month of work, volunteer, education, or work programs',
-        benefit: 'Counts even if you earn less than $580'
-      }
+        option: "Option 2: Hours",
+        description:
+          "Track 80 hours per month of work, volunteer, education, or work programs",
+        benefit: "Counts even if you earn less than $580",
+      },
     ],
-    note: 'You only need to meet ONE of these requirements, not both.',
-    example: 'If you work 100 hours per month but only earn $400, you still meet requirements because you have 80+ hours.'
-  }
+    note: "You only need to meet ONE of these requirements, not both.",
+    example:
+      "If you work 100 hours per month but only earn $400, you still meet requirements because you have 80+ hours.",
+  },
 };
 
 export const combinationRules = {
-  title: 'Combining Activities',
-  definition: 'You can combine different activities to reach 80 hours per month.',
+  title: "Combining Activities",
+  definition:
+    "You can combine different activities to reach 80 hours per month.",
   examples: [
-    '40 hours work + 40 hours volunteer = 80 hours ✓',
-    '60 hours work + 20 hours education = 80 hours ✓',
-    '30 hours work + 30 hours volunteer + 20 hours work program = 80 hours ✓'
+    "40 hours work + 40 hours volunteer = 80 hours ✓",
+    "60 hours work + 20 hours education = 80 hours ✓",
+    "30 hours work + 30 hours volunteer + 20 hours work program = 80 hours ✓",
   ],
-  note: 'The total must equal at least 80 hours per month.',
-  source: 'HR1 Section 71119(xx)(2)(E)'
+  note: "The total must equal at least 80 hours per month.",
+  source: "HR1 Section 71119(xx)(2)(E)",
 };
 
 export const dashboardGuidance = {
-  title: 'How to Use HourKeep',
+  title: "How to Use HourKeep",
   steps: [
     {
-      icon: 'checklist',
-      text: 'Start with the exemption screener to see if you need to track hours',
-      action: 'Go to Exemptions'
+      icon: "checklist",
+      text: "Start with the exemption screener to see if you need to track hours",
+      action: "Go to Exemptions",
     },
     {
-      icon: 'calendar',
-      text: 'Click on calendar days to log your work, volunteer, or education hours',
-      action: null
+      icon: "calendar",
+      text: "Click on calendar days to log your work, volunteer, or education hours",
+      action: null,
     },
     {
-      icon: 'chart',
-      text: 'Review your monthly totals at the bottom to see if you\'re on track',
-      action: null
+      icon: "chart",
+      text: "Review your monthly totals at the bottom to see if you're on track",
+      action: null,
     },
     {
-      icon: 'download',
-      text: 'Export and share your data with your state Medicaid agency',
-      action: 'Go to Export'
-    }
-  ]
+      icon: "download",
+      text: "Export and share your data with your state Medicaid agency",
+      action: "Go to Export",
+    },
+  ],
 };
 ```
 
@@ -536,9 +581,9 @@ export const dashboardGuidance = {
 
 ```typescript
 const breakpoints = {
-  mobile: '0px',      // 0-599px
-  tablet: '600px',    // 600-959px
-  desktop: '960px'    // 960px+
+  mobile: "0px", // 0-599px
+  tablet: "600px", // 600-959px
+  desktop: "960px", // 960px+
 };
 ```
 
@@ -552,8 +597,8 @@ const breakpoints = {
 
 ```typescript
 const STORAGE_KEYS = {
-  DASHBOARD_GUIDANCE_DISMISSED: 'hourkeep_dashboard_guidance_dismissed',
-  HELP_SECTION_STATE: 'hourkeep_help_section_state'
+  DASHBOARD_GUIDANCE_DISMISSED: "hourkeep_dashboard_guidance_dismissed",
+  HELP_SECTION_STATE: "hourkeep_help_section_state",
 };
 ```
 
