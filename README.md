@@ -258,7 +258,7 @@ Built as an MVP learning project to understand:
 
 HourKeep is actively evolving. See our [ROADMAP.md](ROADMAP.md) to learn about:
 
-- ✅ Recently shipped (v4.0: Enhanced onboarding with privacy notice)
+- ✅ Recently shipped (v4.4: Warm Neutral theme for a friendlier look)
 - � Future sconsiderations (income tracking, hardship reporting, compliance alerts)
 - ❌ What we're explicitly not building (and why)
 

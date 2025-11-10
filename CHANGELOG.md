@@ -5,6 +5,52 @@ All notable changes to HourKeep will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.0] - 2025-11-10
+
+### Changed - Warm Neutral Theme 🎨
+
+Refreshed HourKeep's visual design with a warm, approachable color palette that moves beyond generic Material-UI while maintaining simplicity and accessibility.
+
+#### New Color Palette
+
+- **Primary color** - Muted purple (#6B4E71) - warm and approachable instead of generic blue
+- **Secondary color** - Warm tan/gold (#D4A574) - complements the purple beautifully
+- **Success color** - Earthy green (#5C8D5A) - for compliance status indicators
+- **Warning color** - Warm orange (#D97D54) - for attention items
+- **Background** - Warm off-white (#FAF9F7) - easier on eyes than stark white
+
+#### Design Improvements
+
+- **More rounded corners** - Increased from 12px to 16px for a friendlier feel
+- **Pill-shaped chips** - Activity type badges now have 20px border radius
+- **Thicker progress bars** - Increased from 10px to 12px for better visibility
+- **Softer shadows** - Purple-tinted shadows that match the new color scheme
+- **Better button styling** - Removed shouty uppercase text, added hover effects
+- **Improved typography** - Tighter letter spacing for a modern look
+
+#### Why This Theme?
+
+- **Distinctive** - Purple/tan palette stands out from typical blue apps
+- **Friendly** - Warm colors are psychologically calming for users dealing with stressful benefit requirements
+- **Professional** - Still trustworthy and official-feeling
+- **Accessible** - Maintains good contrast ratios for readability
+- **Supportive** - Feels like a community tool rather than a government form
+
+### Technical Details
+
+- Updated theme configuration in `src/theme/theme.ts`
+- Updated meta theme-color in `src/app/layout.tsx` for mobile browser chrome
+- Added component-level style overrides for buttons, papers, chips, and progress bars
+- No breaking changes - purely visual enhancement
+
+### Developer Experience
+
+- Created theme exploration document in `THEME_OPTIONS.md` with 5 design alternatives
+- Created interactive preview page in `theme-preview.html` for visual comparison
+- Simple implementation - just color palette and component overrides
+
+---
+
 ## [4.3.0] - 2025-11-07
 
 ### Added - Privacy-First Analytics Integration 📊
@@ -466,6 +512,7 @@ This release represents the completion of the exemption screening spec, includin
 
 ---
 
+[4.4.0]: https://github.com/naretakis/hourkeep/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/naretakis/hourkeep/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/naretakis/hourkeep/compare/v4.0.0...v4.2.0
 [4.0.0]: https://github.com/naretakis/hourkeep/compare/v3.0.0...v4.0.0

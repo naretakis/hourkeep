@@ -36,7 +36,7 @@ export default function RootLayout({
         />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#1976d2" />
+        <meta name="theme-color" content="#6B4E71" />
         <link rel="manifest" href={`${basePath}/manifest.json`} />
         <link rel="icon" href={`${basePath}/favicon.ico`} />
         <link rel="apple-touch-icon" href={`${basePath}/icon-192x192.png`} />
