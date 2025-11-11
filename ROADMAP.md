@@ -184,23 +184,169 @@ Export everything - profile, activities, documents, exemptions, income, hardship
 
 These features align with the full Medicaid work requirements domain but aren't yet scheduled. We'll prioritize based on user feedback and real-world needs.
 
-### SNAP Work Requirements Support
+### Historical Income & Hours Tracking 📅
+
+Enable users to log income and hours for past months to support lookback periods.
+
+**What You'll Be Able To Do:**
+
+- Add income/hours entries for past months (up to 6 months back)
+- Visual calendar showing historical compliance status
+- Support initial application lookback periods (1-3 months)
+- Support renewal lookback periods (past 6 months)
+- Clear indicators for "current month" vs. "historical month"
+
+**Why This Matters:**
+
+- Initial applications require 1-3 months of prior compliance
+- Renewals require demonstrating compliance over past months
+- Users who start using the app mid-year need to backfill data
+
+---
+
+### Compliance History Dashboard 📊
+
+Comprehensive view of compliance history to support renewal processes.
+
+**What You'll Be Able To Do:**
+
+- 6-month compliance summary view
+- Visual indicators (✓ compliant, ⚠ non-compliant, ⊘ no data)
+- Breakdown by compliance method (hours, income, exempt)
+- State-configurable lookback period requirements
+- "Renewal readiness" indicator
+
+**Why This Matters:**
+
+- Renewals require proof of past compliance
+- See at a glance which months you were compliant
+- Identify gaps before renewal deadline
+- Reduces stress during renewal process
+
+---
+
+### Notice of Non-Compliance Response Workflow 📋
+
+Help users respond to 30-day notices from their state Medicaid agency.
+
+**What You'll Be Able To Do:**
+
+- Notice response wizard with guided workflow
+- 30-day countdown timer with reminders
+- Checklist of required documentation
+- Specialized export package for notice response
+- Templates for common response scenarios
+
+**Why This Matters:**
+
+- HR1 gives users 30 days to respond to non-compliance notices
+- Missing the deadline means losing coverage
+- Guided workflow reduces stress and errors
+- Ensures complete response package
+
+---
+
+### Enhanced Export with Ex Parte Support 📦
+
+Redesign export functionality to support automated state verification.
+
+**What You'll Be Able To Do:**
+
+- Structured data format for automated verification
+- Multiple export formats (PDF, CSV, JSON)
+- Verification status tracking (self-reported vs. documented)
+- Batch export for multiple months
+- State-specific export templates
+
+**Why This Matters:**
+
+- 52% of beneficiaries could be verified automatically with data matches
+- Reduces burden on caseworkers
+- Faster eligibility determinations
+- Supports state modernization efforts
+
+---
+
+### Data Sync & Backup 💾
+
+Enable users to backup and sync data across devices while maintaining privacy.
+
+**What You'll Be Able To Do:**
+
+- Local backup to encrypted file
+- Cloud backup to user's storage (Google Drive, iCloud)
+- Sync data across multiple devices
+- Restore from backup
+- User controls encryption keys
+
+**Why This Matters:**
+
+- Protect against data loss
+- Use app on multiple devices
+- Privacy-first approach (user controls keys)
+
+---
+
+### Exemption Status Change Notifications 🔔
+
+Proactively notify users when exemption status may change.
+
+**What You'll Be Able To Do:**
+
+- Age-based alerts (child turns 14, user turns 65)
+- Pregnancy/postpartum tracking with expiration alerts
+- 30/60/90 day warnings before exemption ends
+- Transition guidance to start tracking
+
+**Why This Matters:**
+
+- Prevents surprise loss of coverage
+- Gives time to prepare for tracking requirements
+- Reduces administrative burden on states
+
+---
+
+### Smart Reminders & Notifications 📱
+
+Intelligent reminders to help users stay compliant.
+
+**What You'll Be Able To Do:**
+
+- Mid-month check-ins ("You're at 45 hours, on track!")
+- End-of-month warnings ("3 days left, need 15 more hours")
+- Renewal reminders (30/60/90 days before)
+- Document reminders ("Don't forget your pay stub")
+- Customizable notification preferences
+
+**Why This Matters:**
+
+- Proactive support reduces non-compliance
+- Reduces stress and last-minute scrambling
+- Improves user success rates
+
+---
+
+### SNAP Work Requirements Support 🍎
 
 Expand to support SNAP (food assistance) work requirements in addition to Medicaid. This would be a major undertaking requiring significant research and design work.
+
+---
 
 ### State System Integration 🔗
 
 API integration with state Medicaid systems for direct data submission. Would require partnerships with state agencies and careful privacy/security considerations.
 
-### Compliance Alerts & Predictions 📊
-
-Proactive notifications to help you stay on track with risk alerts, projected compliance based on historical patterns, deadline countdowns, and recommendations for meeting requirements.
+---
 
 ### Multi-Language Support 🌍
 
-- Spanish translation
+- Spanish translation (priority)
+- Additional languages based on demand
 - Language selector in settings
 - Translated help content
+- Culturally appropriate examples
+
+---
 
 ### State-Specific Configurations 🗺️
 
@@ -209,12 +355,85 @@ Proactive notifications to help you stay on track with risk alerts, projected co
 - State agency contact information
 - State-specific reporting deadlines
 
-### Advanced Analytics 📈
+---
 
-- Compliance trends over time
-- Activity type breakdown
-- Average hours per week/month
-- Compliance streak tracking
+### Income Forecasting 📈
+
+Help users predict future compliance based on historical patterns.
+
+**What You'll Be Able To Do:**
+
+- Income trend analysis ("Based on last 3 months, you're on track")
+- Seasonal pattern detection
+- "What-if" scenarios ("If you work 20 hours/week, you'll meet requirements")
+- Goal setting and progress tracking
+
+**Why This Matters:**
+
+- Helps users plan ahead
+- Identifies potential compliance issues early
+- Reduces anxiety about meeting requirements
+
+---
+
+### Household Management 👨‍👩‍👧‍👦
+
+Support for managing multiple household members with different compliance requirements.
+
+**What You'll Be Able To Do:**
+
+- Multi-user profiles for family members
+- Household dashboard showing everyone's status
+- Handle staggered renewal dates
+- Shared documents across family members
+- Household export for entire family
+
+**Why This Matters:**
+
+- Families often have multiple members on Medicaid
+- Different family members have different renewal dates
+- Simplifies compliance for entire household
+
+---
+
+### OCR & Automated Data Entry 🤖
+
+Reduce manual data entry through optical character recognition.
+
+**What You'll Be Able To Do:**
+
+- Pay stub scanning with automatic data extraction
+- Bank statement parsing for income deposits
+- Receipt scanning for self-employment income
+- Manual review and correction of extracted data
+- Learning system that improves over time
+
+**Why This Matters:**
+
+- Reduces data entry burden
+- Fewer errors from manual typing
+- Faster income/hours logging
+
+---
+
+### Performance Optimization ⚡
+
+Optimize income tracking and hours tracking for better performance with large datasets.
+
+**What We'll Improve:**
+
+- Memoization for monthly summary calculations
+- Debouncing for pay period conversion calculations
+- Lazy loading of income data only when in income mode
+- Database query optimization with proper indexing
+- Testing with large datasets (100+ entries)
+
+**Why This Matters:**
+
+- Faster app performance for long-term users
+- Better experience with lots of historical data
+- Reduced battery usage on mobile devices
+- Smoother UI interactions
 
 ---
 

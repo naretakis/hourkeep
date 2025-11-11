@@ -6,6 +6,7 @@
 - **[DEPLOYMENT.md](../DEPLOYMENT.md)** - How to deploy to GitHub Pages
 - **[PWA-TESTING.md](../PWA-TESTING.md)** - Testing PWA features
 - **[BRANDING.md](../BRANDING.md)** - Brand guidelines
+- **[ROADMAP.md](../ROADMAP.md)** - Product roadmap and future features
 
 ## Developer Documentation
 
