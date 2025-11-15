@@ -10,7 +10,7 @@ This roadmap outlines where HourKeep is today, what we're building next, and our
 
 **Current Release - Available Today**
 
-HourKeep provides a privacy-first onboarding experience, helps you determine if you're exempt from Medicaid work requirements, and if not, track work hours OR income to meet compliance requirements. Full feature parity between hours and income tracking with comprehensive document management and contextual help throughout the app.
+HourKeep provides a guided assessment to help you find the easiest way to maintain your Medicaid coverage. The "Find Your Path" feature combines exemption screening with work situation analysis to provide personalized recommendations. If you need to track, choose between hours (80/month) or income ($580/month) with full feature parity, comprehensive document management, and contextual help throughout the app.
 
 ### Core Features
 
@@ -47,24 +47,36 @@ HourKeep provides a privacy-first onboarding experience, helps you determine if 
 - ✅ **Mobile-Optimized Forms** - Touch-friendly inputs with smart validation
 - ✅ **Privacy Policy Access** - Review privacy policy anytime from settings
 
-### Exemption Screening 🎯
+### Find Your Path Assessment 🧭
 
-- ✅ **Complete Questionnaire** - Simple questions covering all 5 exemption categories
-- ✅ **Smart Question Flow** - Dynamic questions that adapt to your answers
-- ✅ **Immediate Results** - Know right away if you're exempt or need to track
-- ✅ **Plain Language** - No legal jargon, clear explanations
-- ✅ **Definition Tooltips** - Tap any term to see what it means
-- ✅ **Dashboard Integration** - Prominent exemption status display
-- ✅ **Screening History** - Track your status over time
-- ✅ **Rescreen Workflow** - Update status when circumstances change
+- ✅ **Guided Assessment** - Comprehensive questionnaire to discover your easiest compliance path
+- ✅ **Personalized Recommendations** - Smart analysis suggests optimal method for your situation
+- ✅ **Four Compliance Paths** - Exemption, income tracking, seasonal income tracking, or hour tracking
+- ✅ **Notice Screening** - Upfront question about receiving agency communication
+- ✅ **Integrated Exemption Check** - Complete 5-category exemption screening built into flow
+- ✅ **Work Situation Analysis** - Questions about employment, income, and activities
+- ✅ **Estimation Tools** - Simple calculators to convert weekly to monthly values
+- ✅ **Progress Saving** - Resume incomplete assessments where you left off
+- ✅ **Assessment History** - Track how your situation changes over time
+- ✅ **Dashboard Integration** - Prominent badge showing status and recommendation
+- ✅ **Alternative Methods** - View other viable options and make informed choices
+- ✅ **Plain Language** - No jargon, clear explanations throughout
+- ✅ **Mobile-Optimized** - Touch-friendly interface with clear navigation
 
-**Exemption Categories:**
+**Exemption Categories Covered:**
 
 - Age-based (18 or younger, 65 or older)
 - Family/caregiving (pregnant, young children, disabled dependent)
 - Health/disability (Medicare, medically frail, disabled veteran)
 - Program participation (SNAP/TANF, rehabilitation)
 - Other (incarcerated, tribal status)
+
+**Recommendation Logic:**
+
+- Analyzes exemption status, income level, work hours, and activities
+- Suggests easiest path with clear reasoning
+- Shows alternative methods you can explore
+- Indicates effort level and compliance status
 
 ### Activity Definitions Help 💡
 

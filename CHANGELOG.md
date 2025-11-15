@@ -5,6 +5,89 @@ All notable changes to HourKeep will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0] - 2025-11-14
+
+### Added - Find Your Path Assessment 🧭
+
+A comprehensive guided assessment that helps Medicaid beneficiaries discover the easiest way to maintain their coverage. Instead of forcing users to figure out which compliance method to use, Find Your Path combines exemption screening with work situation analysis to provide personalized recommendations, reducing decision paralysis and helping users choose the most appropriate and least burdensome path.
+
+#### Assessment Flow
+
+- **Introduction screen** - Clear explanation of what the assessment determines
+- **Notice screening** - Upfront question about receiving agency notice
+- **Smart routing** - Skip to compliance methods if user received notice and wants to skip exemption check
+- **Exemption screening** - Complete 5-category exemption questionnaire integrated into flow
+- **Work situation questions** - Employment status, income level, seasonal work, activity participation
+- **Progress saving** - Resume incomplete assessments where you left off
+- **Estimation tools** - Simple calculators to convert weekly to monthly values
+- **Results page** - Personalized recommendation with clear reasoning and alternatives
+
+#### Recommendation Engine
+
+- **Intelligent analysis** - Evaluates exemption status, income, hours, and activities
+- **Primary recommendation** - Suggests the easiest compliance method for your situation
+- **Alternative methods** - Shows other viable options you can explore
+- **Effort estimation** - Indicates expected effort level (low, medium, high)
+- **Compliance status** - Shows if you're already compliant based on current situation
+- **Plain language reasoning** - Clear explanation of why each method was recommended
+
+#### Compliance Methods
+
+The assessment recommends one of four paths:
+
+1. **Exemption** - You qualify for an exemption and don't need to track anything
+2. **Income Tracking** - Easiest if you earn $580+ per month consistently
+3. **Seasonal Income Tracking** - Best for variable income that averages $580+ over 6 months
+4. **Hour Tracking** - Best if income is below threshold but you work/volunteer 80+ hours
+
+#### Dashboard Integration
+
+- **Assessment badge** - Prominent dashboard element showing status and recommendation
+- **Take assessment prompt** - Clear call-to-action for users who haven't completed it
+- **View details** - Quick access to full results and reasoning
+- **Retake assessment** - Easy re-assessment when circumstances change
+- **Status indicators** - Visual display of exemption status and recommended method
+
+#### Assessment History
+
+- **Track over time** - See how your situation and recommendations have changed
+- **Previous results** - Access past assessment results
+- **Comparison view** - Understand what changed between assessments
+- **Date tracking** - Know when each assessment was completed
+
+#### Technical Implementation
+
+- **3 new database tables** - assessmentProgress, assessmentResults, assessmentHistory
+- **12 new components** - IntroductionScreen, ProgressIndicator, QuestionWrapper, various question types, EstimationTools, AssessmentBadge, AssessmentHistory
+- **Recommendation engine** - Smart logic analyzing all factors to suggest optimal path
+- **Progress persistence** - Save and resume incomplete assessments
+- **Unified exemption flow** - Replaces standalone exemption screening with integrated approach
+
+#### User Experience Improvements
+
+- **Reduced decision paralysis** - System guides users instead of overwhelming them with choices
+- **Personalized guidance** - Recommendations based on individual circumstances
+- **Exploration encouraged** - Users can view alternatives and make informed choices
+- **Mobile-optimized** - Touch-friendly interface with clear navigation
+- **Accessible** - Screen reader support and keyboard navigation
+- **Plain language** - No jargon, clear explanations throughout
+
+### Changed
+
+- **Exemption screening page** - Now redirects to Find Your Path assessment
+- **Dashboard exemption badge** - Replaced with comprehensive assessment badge
+- **Onboarding flow** - Assessment presented after initial profile setup (can be skipped)
+
+### Technical Notes
+
+- Database schema version bumped to v6
+- Assessment data stored at individual level with full history
+- Recommendation engine uses deterministic logic for consistent results
+- Progress state allows users to resume multi-step assessment
+- All assessment data encrypted and stored locally
+
+---
+
 ## [5.0.0] - 2025-11-11
 
 ### Added - Income Tracking 💰

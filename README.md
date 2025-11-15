@@ -12,6 +12,8 @@ Start using HourKeep today: https://naretakis.github.io/hourkeep
 
 HourKeep is a simple, privacy-focused app that helps you:
 
+- **Find your path** - Take a guided assessment to discover the easiest way to maintain your coverage
+- **Get personalized recommendations** - System analyzes your situation and suggests the best compliance method
 - **Check exemptions** - Find out if you're exempt from work requirements (you might not need to track at all!)
 - **Track hours OR income** - Choose to log activities (80 hours/month) or track income ($580/month)
 - **Flexible tracking** - Switch between hours and income modes anytime
@@ -31,12 +33,19 @@ HourKeep is a simple, privacy-focused app that helps you:
 - ✅ **Secure encryption** - Sensitive data encrypted at rest
 - ✅ **Profile management** - View and edit your information anytime
 
-### Exemption Screening
+### Find Your Path Assessment (NEW!)
 
-- ✅ **Exemption screening** - Find out if you're exempt from work requirements
-- ✅ **Plain language questionnaire** - Simple questions covering all 5 exemption categories
-- ✅ **Smart question flow** - Dynamic questions that adapt to your answers
-- ✅ **Exemption history** - Track your status over time
+- ✅ **Guided assessment** - Comprehensive questionnaire to find your easiest compliance path
+- ✅ **Personalized recommendations** - Smart analysis suggests optimal method based on your situation
+- ✅ **Four compliance paths** - Exemption, income tracking, seasonal income tracking, or hour tracking
+- ✅ **Notice screening** - Upfront question about agency communication
+- ✅ **Integrated exemption check** - Complete 5-category exemption screening built into flow
+- ✅ **Work situation analysis** - Questions about employment, income, and activities
+- ✅ **Estimation tools** - Simple calculators to convert weekly to monthly values
+- ✅ **Progress saving** - Resume incomplete assessments where you left off
+- ✅ **Assessment history** - Track how your situation changes over time
+- ✅ **Dashboard integration** - Prominent badge showing your status and recommendation
+- ✅ **Alternative methods** - View other viable options and make informed choices
 
 ### Hours Tracking
 
