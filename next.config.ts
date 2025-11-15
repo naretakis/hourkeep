@@ -21,10 +21,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // Set base path only for production (GitHub Pages deployment)
-  // In development, access at http://localhost:3000/
-  // In production, access at https://username.github.io/hourkeep/
-  basePath: process.env.NODE_ENV === "production" ? "/hourkeep" : "",
+  // No basePath needed with custom domain (hourkeep.app)
   // Inject version as environment variable
   env: {
     NEXT_PUBLIC_APP_VERSION: packageJson.version,

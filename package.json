@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/naretakis/hourkeep/issues"
   },
-  "homepage": "https://github.com/naretakis/hourkeep#readme",
+  "homepage": "https://hourkeep.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/update-manifest.js",
