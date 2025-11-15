@@ -11,6 +11,7 @@ Find Your Path is a comprehensive assessment system that guides Medicaid benefic
 ### Problem Statement
 
 User testing revealed that beneficiaries are confused about which compliance method to use. They face questions like:
+
 - Should I do exemption screening?
 - Should I track hours or income?
 - What if I can do both?
@@ -18,6 +19,7 @@ User testing revealed that beneficiaries are confused about which compliance met
 - Should I do seasonal income tracking?
 
 This confusion leads to:
+
 - Delayed engagement with the app
 - Suboptimal method selection
 - Increased burden on users
@@ -26,6 +28,7 @@ This confusion leads to:
 ### Solution Approach
 
 Create a unified assessment flow that:
+
 1. Checks exemption status first (easiest path)
 2. Assesses work situation if not exempt
 3. Calculates which compliance method is easiest
@@ -86,6 +89,7 @@ User → Entry Point → Assessment Flow → Recommendation Engine → Results D
 **Purpose**: Multi-step wizard that guides users through questions
 
 **Key Features**:
+
 - Progress indicator with visual bar
 - Back/forward navigation
 - Auto-save on every answer
@@ -96,7 +100,10 @@ User → Entry Point → Assessment Flow → Recommendation Engine → Results D
 
 ```typescript
 interface AssessmentFlowProps {
-  onComplete: (responses: AssessmentResponses, recommendation: Recommendation) => void;
+  onComplete: (
+    responses: AssessmentResponses,
+    recommendation: Recommendation,
+  ) => void;
   initialResponses?: AssessmentResponses; // For re-assessment
   userId: string;
 }
@@ -110,6 +117,7 @@ interface AssessmentFlowState {
 ```
 
 **Question Types**:
+
 - Single choice (radio buttons)
 - Multiple choice (checkboxes)
 - Number input (hours, income)
@@ -117,6 +125,7 @@ interface AssessmentFlowState {
 - Yes/No/Not Sure
 
 **Navigation Logic**:
+
 - Linear progression with conditional skips
 - Back button available on all questions except first
 - Progress saved on every answer
@@ -141,15 +150,15 @@ interface Recommendation {
   primaryMethod: ComplianceMethod;
   reasoning: string;
   alternativeMethods: ComplianceMethod[];
-  complianceStatus: 'compliant' | 'needs-increase' | 'unknown';
-  estimatedEffort: 'low' | 'medium' | 'high';
+  complianceStatus: "compliant" | "needs-increase" | "unknown";
+  estimatedEffort: "low" | "medium" | "high";
 }
 
-type ComplianceMethod = 
-  | 'exemption'
-  | 'income-tracking'
-  | 'seasonal-income-tracking'
-  | 'hour-tracking';
+type ComplianceMethod =
+  | "exemption"
+  | "income-tracking"
+  | "seasonal-income-tracking"
+  | "hour-tracking";
 ```
 
 **Decision Tree**:
@@ -161,13 +170,13 @@ type ComplianceMethod =
 2. If not exempt, calculate compliance paths:
    a. Income path viable? (monthly income ≥ $580)
       └─ Yes → Recommend income tracking
-   
+
    b. Seasonal income path viable? (6-month avg ≥ $580)
       └─ Yes → Recommend seasonal income tracking
-   
+
    c. Hour path viable? (total monthly hours ≥ 80)
       └─ Yes → Recommend hour tracking
-   
+
    d. None viable?
       └─ Recommend hour tracking + explain need to increase activities
 
@@ -177,6 +186,7 @@ type ComplianceMethod =
 ```
 
 **Effort Estimation**:
+
 - **Low**: Exemption, income tracking with steady job
 - **Medium**: Seasonal income, hour tracking with single activity
 - **High**: Hour tracking with multiple activities
@@ -189,7 +199,7 @@ type ComplianceMethod =
 
 ```typescript
 interface AssessmentBadge {
-  type: 'not-started' | 'exempt' | 'recommended-method';
+  type: "not-started" | "exempt" | "recommended-method";
   title: string;
   subtitle?: string;
   icon: ReactNode;
@@ -237,6 +247,7 @@ interface AssessmentBadge {
 **Purpose**: Save assessment progress for resumption
 
 **Storage Strategy**:
+
 - Save to IndexedDB on every answer
 - Separate table for in-progress vs completed assessments
 - Timestamp for staleness detection
@@ -254,6 +265,7 @@ interface AssessmentProgress {
 ```
 
 **Resume Logic**:
+
 - If incomplete progress exists and < 24 hours old → Resume
 - If incomplete progress exists and > 24 hours old → Offer to resume or restart
 - If complete assessment exists → Show results, offer re-assessment
@@ -265,6 +277,7 @@ interface AssessmentProgress {
 **Tool Types**:
 
 1. **Hours Converter**:
+
    ```typescript
    function weeklyToMonthlyHours(weeklyHours: number): number {
      return Math.round(weeklyHours * 4.33);
@@ -275,7 +288,7 @@ interface AssessmentProgress {
    ```typescript
    function paycheckToMonthlyIncome(
      paycheckAmount: number,
-     frequency: PayFrequency
+     frequency: PayFrequency,
    ): number {
      const multipliers = {
        weekly: 4.33,
@@ -287,6 +300,7 @@ interface AssessmentProgress {
    ```
 
 **UI Pattern**:
+
 - Link below input: "I only know my weekly hours"
 - Expands inline calculator
 - Auto-fills main input with result
@@ -302,17 +316,17 @@ interface AssessmentProgress {
 interface AssessmentResponses {
   // Notice question
   receivedAgencyNotice?: boolean;
-  
+
   // Exemption responses (from existing ExemptionResponses)
   exemption: ExemptionResponses;
-  
+
   // Work situation
   hasJob?: boolean;
-  paymentFrequency?: 'weekly' | 'biweekly' | 'monthly' | 'varies' | 'not-sure';
+  paymentFrequency?: "weekly" | "biweekly" | "monthly" | "varies" | "not-sure";
   monthlyIncome?: number;
   monthlyWorkHours?: number;
   isSeasonalWork?: boolean;
-  
+
   // Other activities
   otherActivities?: {
     volunteer?: boolean;
@@ -361,7 +375,7 @@ interface AssessmentHistoryEntry {
 // In db.ts
 class HourKeepDB extends Dexie {
   // ... existing tables ...
-  
+
   assessmentProgress!: Table<AssessmentProgress>;
   assessmentResults!: Table<AssessmentResult>;
   assessmentHistory!: Table<AssessmentHistoryEntry>;
@@ -370,9 +384,9 @@ class HourKeepDB extends Dexie {
 // Schema definition
 this.version(6).stores({
   // ... existing stores ...
-  assessmentProgress: '++id, userId, lastUpdatedAt, isComplete',
-  assessmentResults: '++id, userId, completedAt',
-  assessmentHistory: '++id, userId, completedAt',
+  assessmentProgress: "++id, userId, lastUpdatedAt, isComplete",
+  assessmentResults: "++id, userId, completedAt",
+  assessmentHistory: "++id, userId, completedAt",
 });
 ```
 
@@ -598,33 +612,34 @@ User Profile (1) ─── (0..1) Assessment Progress (in-progress)
 ```typescript
 function getNextStep(
   currentStep: number,
-  responses: Partial<AssessmentResponses>
+  responses: Partial<AssessmentResponses>,
 ): number {
   // Notice question branching
   if (currentStep === 2 && responses.receivedAgencyNotice === true) {
     // User can choose to skip exemptions
-    return userChoice === 'skip' ? 8 : 3;
+    return userChoice === "skip" ? 8 : 3;
   }
-  
+
   // Exemption early exit
   if (currentStep >= 3 && currentStep <= 7) {
     if (isExempt(responses.exemption)) {
       return 15; // Jump to results
     }
   }
-  
+
   // Job status branching
   if (currentStep === 8 && responses.hasJob === false) {
     return 13; // Skip to activities
   }
-  
+
   // Activities branching
   if (currentStep === 13) {
-    const hasActivities = Object.values(responses.otherActivities || {})
-      .some(v => v === true);
+    const hasActivities = Object.values(responses.otherActivities || {}).some(
+      (v) => v === true,
+    );
     return hasActivities ? 14 : 15;
   }
-  
+
   // Default: next step
   return currentStep + 1;
 }
@@ -645,14 +660,14 @@ interface ValidationRule {
 
 const validationRules: ValidationRule[] = [
   {
-    field: 'monthlyIncome',
+    field: "monthlyIncome",
     validate: (v) => v === undefined || (v >= 0 && v <= 100000),
-    errorMessage: 'Please enter a valid income amount',
+    errorMessage: "Please enter a valid income amount",
   },
   {
-    field: 'monthlyWorkHours',
+    field: "monthlyWorkHours",
     validate: (v) => v === undefined || (v >= 0 && v <= 744), // Max hours in month
-    errorMessage: 'Please enter valid hours (0-744)',
+    errorMessage: "Please enter valid hours (0-744)",
   },
   // ... more rules
 ];
@@ -713,29 +728,29 @@ Given MVP approach, focus on:
 // Example test scenarios
 const testScenarios = [
   {
-    name: 'Exempt - Age',
-    responses: { exemption: { dateOfBirth: new Date('1950-01-01') } },
-    expected: { method: 'exemption', category: 'age' }
+    name: "Exempt - Age",
+    responses: { exemption: { dateOfBirth: new Date("1950-01-01") } },
+    expected: { method: "exemption", category: "age" },
   },
   {
-    name: 'Income Tracking - Steady Job',
-    responses: { 
+    name: "Income Tracking - Steady Job",
+    responses: {
       hasJob: true,
       monthlyIncome: 650,
-      monthlyWorkHours: 90
+      monthlyWorkHours: 90,
     },
-    expected: { method: 'income-tracking', reasoning: 'steady income' }
+    expected: { method: "income-tracking", reasoning: "steady income" },
   },
   {
-    name: 'Hour Tracking - Multiple Activities',
+    name: "Hour Tracking - Multiple Activities",
     responses: {
       hasJob: true,
       monthlyIncome: 400,
       monthlyWorkHours: 50,
       otherActivities: { volunteer: true },
-      volunteerHoursPerMonth: 35
+      volunteerHoursPerMonth: 35,
     },
-    expected: { method: 'hour-tracking', reasoning: 'combined activities' }
+    expected: { method: "hour-tracking", reasoning: "combined activities" },
   },
   // ... more scenarios
 ];
@@ -833,6 +848,7 @@ const testScenarios = [
 ### Privacy Notices
 
 Display before assessment:
+
 - "Your answers stay on your device"
 - "We don't share your information"
 - "You can delete your data anytime"
@@ -846,6 +862,7 @@ Display before assessment:
 **Important**: Find Your Path completely replaces the standalone exemption screening feature.
 
 **Migration Strategy**:
+
 1. Remove `/exemptions` route and page
 2. Remove exemption screening entry point from settings
 3. Redirect any existing links to Find Your Path assessment
@@ -854,11 +871,13 @@ Display before assessment:
 6. Remove the old help popup (already planned in requirements)
 
 **Data Preservation**:
+
 - Existing `exemptions` and `exemptionHistory` tables remain in database
 - Historical exemption screenings are viewable in assessment history
 - No data loss for users who previously completed exemption screening
 
 **User Experience**:
+
 - Users who previously completed exemption screening will see prompt to complete full assessment
 - Assessment will show their exemption status if still applicable
 - Exemption results are now part of the broader Find Your Path recommendation
@@ -935,6 +954,7 @@ interface AssessmentExportData {
 ### Monitoring
 
 Track (locally, no analytics):
+
 - Assessment completion rate
 - Average time to complete
 - Most common recommendations
@@ -944,6 +964,7 @@ Track (locally, no analytics):
 ### Rollback Plan
 
 If critical issues found:
+
 1. Disable assessment entry point
 2. Revert to previous help popup
 3. Fix issues
@@ -1058,6 +1079,7 @@ If critical issues found:
 Find Your Path transforms the user experience from confusing and overwhelming to guided and supportive. By combining exemption screening with work situation analysis, we provide personalized recommendations that help users choose the easiest viable compliance method.
 
 The design prioritizes:
+
 - **User agency**: Suggest, don't force
 - **Flexibility**: Switch anytime, no data loss
 - **Simplicity**: Plain language, clear reasoning

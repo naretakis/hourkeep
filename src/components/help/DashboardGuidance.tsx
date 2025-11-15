@@ -23,6 +23,7 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import ExploreIcon from "@mui/icons-material/Explore";
 import { useRouter } from "next/navigation";
 import { dashboardGuidance } from "@/content/helpText";
 
@@ -143,6 +144,8 @@ export function DashboardGuidance({
   // Get icon for each step
   const getStepIcon = (iconName: string) => {
     switch (iconName) {
+      case "compass":
+        return <ExploreIcon />;
       case "checklist":
         return <ChecklistIcon />;
       case "calendar":

@@ -414,4 +414,3 @@ This feature depends on:
 - The notice question helps users who already know they're not exempt skip ahead
 - Assessment history helps users and caseworkers see how circumstances have changed
 - This replaces the limited help popup with comprehensive, personalized guidance
-

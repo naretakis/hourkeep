@@ -9,6 +9,11 @@ import {
   ComplianceMode,
   SeasonalWorkerStatus,
 } from "@/types/income";
+import {
+  AssessmentProgress,
+  AssessmentResult,
+  AssessmentHistoryEntry,
+} from "@/types/assessment";
 
 // Database class
 class HourKeepDB extends Dexie {
@@ -23,6 +28,9 @@ class HourKeepDB extends Dexie {
   incomeDocumentBlobs!: Table<IncomeDocumentBlob>;
   complianceModes!: Table<ComplianceMode>;
   seasonalWorkerStatus!: Table<SeasonalWorkerStatus>;
+  assessmentProgress!: Table<AssessmentProgress>;
+  assessmentResults!: Table<AssessmentResult>;
+  assessmentHistory!: Table<AssessmentHistoryEntry>;
 
   constructor() {
     super("HourKeepDB");
@@ -106,6 +114,28 @@ class HourKeepDB extends Dexie {
       })
       .upgrade(() => {
         console.log("Added income tracking tables to database");
+      });
+
+    // Version 6: Add Find Your Path assessment tables
+    this.version(6)
+      .stores({
+        profiles: "id",
+        activities: "++id, date, type",
+        documents: "++id, activityId, type, createdAt",
+        documentBlobs: "++id",
+        exemptions: "++id, userId, screeningDate",
+        exemptionHistory: "++id, userId, screeningDate",
+        incomeEntries: "++id, date, userId",
+        incomeDocuments: "++id, incomeEntryId, type, createdAt",
+        incomeDocumentBlobs: "++id",
+        complianceModes: "++id, month, userId",
+        seasonalWorkerStatus: "++id, userId, month",
+        assessmentProgress: "++id, userId, lastUpdatedAt, isComplete",
+        assessmentResults: "++id, userId, completedAt",
+        assessmentHistory: "++id, userId, completedAt",
+      })
+      .upgrade(() => {
+        console.log("Added Find Your Path assessment tables to database");
       });
   }
 }

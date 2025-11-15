@@ -25,18 +25,21 @@ HourKeep is a simple, privacy-focused app that helps you:
 ## Key Features
 
 ### Privacy & Profile
+
 - ✅ **Privacy notice** - Clear explanation of data handling before you start
 - ✅ **Extended profile** - Name, state, date of birth, and optional contact info
 - ✅ **Secure encryption** - Sensitive data encrypted at rest
 - ✅ **Profile management** - View and edit your information anytime
 
 ### Exemption Screening
+
 - ✅ **Exemption screening** - Find out if you're exempt from work requirements
 - ✅ **Plain language questionnaire** - Simple questions covering all 5 exemption categories
 - ✅ **Smart question flow** - Dynamic questions that adapt to your answers
 - ✅ **Exemption history** - Track your status over time
 
 ### Hours Tracking
+
 - ✅ **Activity logging** - Log work, volunteer, and education activities daily
 - ✅ **Visual calendar** - See all logged activities with indicators
 - ✅ **80-hour compliance** - Automatic monthly compliance calculations
@@ -45,6 +48,7 @@ HourKeep is a simple, privacy-focused app that helps you:
 - ✅ **Duplicate activities** - Replicate entries across multiple dates
 
 ### Income Tracking (NEW!)
+
 - ✅ **Income entry logging** - Record income with dates, amounts, and sources
 - ✅ **Pay period conversion** - Automatic monthly equivalent (daily, weekly, bi-weekly, monthly)
 - ✅ **$580 threshold tracking** - Real-time progress toward income requirement
@@ -54,6 +58,7 @@ HourKeep is a simple, privacy-focused app that helps you:
 - ✅ **Duplicate income entries** - Replicate entries across multiple dates
 
 ### Document Management
+
 - ✅ **Document capture** - Photograph or upload verification documents
 - ✅ **Smart image compression** - Automatic compression for large images
 - ✅ **Document viewer** - Full-size viewing with pinch-to-zoom
@@ -61,11 +66,13 @@ HourKeep is a simple, privacy-focused app that helps you:
 - ✅ **Income documents** - Pay stubs, bank statements, gig work screenshots
 
 ### Help & Guidance
+
 - ✅ **Contextual help system** - Get guidance right where you need it
 - ✅ **Income guidance** - Understand the $580/month threshold and seasonal worker rules
 - ✅ **Activity combinations** - Learn how to mix activities to reach 80 hours
 
 ### Export & Offline
+
 - ✅ **Data export** - JSON or text format with activities and income
 - 🚧 **Comprehensive export** - Full package with profile, exemptions, documents (coming soon)
 - ✅ **100% offline functionality** - No internet required
@@ -230,12 +237,14 @@ hourkeep/
 ### Viewing Progress
 
 **Hours Mode:**
+
 - Your monthly total is displayed at the top of the tracking page
 - Green "Compliant" badge shows when you've met the 80-hour requirement
 - Calendar shows visual indicators for dates with logged activities
 - Document icons show which activities have attached verification documents
 
 **Income Mode:**
+
 - Your total monthly income is displayed with progress toward $580
 - Green "Compliant" badge shows when you've met the income threshold
 - Income breakdown by source shows where your income comes from

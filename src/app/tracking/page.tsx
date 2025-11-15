@@ -24,16 +24,17 @@ import { ActivityList } from "@/components/ActivityList";
 import { DateActivityMenu } from "@/components/DateActivityMenu";
 import { Dashboard } from "@/components/Dashboard";
 import { DuplicateActivityDialog } from "@/components/DuplicateActivityDialog";
-import { ExemptionBadge } from "@/components/exemptions/ExemptionBadge";
+
+import { AssessmentBadge } from "@/components/assessment/AssessmentBadge";
 import { DashboardGuidance } from "@/components/help/DashboardGuidance";
 import { ComplianceModeSelector } from "@/components/compliance/ComplianceModeSelector";
 import { IncomeDashboard } from "@/components/income/IncomeDashboard";
 import { db } from "@/lib/db";
 import { Activity, MonthlySummary } from "@/types";
-import { ExemptionScreening } from "@/types/exemptions";
+import { AssessmentResult } from "@/types/assessment";
 import { calculateMonthlySummary } from "@/lib/calculations";
 import { deleteActivityWithDocuments } from "@/lib/storage/activities";
-import { getLatestScreening } from "@/lib/storage/exemptions";
+import { getLatestAssessmentResult } from "@/lib/storage/assessment";
 import {
   getComplianceMode,
   setComplianceMode,
@@ -77,8 +78,9 @@ export default function TrackingPage() {
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
   const [activityToDuplicate, setActivityToDuplicate] =
     useState<Activity | null>(null);
-  const [exemptionScreening, setExemptionScreening] =
-    useState<ExemptionScreening | null>(null);
+
+  const [assessmentResult, setAssessmentResult] =
+    useState<AssessmentResult | null>(null);
   const [complianceMode, setComplianceModeState] = useState<"hours" | "income">(
     "hours",
   );
@@ -121,13 +123,15 @@ export default function TrackingPage() {
       const summary = calculateMonthlySummary(allActivities);
       setMonthlySummary(summary);
 
-      // Load exemption screening, compliance mode, and seasonal worker status
+      // Load exemption screening, assessment result, compliance mode, and seasonal worker status
       const profiles = await db.profiles.toArray();
       if (profiles.length > 0) {
         const profile = profiles[0];
         setUserId(profile.id);
-        const screening = await getLatestScreening(profile.id);
-        setExemptionScreening(screening || null);
+
+        // Load assessment result
+        const assessment = await getLatestAssessmentResult(profile.id);
+        setAssessmentResult(assessment || null);
 
         // Load compliance mode and seasonal worker status for current month
         const currentMonth = format(new Date(), "yyyy-MM");
@@ -457,8 +461,14 @@ export default function TrackingPage() {
           <DashboardGuidance dismissible={true} />
         </Box>
 
+        {/* Assessment Badge - replaces old exemption badge */}
         <Box sx={{ mt: 3 }}>
-          <ExemptionBadge screening={exemptionScreening} />
+          <AssessmentBadge
+            result={assessmentResult}
+            onTakeAssessment={() => router.push("/find-your-path")}
+            onViewDetails={() => router.push("/find-your-path/results")}
+            onRetakeAssessment={() => router.push("/find-your-path")}
+          />
         </Box>
 
         {/* Compliance Mode Selector - show for all users, but note exempt users don't need to track */}

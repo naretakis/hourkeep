@@ -422,23 +422,23 @@ export const dashboardGuidance: DashboardGuidance = {
   title: "How to Use HourKeep",
   steps: [
     {
-      icon: "checklist",
-      text: "Start with the exemption screener to see if you need to track hours",
-      action: "/exemptions",
-    },
-    {
-      icon: "calendar",
-      text: "Click on calendar days to log your work, volunteer, or education hours",
-      action: null,
+      icon: "compass",
+      text: "Take the quick assessment to discover if you're exempt and learn which tracking method works best for you",
+      action: "/find-your-path",
     },
     {
       icon: "chart",
-      text: "Review your monthly totals to see if you're on track",
+      text: "Choose between tracking hours or income based on your recommendation",
+      action: null,
+    },
+    {
+      icon: "calendar",
+      text: "Log your activities or income each month to stay on track",
       action: null,
     },
     {
       icon: "download",
-      text: "Export and share your data with your state Medicaid agency.",
+      text: "Export and share your data with your state Medicaid agency",
       action: "/export",
     },
   ],

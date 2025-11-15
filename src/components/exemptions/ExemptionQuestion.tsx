@@ -55,7 +55,9 @@ export function ExemptionQuestion({
 
   const handleDateChange = (newValue: string) => {
     if (newValue) {
-      onChange(new Date(newValue));
+      // Create date at noon UTC to avoid timezone issues
+      const date = new Date(newValue + "T12:00:00Z");
+      onChange(date);
     }
   };
 
@@ -65,7 +67,7 @@ export function ExemptionQuestion({
 
   // Format date for input field
   const getDateValue = () => {
-    if (value instanceof Date) {
+    if (value instanceof Date && !isNaN(value.getTime())) {
       return value.toISOString().split("T")[0];
     }
     return "";

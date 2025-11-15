@@ -23,7 +23,7 @@ A comprehensive income tracking system that provides an alternative way to meet 
 #### Pay Period Conversion
 
 - **Daily pay** - Amount × 30 = Monthly equivalent
-- **Weekly pay** - Amount × 4.33 = Monthly equivalent  
+- **Weekly pay** - Amount × 4.33 = Monthly equivalent
 - **Bi-weekly pay** - Amount × 2.17 = Monthly equivalent
 - **Monthly pay** - Amount = Monthly equivalent (no conversion)
 - **Real-time calculation** - See monthly equivalent as you type
