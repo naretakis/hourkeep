@@ -54,7 +54,7 @@ export function IntroductionScreen({
           mb: 2,
         }}
       >
-        Find Your Path
+        How to HourKeep
       </Typography>
 
       {/* Description */}
@@ -74,8 +74,7 @@ export function IntroductionScreen({
           color="text.secondary"
           paragraph
         >
-          Let&apos;s find the easiest way for you to stay compliant with
-          Medicaid work requirements.
+          Discover the easiest way to keep your hours, and keep your coverage.
         </Typography>
         <Typography variant="body1" align="center" color="text.secondary">
           This will take about 5 minutes.

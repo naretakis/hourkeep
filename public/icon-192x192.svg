@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
   <!-- Background -->
-  <rect width="192" height="192" fill="#1976d2"/>
+  <rect width="192" height="192" fill="#FAF9F7" rx="30"/>
   
-  <!-- Lucide clipboard-check icon -->
-  <g transform="translate(48, 48) scale(4)">
-    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" 
-          stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M9 2h6v2H9z" 
-          stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="m9 12 2 2 4-4" 
-          stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Lucide clock-plus icon, centered and scaled to fill -->
+  <g transform="translate(96, 96)">
+    <g transform="scale(6)">
+      <g transform="translate(-12, -12)">
+        <path d="M12 6v6l3.644 1.822" fill="none" stroke="#6B4E71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16 19h6" stroke="#6B4E71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 16v6" stroke="#6B4E71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21.92 13.267a10 10 0 1 0-8.653 8.653" fill="none" stroke="#6B4E71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
   </g>
 </svg>

@@ -4,7 +4,7 @@
   "description": "Keep track of your work, volunteer, and school hours in one simple place. When it's time, share them with your agency to keep your coverage and benefits.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#FAF9F7",
   "theme_color": "#6B4E71",
   "orientation": "portrait",
   "icons": [

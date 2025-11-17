@@ -1,4 +1,4 @@
-// Find Your Path Assessment Types
+// How to HourKeep Assessment Types
 
 import { ExemptionResponses } from "./exemptions";
 

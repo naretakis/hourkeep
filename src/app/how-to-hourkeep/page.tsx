@@ -50,7 +50,7 @@ type AssessmentStep =
   | "activities-workprogram"
   | "results";
 
-export default function FindYourPathPage() {
+export default function HowToHourKeepPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string>("");
@@ -211,7 +211,14 @@ export default function FindYourPathPage() {
     };
 
     saveProgress();
-  }, [userId, currentStep, responses, stepHistory, exemptionQuestionIndex, getStepNumber]);
+  }, [
+    userId,
+    currentStep,
+    responses,
+    stepHistory,
+    exemptionQuestionIndex,
+    getStepNumber,
+  ]);
 
   const getTotalSteps = (): number => {
     // Return 100 since we're now using percentage-based progress
@@ -449,7 +456,7 @@ export default function FindYourPathPage() {
       }
 
       // Navigate to results
-      router.push("/find-your-path/results");
+      router.push("/how-to-hourkeep/results");
     } catch (error) {
       console.error("Error saving assessment result:", error);
     }

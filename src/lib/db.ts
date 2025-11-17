@@ -116,7 +116,7 @@ class HourKeepDB extends Dexie {
         console.log("Added income tracking tables to database");
       });
 
-    // Version 6: Add Find Your Path assessment tables
+    // Version 6: Add How to HourKeep assessment tables
     this.version(6)
       .stores({
         profiles: "id",
@@ -135,7 +135,7 @@ class HourKeepDB extends Dexie {
         assessmentHistory: "++id, userId, completedAt",
       })
       .upgrade(() => {
-        console.log("Added Find Your Path assessment tables to database");
+        console.log("Added How to HourKeep assessment tables to database");
       });
   }
 }

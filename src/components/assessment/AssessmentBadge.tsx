@@ -63,10 +63,11 @@ export function AssessmentBadge({
               gutterBottom
               sx={{ color: "primary.main", fontWeight: 600 }}
             >
-              Find Your Path
+              How to HourKeep
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              Discover the easiest way to stay compliant
+              Discover the easiest way to keep your hours, and keep your
+              coverage
             </Typography>
             <Button
               variant="contained"
@@ -76,7 +77,7 @@ export function AssessmentBadge({
                 onTakeAssessment();
               }}
             >
-              Take Assessment →
+              Take 5 Minute Assessment →
             </Button>
           </Box>
         </Box>

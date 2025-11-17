@@ -10,7 +10,7 @@ This roadmap outlines where HourKeep is today, what we're building next, and our
 
 **Current Release - Available Today**
 
-HourKeep provides a guided assessment to help you find the easiest way to maintain your Medicaid coverage. The "Find Your Path" feature combines exemption screening with work situation analysis to provide personalized recommendations. If you need to track, choose between hours (80/month) or income ($580/month) with full feature parity, comprehensive document management, and contextual help throughout the app.
+HourKeep provides a guided assessment to help you discover the easiest way to maintain your Medicaid coverage. The "How to HourKeep" feature combines exemption screening with work situation analysis to provide personalized recommendations. If you need to track, choose between hours (80/month) or income ($580/month) with full feature parity, comprehensive document management, and contextual help throughout the app.
 
 ### Core Features
 
@@ -47,7 +47,7 @@ HourKeep provides a guided assessment to help you find the easiest way to mainta
 - ✅ **Mobile-Optimized Forms** - Touch-friendly inputs with smart validation
 - ✅ **Privacy Policy Access** - Review privacy policy anytime from settings
 
-### Find Your Path Assessment 🧭
+### How to HourKeep Assessment 🧭
 
 - ✅ **Guided Assessment** - Comprehensive questionnaire to discover your easiest compliance path
 - ✅ **Personalized Recommendations** - Smart analysis suggests optimal method for your situation

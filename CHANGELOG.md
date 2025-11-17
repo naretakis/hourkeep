@@ -5,6 +5,51 @@ All notable changes to HourKeep will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0] - 2025-11-17
+
+### Changed - "How to HourKeep" Rebrand 🎨
+
+Renamed the "Find Your Path" assessment feature to "How to HourKeep" throughout the entire application to better align with the app's core value proposition and create a more cohesive brand identity.
+
+#### Route Changes
+
+- **Assessment route** - Renamed `/find-your-path` to `/how-to-hourkeep`
+- **Results route** - Renamed `/find-your-path/results` to `/how-to-hourkeep/results`
+- **Exemptions redirect** - Updated to point to new assessment route
+
+#### Branding Updates
+
+- **Feature name** - "Find Your Path" → "How to HourKeep" throughout UI
+- **Tagline** - Added "Keep your hours, keep your coverage" messaging
+- **Assessment badge** - Updated title, description, and button text
+- **Introduction screen** - Updated title and description
+- **Dashboard guidance** - Updated step descriptions and action links
+- **Help text** - Updated references throughout content
+
+#### Visual Identity
+
+- **App icons** - Redesigned SVG and PNG icons (192x192, 512x512)
+- **Favicon** - Updated with new design
+- **Manifest** - Changed background color to #FAF9F7 (warm off-white)
+- **Tracking page header** - Added HourKeep logo with clock icon
+- **Icon link tags** - Added proper icon declarations in layout
+
+#### Documentation
+
+- **README** - Updated feature description
+- **ROADMAP** - Updated feature name and descriptions
+
+### Technical Details
+
+- Renamed directory: `src/app/find-your-path/` → `src/app/how-to-hourkeep/`
+- Updated 10 component files with new branding
+- Updated 3 documentation files
+- Redesigned 5 icon files
+- No breaking changes to data structures or APIs
+- All existing user data remains compatible
+
+---
+
 ## [6.0.0] - 2025-11-14
 
 ### Added - Find Your Path Assessment 🧭
@@ -822,6 +867,8 @@ This release represents the completion of the exemption screening spec, includin
 
 ---
 
+[6.1.0]: https://github.com/naretakis/hourkeep/compare/v6.0.0...v6.1.0
+[6.0.0]: https://github.com/naretakis/hourkeep/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/naretakis/hourkeep/compare/v4.5.0...v5.0.0
 [4.5.0]: https://github.com/naretakis/hourkeep/compare/v4.4.0...v4.5.0
 [4.4.0]: https://github.com/naretakis/hourkeep/compare/v4.3.0...v4.4.0

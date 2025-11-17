@@ -38,8 +38,21 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#6B4E71" />
         <link rel="manifest" href={`${basePath}/manifest.json`} />
-        <link rel="icon" href={`${basePath}/favicon.ico`} />
+        <link rel="icon" type="image/svg+xml" href={`${basePath}/icon.svg`} />
+        <link rel="icon" type="image/x-icon" href={`${basePath}/favicon.ico`} />
         <link rel="apple-touch-icon" href={`${basePath}/icon-192x192.png`} />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href={`${basePath}/icon-192x192.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href={`${basePath}/icon-512x512.png`}
+        />
 
         {/* Plausible Analytics - Privacy-first, lightweight analytics */}
         {/* Tracks: anonymous page views, device types, browsers, and regions/states */}

@@ -12,7 +12,7 @@ Start using HourKeep today: https://naretakis.github.io/hourkeep
 
 HourKeep is a simple, privacy-focused app that helps you:
 
-- **Find your path** - Take a guided assessment to discover the easiest way to maintain your coverage
+- **How to HourKeep** - Take a guided assessment to discover the easiest way to maintain your coverage
 - **Get personalized recommendations** - System analyzes your situation and suggests the best compliance method
 - **Check exemptions** - Find out if you're exempt from work requirements (you might not need to track at all!)
 - **Track hours OR income** - Choose to log activities (80 hours/month) or track income ($580/month)

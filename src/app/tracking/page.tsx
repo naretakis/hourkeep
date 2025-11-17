@@ -398,13 +398,45 @@ export default function TrackingPage() {
             mb: 2,
           }}
         >
-          <Typography
-            variant="h4"
-            component="h1"
-            sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" } }}
-          >
-            Activity Tracking
-          </Typography>
+          <Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                component="svg"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                sx={{
+                  width: { xs: "1.75rem", sm: "2.25rem", md: "2.5rem" },
+                  height: { xs: "1.75rem", sm: "2.25rem", md: "2.5rem" },
+                  color: "primary.main",
+                  flexShrink: 0,
+                }}
+              >
+                <path d="M12 6v6l3.644 1.822" />
+                <path d="M16 19h6" />
+                <path d="M19 16v6" />
+                <path d="M21.92 13.267a10 10 0 1 0-8.653 8.653" />
+              </Box>
+              <Typography
+                variant="h4"
+                component="h1"
+                sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" } }}
+              >
+                HourKeep
+              </Typography>
+            </Box>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mt: 0.5, ml: { xs: 5, sm: 5.5, md: 6 } }}
+            >
+              Keep your hours, keep your coverage
+            </Typography>
+          </Box>
           <Box sx={{ display: "flex", gap: { xs: 0.5, sm: 1 } }}>
             <IconButton
               onClick={() => {
@@ -465,9 +497,9 @@ export default function TrackingPage() {
         <Box sx={{ mt: 3 }}>
           <AssessmentBadge
             result={assessmentResult}
-            onTakeAssessment={() => router.push("/find-your-path")}
-            onViewDetails={() => router.push("/find-your-path/results")}
-            onRetakeAssessment={() => router.push("/find-your-path")}
+            onTakeAssessment={() => router.push("/how-to-hourkeep")}
+            onViewDetails={() => router.push("/how-to-hourkeep/results")}
+            onRetakeAssessment={() => router.push("/how-to-hourkeep")}
           />
         </Box>
 

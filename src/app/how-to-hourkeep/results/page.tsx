@@ -46,7 +46,7 @@ export default function AssessmentResultsPage() {
 
         const latestResult = await getLatestAssessmentResult(profiles[0].id);
         if (!latestResult) {
-          router.push("/find-your-path");
+          router.push("/how-to-hourkeep");
           return;
         }
 
@@ -119,7 +119,7 @@ export default function AssessmentResultsPage() {
           </Alert>
           <Button
             variant="contained"
-            onClick={() => router.push("/find-your-path")}
+            onClick={() => router.push("/how-to-hourkeep")}
             sx={{ mt: 2 }}
           >
             Start Assessment
@@ -430,7 +430,7 @@ export default function AssessmentResultsPage() {
                   console.error("Error deleting result:", error);
                 }
               }
-              router.push("/find-your-path");
+              router.push("/how-to-hourkeep");
             }}
             fullWidth
             sx={{ py: 1.5 }}
@@ -441,7 +441,7 @@ export default function AssessmentResultsPage() {
           <Button
             variant="text"
             size="large"
-            onClick={() => router.push("/find-your-path")}
+            onClick={() => router.push("/how-to-hourkeep")}
             fullWidth
             sx={{
               color: "text.secondary",

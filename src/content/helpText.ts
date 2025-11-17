@@ -419,12 +419,12 @@ export const combinationRules: CombinationRules = {
 // ============================================================================
 
 export const dashboardGuidance: DashboardGuidance = {
-  title: "How to Use HourKeep",
+  title: "Getting Started",
   steps: [
     {
       icon: "compass",
       text: "Take the quick assessment to discover if you're exempt and learn which tracking method works best for you",
-      action: "/find-your-path",
+      action: "/how-to-hourkeep",
     },
     {
       icon: "chart",
@@ -433,7 +433,7 @@ export const dashboardGuidance: DashboardGuidance = {
     },
     {
       icon: "calendar",
-      text: "Log your activities or income each month to stay on track",
+      text: "Log your hours or income each month to stay on track",
       action: null,
     },
     {
