@@ -27,7 +27,7 @@ export function AssessmentBadge({
     return (
       <Paper
         sx={{
-          p: 3,
+          p: { xs: 2, sm: 3 },
           bgcolor: "primary.50",
           border: "2px solid",
           borderColor: "primary.main",
@@ -41,11 +41,17 @@ export function AssessmentBadge({
         }}
         onClick={onTakeAssessment}
       >
-        <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: { xs: 1.5, sm: 2 },
+          }}
+        >
           <Box
             sx={{
-              width: 48,
-              height: 48,
+              width: { xs: 40, sm: 48 },
+              height: { xs: 40, sm: 48 },
               borderRadius: "50%",
               bgcolor: "primary.main",
               display: "flex",
@@ -54,18 +60,28 @@ export function AssessmentBadge({
               flexShrink: 0,
             }}
           >
-            <ExploreIcon sx={{ color: "white", fontSize: 28 }} />
+            <ExploreIcon
+              sx={{ color: "white", fontSize: { xs: 24, sm: 28 } }}
+            />
           </Box>
 
-          <Box sx={{ flex: 1 }}>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
               variant="h6"
               gutterBottom
-              sx={{ color: "primary.main", fontWeight: 600 }}
+              sx={{
+                color: "primary.main",
+                fontWeight: 600,
+                fontSize: { xs: "1rem", sm: "1.25rem" },
+              }}
             >
               How to HourKeep
             </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mb: 2, fontSize: { xs: "0.875rem", sm: "0.875rem" } }}
+            >
               Discover the easiest way to keep your hours, and keep your
               coverage
             </Typography>
@@ -75,6 +91,9 @@ export function AssessmentBadge({
               onClick={(e) => {
                 e.stopPropagation();
                 onTakeAssessment();
+              }}
+              sx={{
+                fontSize: { xs: "0.75rem", sm: "0.8125rem" },
               }}
             >
               Take 5 Minute Assessment →
@@ -93,17 +112,23 @@ export function AssessmentBadge({
     return (
       <Paper
         sx={{
-          p: 3,
+          p: { xs: 2, sm: 3 },
           bgcolor: "success.50",
           border: "2px solid",
           borderColor: "success.main",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: { xs: 1.5, sm: 2 },
+          }}
+        >
           <Box
             sx={{
-              width: 48,
-              height: 48,
+              width: { xs: 40, sm: 48 },
+              height: { xs: 40, sm: 48 },
               borderRadius: "50%",
               bgcolor: "success.main",
               display: "flex",
@@ -112,41 +137,58 @@ export function AssessmentBadge({
               flexShrink: 0,
             }}
           >
-            <CheckCircleIcon sx={{ color: "white", fontSize: 28 }} />
+            <CheckCircleIcon
+              sx={{ color: "white", fontSize: { xs: 24, sm: 28 } }}
+            />
           </Box>
 
-          <Box sx={{ flex: 1 }}>
+          <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
-              variant="h6"
-              gutterBottom
-              sx={{ color: "success.main", fontWeight: 600 }}
+              sx={{
+                color: "success.main",
+                fontWeight: 600,
+                fontSize: { xs: "0.9rem", sm: "1.1rem" },
+                mb: 1.5,
+              }}
             >
               You&apos;re Exempt
             </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mb: 1.5, fontSize: { xs: "0.8125rem", sm: "0.875rem" } }}
+            >
               {recommendation.reasoning}
             </Typography>
-            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Button
                 variant="outlined"
                 size="small"
                 onClick={onViewDetails}
+                fullWidth
                 sx={{
                   borderColor: "success.main",
                   color: "success.main",
+                  fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+                  py: { xs: 0.75, sm: 1 },
                   "&:hover": {
                     borderColor: "success.dark",
                     bgcolor: "success.50",
                   },
                 }}
               >
-                View Details
+                See Assessment Details
               </Button>
               <Button
                 variant="text"
                 size="small"
                 onClick={onRetakeAssessment}
-                sx={{ color: "text.secondary" }}
+                fullWidth
+                sx={{
+                  color: "text.secondary",
+                  fontSize: { xs: "0.75rem", sm: "0.8125rem" },
+                  py: { xs: 0.5, sm: 0.75 },
+                }}
               >
                 Retake Assessment
               </Button>
@@ -161,17 +203,23 @@ export function AssessmentBadge({
   return (
     <Paper
       sx={{
-        p: 3,
+        p: { xs: 2, sm: 3 },
         bgcolor: "primary.50",
         border: "2px solid",
         borderColor: "primary.main",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: { xs: 1.5, sm: 2 },
+        }}
+      >
         <Box
           sx={{
-            width: 48,
-            height: 48,
+            width: { xs: 40, sm: 48 },
+            height: { xs: 40, sm: 48 },
             borderRadius: "50%",
             bgcolor: "primary.main",
             display: "flex",
@@ -180,22 +228,21 @@ export function AssessmentBadge({
             flexShrink: 0,
           }}
         >
-          <RecommendIcon sx={{ color: "white", fontSize: 28 }} />
+          <RecommendIcon
+            sx={{ color: "white", fontSize: { xs: 24, sm: 28 } }}
+          />
         </Box>
 
-        <Box sx={{ flex: 1 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              mb: 1,
-              flexWrap: "wrap",
-            }}
-          >
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Box sx={{ mb: 1.5 }}>
             <Typography
-              variant="h6"
-              sx={{ color: "primary.main", fontWeight: 600 }}
+              component="span"
+              sx={{
+                color: "primary.main",
+                fontWeight: 600,
+                fontSize: { xs: "0.9rem", sm: "1.1rem" },
+                mr: 1,
+              }}
             >
               Recommended:
             </Typography>
@@ -206,31 +253,38 @@ export function AssessmentBadge({
                 bgcolor: "primary.main",
                 color: "white",
                 fontWeight: 600,
+                fontSize: { xs: "0.7rem", sm: "0.75rem" },
+                height: { xs: 20, sm: 24 },
               }}
             />
           </Box>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            Based on your assessment
-          </Typography>
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             <Button
               variant="contained"
               size="small"
               onClick={onViewDetails}
+              fullWidth
               sx={{
                 bgcolor: "primary.main",
+                fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+                py: { xs: 0.75, sm: 1 },
                 "&:hover": {
                   bgcolor: "primary.dark",
                 },
               }}
             >
-              View Details
+              View Assessment Details
             </Button>
             <Button
               variant="text"
               size="small"
               onClick={onRetakeAssessment}
-              sx={{ color: "text.secondary" }}
+              fullWidth
+              sx={{
+                color: "text.secondary",
+                fontSize: { xs: "0.75rem", sm: "0.8125rem" },
+                py: { xs: 0.5, sm: 0.75 },
+              }}
             >
               Retake Assessment
             </Button>
