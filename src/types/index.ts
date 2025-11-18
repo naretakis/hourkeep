@@ -1,3 +1,11 @@
+// Onboarding Context
+export interface OnboardingContext {
+  hasNotice?: boolean; // Whether user received a notice
+  monthsRequired?: number; // Number of months user needs to document (1-6)
+  deadline?: Date; // Deadline for responding to notice
+  completedAt?: Date; // When onboarding was completed
+}
+
 // User Profile
 export interface UserProfile {
   id: string; // UUID
@@ -12,6 +20,7 @@ export interface UserProfile {
   privacyNoticeAcknowledged: boolean; // Must be true
   privacyNoticeAcknowledgedAt: Date; // When acknowledged
   version: number; // Profile schema version (for migrations)
+  onboardingContext?: OnboardingContext; // Optional onboarding context
 }
 
 // Activity

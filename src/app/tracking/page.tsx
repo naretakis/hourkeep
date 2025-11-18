@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Container,
@@ -29,8 +29,10 @@ import { AssessmentBadge } from "@/components/assessment/AssessmentBadge";
 import { DashboardGuidance } from "@/components/help/DashboardGuidance";
 import { ComplianceModeSelector } from "@/components/compliance/ComplianceModeSelector";
 import { IncomeDashboard } from "@/components/income/IncomeDashboard";
+import { GoalProgress } from "@/components/tracking/GoalProgress";
+import { CompletionMessage } from "@/components/tracking/CompletionMessage";
 import { db } from "@/lib/db";
-import { Activity, MonthlySummary } from "@/types";
+import { Activity, MonthlySummary, UserProfile } from "@/types";
 import { AssessmentResult } from "@/types/assessment";
 import { calculateMonthlySummary } from "@/lib/calculations";
 import { deleteActivityWithDocuments } from "@/lib/storage/activities";
@@ -86,10 +88,23 @@ export default function TrackingPage() {
   );
   const [userId, setUserId] = useState<string>("");
   const [isSeasonalWorker, setIsSeasonalWorker] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [monthlyCompliance, setMonthlyCompliance] = useState<
+    Map<string, boolean>
+  >(new Map());
 
-  const loadActivities = async () => {
+  const loadActivities = React.useCallback(async () => {
     try {
       setLoading(true);
+
+      // Check if profile exists - route guard
+      const profiles = await db.profiles.toArray();
+      if (profiles.length === 0) {
+        // No profile exists, redirect to onboarding
+        router.push("/onboarding");
+        return;
+      }
+
       const allActivities = await db.activities.toArray();
       setActivities(allActivities);
 
@@ -114,35 +129,42 @@ export default function TrackingPage() {
       const now = new Date();
       const monthStart = format(startOfMonth(now), "yyyy-MM-dd");
       const monthEnd = format(endOfMonth(now), "yyyy-MM-dd");
-      const currentMonth = allActivities.filter(
+      const currentMonthActivities = allActivities.filter(
         (a) => a.date >= monthStart && a.date <= monthEnd,
       );
-      setCurrentMonthActivities(currentMonth);
+      setCurrentMonthActivities(currentMonthActivities);
 
       // Calculate monthly summary
       const summary = calculateMonthlySummary(allActivities);
       setMonthlySummary(summary);
 
       // Load exemption screening, assessment result, compliance mode, and seasonal worker status
-      const profiles = await db.profiles.toArray();
-      if (profiles.length > 0) {
-        const profile = profiles[0];
-        setUserId(profile.id);
+      const profile = profiles[0];
+      setUserId(profile.id);
+      setUserProfile(profile);
 
-        // Load assessment result
-        const assessment = await getLatestAssessmentResult(profile.id);
-        setAssessmentResult(assessment || null);
+      // Load assessment result
+      const assessment = await getLatestAssessmentResult(profile.id);
+      setAssessmentResult(assessment || null);
 
-        // Load compliance mode and seasonal worker status for current month
-        const currentMonth = format(new Date(), "yyyy-MM");
-        const mode = await getComplianceMode(profile.id, currentMonth);
-        setComplianceModeState(mode);
+      // Load compliance mode and seasonal worker status for current month
+      const currentMonthStr = format(new Date(), "yyyy-MM");
+      const mode = await getComplianceMode(profile.id, currentMonthStr);
+      setComplianceModeState(mode);
 
-        const seasonalStatus = await getSeasonalWorkerStatus(
-          profile.id,
-          currentMonth,
-        );
-        setIsSeasonalWorker(seasonalStatus);
+      const seasonalStatus = await getSeasonalWorkerStatus(
+        profile.id,
+        currentMonthStr,
+      );
+      setIsSeasonalWorker(seasonalStatus);
+
+      // Calculate monthly compliance for goal tracking
+      if (profile.onboardingContext?.monthsRequired) {
+        const complianceMap = new Map<string, boolean>();
+        // For now, just check current month
+        // In a full implementation, this would check all required months
+        complianceMap.set(currentMonthStr, summary.isCompliant);
+        setMonthlyCompliance(complianceMap);
       }
     } catch (err) {
       console.error("Error loading activities:", err);
@@ -150,9 +172,9 @@ export default function TrackingPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [router]);
 
-  // Load activities on mount - this is intentional initialization
+  // Load activities on mount and listen for updates
   useEffect(() => {
     loadActivities();
 
@@ -161,11 +183,22 @@ export default function TrackingPage() {
       loadActivities();
     };
 
+    // Listen for assessment completion event
+    const handleAssessmentCompleted = () => {
+      loadActivities(); // Reload to get updated assessment
+    };
+
     window.addEventListener("activities-updated", handleActivitiesUpdated);
+    window.addEventListener("assessment-completed", handleAssessmentCompleted);
 
     return () => {
       window.removeEventListener("activities-updated", handleActivitiesUpdated);
+      window.removeEventListener(
+        "assessment-completed",
+        handleAssessmentCompleted,
+      );
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDateClick = async (
@@ -365,6 +398,21 @@ export default function TrackingPage() {
     }
   };
 
+  const handleAddMonth = () => {
+    // Navigate to settings to add another month
+    router.push("/settings");
+  };
+
+  const handleContinueTracking = () => {
+    // Just close the completion message and continue tracking
+    // In a full implementation, this might update a preference
+  };
+
+  const handleSetReminder = () => {
+    // Placeholder for future reminder functionality
+    alert("Renewal reminders will be available in a future update!");
+  };
+
   if (loading) {
     return (
       <Box
@@ -515,6 +563,34 @@ export default function TrackingPage() {
         {/* Hours Tracking UI */}
         {complianceMode === "hours" && (
           <>
+            {/* Completion Message - show if goal is complete */}
+            {userProfile?.onboardingContext?.monthsRequired && (
+              <Box sx={{ mt: 3 }}>
+                <CompletionMessage
+                  monthsCompleted={
+                    Array.from(monthlyCompliance.values()).filter(
+                      (isCompliant) => isCompliant,
+                    ).length
+                  }
+                  monthsRequired={userProfile.onboardingContext.monthsRequired}
+                  onExport={handleExport}
+                  onContinueTracking={handleContinueTracking}
+                  onSetReminder={handleSetReminder}
+                />
+              </Box>
+            )}
+
+            {/* Goal Progress - show if user has onboarding context */}
+            {userProfile?.onboardingContext && (
+              <Box sx={{ mt: 3 }}>
+                <GoalProgress
+                  onboardingContext={userProfile.onboardingContext}
+                  monthlyCompliance={monthlyCompliance}
+                  onAddMonth={handleAddMonth}
+                />
+              </Box>
+            )}
+
             <Box sx={{ mt: 3 }}>
               <Dashboard summary={monthlySummary} />
             </Box>

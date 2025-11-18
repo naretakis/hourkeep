@@ -1,189 +1,456 @@
 "use client";
 
-import { Box, Typography, Button, Paper, Alert } from "@mui/material";
-import { Info as InfoIcon } from "@mui/icons-material";
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  Alert,
+  FormControl,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Button,
+} from "@mui/material";
+import {
+  ArrowBack as ArrowBackIcon,
+  ArrowForward as ArrowForwardIcon,
+} from "@mui/icons-material";
 
 interface NoticeQuestionProps {
   onAnswer: (receivedNotice: boolean, skipToWork: boolean) => void;
+  onBack?: () => void;
 }
 
-export function NoticeQuestion({ onAnswer }: NoticeQuestionProps) {
+export function NoticeQuestion({ onAnswer, onBack }: NoticeQuestionProps) {
+  const [value, setValue] = useState<string>("");
+
+  const handleNext = () => {
+    if (value === "yes") {
+      onAnswer(true, false);
+    } else if (value === "no") {
+      onAnswer(false, false);
+    }
+  };
+
+  const isAnswered = value !== "";
+
   return (
-    <Box>
-      <Typography
-        variant="h5"
-        component="h2"
-        gutterBottom
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        minHeight: "400px",
+      }}
+    >
+      {/* Question Text */}
+      <Box>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{ fontWeight: 600 }}
+        >
+          Have you received a notice from your Medicaid agency about work
+          requirements?
+        </Typography>
+        <Alert severity="info" sx={{ mt: 2 }}>
+          <Typography variant="body2" fontWeight={600} gutterBottom>
+            This notice might mention:
+          </Typography>
+          <Typography variant="body2" component="ul" sx={{ pl: 2, m: 0 }}>
+            <li>Community engagement requirements</li>
+            <li>Work requirements for Medicaid</li>
+            <li>Reporting your work hours or income</li>
+            <li>80 hours per month or $580 per month</li>
+          </Typography>
+        </Alert>
+      </Box>
+
+      {/* Answer Input */}
+      <Box sx={{ flex: 1 }}>
+        <FormControl component="fieldset" fullWidth>
+          <RadioGroup value={value} onChange={(e) => setValue(e.target.value)}>
+            <FormControlLabel
+              value="yes"
+              control={<Radio />}
+              label={
+                <Box>
+                  <Typography variant="body1" fontWeight={600}>
+                    Yes, I received a notice
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Your agency has determined you need to track work
+                    requirements
+                  </Typography>
+                </Box>
+              }
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                mb: 1,
+                mx: 0,
+                px: 2,
+                py: 1.5,
+                alignItems: "flex-start",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            />
+            <FormControlLabel
+              value="no"
+              control={<Radio />}
+              label={
+                <Box>
+                  <Typography variant="body1" fontWeight={600}>
+                    No or I&apos;m not sure
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Let&apos;s check if you might be exempt
+                  </Typography>
+                </Box>
+              }
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                mb: 1,
+                mx: 0,
+                px: 2,
+                py: 1.5,
+                alignItems: "flex-start",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            />
+          </RadioGroup>
+        </FormControl>
+      </Box>
+
+      {/* Navigation Buttons */}
+      <Box
         sx={{
-          fontSize: { xs: "1.25rem", sm: "1.5rem" },
-          fontWeight: 500,
-          mb: 2,
+          display: "flex",
+          gap: 2,
+          pt: 2,
+          borderTop: "1px solid",
+          borderColor: "divider",
         }}
       >
-        Have you received a notice from your Medicaid agency about work
-        requirements?
-      </Typography>
-
-      <Paper
-        sx={{
-          p: 2,
-          mb: 3,
-          bgcolor: "info.50",
-          border: "1px solid",
-          borderColor: "info.200",
-        }}
-      >
-        <Box sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}>
-          <InfoIcon sx={{ color: "info.main", fontSize: 20, mt: 0.5 }} />
-          <Box>
-            <Typography variant="body2" color="info.main" paragraph>
-              This notice might mention:
-            </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              component="ul"
-              sx={{ pl: 2, m: 0 }}
-            >
-              <li>Community engagement requirements</li>
-              <li>Work requirements for Medicaid</li>
-              <li>Reporting your work hours or income</li>
-              <li>80 hours per month or $580 per month</li>
-            </Typography>
-          </Box>
-        </Box>
-      </Paper>
-
-      {/* Answer buttons */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {onBack && (
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={onBack}
+            sx={{ minHeight: 48 }}
+          >
+            Back
+          </Button>
+        )}
         <Button
-          variant="outlined"
-          size="large"
-          onClick={() => onAnswer(true, false)}
-          sx={{
-            py: 2,
-            textAlign: "left",
-            justifyContent: "flex-start",
-            textTransform: "none",
-            borderWidth: 2,
-            "&:hover": {
-              borderWidth: 2,
-            },
-          }}
+          variant="contained"
+          endIcon={<ArrowForwardIcon />}
+          onClick={handleNext}
+          disabled={!isAnswered}
+          fullWidth={!onBack}
+          sx={{ minHeight: 48 }}
         >
-          <Box>
-            <Typography variant="body1" fontWeight={600}>
-              Yes, I received a notice
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Your agency has determined you need to track work requirements
-            </Typography>
-          </Box>
-        </Button>
-
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={() => onAnswer(false, false)}
-          sx={{
-            py: 2,
-            textAlign: "left",
-            justifyContent: "flex-start",
-            textTransform: "none",
-            borderWidth: 2,
-            "&:hover": {
-              borderWidth: 2,
-            },
-          }}
-        >
-          <Box>
-            <Typography variant="body1" fontWeight={600}>
-              No or I&apos;m not sure
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Let&apos;s check if you might be exempt
-            </Typography>
-          </Box>
+          Next
         </Button>
       </Box>
     </Box>
   );
 }
 
+// For users who received a notice (after notice details)
+interface NoticeFollowUpWithNoticeProps {
+  onCheckExemption: () => void;
+  onSkipToWork: () => void;
+  onBack?: () => void;
+}
+
+export function NoticeFollowUpWithNotice({
+  onCheckExemption,
+  onSkipToWork,
+  onBack,
+}: NoticeFollowUpWithNoticeProps) {
+  const [value, setValue] = useState<string>("");
+
+  const handleNext = () => {
+    if (value === "check") {
+      onCheckExemption();
+    } else if (value === "skip") {
+      onSkipToWork();
+    }
+  };
+
+  const isAnswered = value !== "";
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        minHeight: "400px",
+      }}
+    >
+      {/* Question Text */}
+      <Box>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{ fontWeight: 600 }}
+        >
+          What would you like to do?
+        </Typography>
+        <Alert severity="info" sx={{ mt: 2 }}>
+          Your Medicaid agency has determined that you need to track work
+          requirements. However, you might still qualify for an exemption.
+        </Alert>
+      </Box>
+
+      {/* Answer Input */}
+      <Box sx={{ flex: 1 }}>
+        <FormControl component="fieldset" fullWidth>
+          <RadioGroup value={value} onChange={(e) => setValue(e.target.value)}>
+            <FormControlLabel
+              value="check"
+              control={<Radio />}
+              label={
+                <Box>
+                  <Typography variant="body1" fontWeight={600}>
+                    Check if I&apos;m exempt anyway
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Recommended—takes 2 minutes
+                  </Typography>
+                </Box>
+              }
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                mb: 1,
+                mx: 0,
+                px: 2,
+                py: 1.5,
+                alignItems: "flex-start",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            />
+            <FormControlLabel
+              value="skip"
+              control={<Radio />}
+              label={
+                <Box>
+                  <Typography variant="body1" fontWeight={600}>
+                    Skip to finding my compliance method
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Go straight to work situation questions
+                  </Typography>
+                </Box>
+              }
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                mb: 1,
+                mx: 0,
+                px: 2,
+                py: 1.5,
+                alignItems: "flex-start",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            />
+          </RadioGroup>
+        </FormControl>
+      </Box>
+
+      {/* Navigation Buttons */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          pt: 2,
+          borderTop: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        {onBack && (
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={onBack}
+            sx={{ minHeight: 48 }}
+          >
+            Back
+          </Button>
+        )}
+        <Button
+          variant="contained"
+          endIcon={<ArrowForwardIcon />}
+          onClick={handleNext}
+          disabled={!isAnswered}
+          fullWidth={!onBack}
+          sx={{ minHeight: 48 }}
+        >
+          Next
+        </Button>
+      </Box>
+    </Box>
+  );
+}
+
+// For users who did NOT receive a notice
 interface NoticeFollowUpProps {
   onCheckExemption: () => void;
   onSkipToWork: () => void;
+  onBack?: () => void;
 }
 
 export function NoticeFollowUp({
   onCheckExemption,
   onSkipToWork,
+  onBack,
 }: NoticeFollowUpProps) {
-  return (
-    <Box>
-      <Alert severity="info" sx={{ mb: 3 }}>
-        Your Medicaid agency has determined that you need to track work
-        requirements. However, you might still qualify for an exemption.
-      </Alert>
+  const [value, setValue] = useState<string>("");
 
-      <Typography
-        variant="h5"
-        component="h2"
-        gutterBottom
+  const handleNext = () => {
+    if (value === "check") {
+      onCheckExemption();
+    } else if (value === "skip") {
+      onSkipToWork();
+    }
+  };
+
+  const isAnswered = value !== "";
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        minHeight: "400px",
+      }}
+    >
+      {/* Question Text */}
+      <Box>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{ fontWeight: 600 }}
+        >
+          What would you like to do?
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          We recommend checking if you&apos;re exempt first—it only takes 2
+          minutes and could save you time.
+        </Typography>
+      </Box>
+
+      {/* Answer Input */}
+      <Box sx={{ flex: 1 }}>
+        <FormControl component="fieldset" fullWidth>
+          <RadioGroup value={value} onChange={(e) => setValue(e.target.value)}>
+            <FormControlLabel
+              value="check"
+              control={<Radio />}
+              label={
+                <Box>
+                  <Typography variant="body1" fontWeight={600}>
+                    Check if I&apos;m exempt
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Recommended—takes 2 minutes
+                  </Typography>
+                </Box>
+              }
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                mb: 1,
+                mx: 0,
+                px: 2,
+                py: 1.5,
+                alignItems: "flex-start",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            />
+            <FormControlLabel
+              value="skip"
+              control={<Radio />}
+              label={
+                <Box>
+                  <Typography variant="body1" fontWeight={600}>
+                    Skip to finding my compliance method
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Go straight to work situation questions
+                  </Typography>
+                </Box>
+              }
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 1,
+                mb: 1,
+                mx: 0,
+                px: 2,
+                py: 1.5,
+                alignItems: "flex-start",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+              }}
+            />
+          </RadioGroup>
+        </FormControl>
+      </Box>
+
+      {/* Navigation Buttons */}
+      <Box
         sx={{
-          fontSize: { xs: "1.25rem", sm: "1.5rem" },
-          fontWeight: 500,
-          mb: 3,
+          display: "flex",
+          gap: 2,
+          pt: 2,
+          borderTop: "1px solid",
+          borderColor: "divider",
         }}
       >
-        What would you like to do?
-      </Typography>
-
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {onBack && (
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={onBack}
+            sx={{ minHeight: 48 }}
+          >
+            Back
+          </Button>
+        )}
         <Button
           variant="contained"
-          size="large"
-          onClick={onCheckExemption}
-          sx={{
-            py: 2,
-            textAlign: "left",
-            justifyContent: "flex-start",
-            textTransform: "none",
-          }}
+          endIcon={<ArrowForwardIcon />}
+          onClick={handleNext}
+          disabled={!isAnswered}
+          fullWidth={!onBack}
+          sx={{ minHeight: 48 }}
         >
-          <Box>
-            <Typography variant="body1" fontWeight={600}>
-              Check if I&apos;m exempt anyway
-            </Typography>
-            <Typography variant="caption" sx={{ opacity: 0.9 }}>
-              Recommended—takes 2 minutes
-            </Typography>
-          </Box>
-        </Button>
-
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={onSkipToWork}
-          sx={{
-            py: 2,
-            textAlign: "left",
-            justifyContent: "flex-start",
-            textTransform: "none",
-            borderWidth: 2,
-            "&:hover": {
-              borderWidth: 2,
-            },
-          }}
-        >
-          <Box>
-            <Typography variant="body1" fontWeight={600}>
-              Skip to finding my compliance method
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Go straight to work situation questions
-            </Typography>
-          </Box>
+          Next
         </Button>
       </Box>
     </Box>

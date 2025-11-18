@@ -1,7 +1,10 @@
 "use client";
 
-import { Box, Button, IconButton } from "@mui/material";
-import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
+import {
+  ArrowBack as ArrowBackIcon,
+  ArrowForward as ArrowForwardIcon,
+} from "@mui/icons-material";
 import { ReactNode } from "react";
 
 interface QuestionWrapperProps {
@@ -18,7 +21,7 @@ export function QuestionWrapper({
   onBack,
   onContinue,
   continueDisabled = false,
-  continueLabel = "Continue",
+  continueLabel = "Next",
   showContinue = true,
 }: QuestionWrapperProps) {
   return (
@@ -29,44 +32,42 @@ export function QuestionWrapper({
         minHeight: "60vh",
       }}
     >
-      {/* Back button */}
-      {onBack && (
-        <Box sx={{ mb: 2 }}>
-          <IconButton
-            onClick={onBack}
-            aria-label="go back"
-            sx={{
-              color: "text.secondary",
-              "&:hover": {
-                bgcolor: "action.hover",
-              },
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Box>
-      )}
-
       {/* Question content */}
       <Box sx={{ flex: 1, mb: 3 }}>{children}</Box>
 
-      {/* Continue button */}
-      {showContinue && onContinue && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      {/* Navigation buttons */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          pt: 2,
+          borderTop: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        {onBack && (
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={onBack}
+            sx={{ minHeight: 48 }}
+          >
+            Back
+          </Button>
+        )}
+        {showContinue && onContinue && (
           <Button
             variant="contained"
-            size="large"
+            endIcon={<ArrowForwardIcon />}
             onClick={onContinue}
             disabled={continueDisabled}
-            sx={{
-              minWidth: 120,
-              py: 1.5,
-            }}
+            fullWidth={!onBack}
+            sx={{ minHeight: 48 }}
           >
             {continueLabel}
           </Button>
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 }

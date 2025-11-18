@@ -10,7 +10,17 @@ import {
   CircularProgress,
   Divider,
   Alert,
+  Paper,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
+import {
+  TrendingUp as TrendingUpIcon,
+  Assessment as AssessmentIcon,
+  FileDownload as FileDownloadIcon,
+} from "@mui/icons-material";
 import { UserProfile } from "@/types";
 import {
   calculateAge,
@@ -78,11 +88,21 @@ interface ProfileFormProps {
     profile: Omit<UserProfile, "id" | "createdAt" | "updatedAt">,
   ) => Promise<void>;
   privacyAcknowledgedAt: Date;
+  showDeadlineField?: boolean; // Show deadline field for users with notices
+  initialDeadline?: string; // Pre-fill deadline if already set
+  showIntroduction?: boolean; // Show welcome message at the top
+  onSkip?: (
+    profile: Omit<UserProfile, "id" | "createdAt" | "updatedAt">,
+  ) => Promise<void>; // Skip to dashboard without assessment
 }
 
 export function ProfileForm({
   onSave,
   privacyAcknowledgedAt,
+  showDeadlineField = false,
+  initialDeadline = "",
+  showIntroduction = false,
+  onSkip,
 }: ProfileFormProps) {
   // Required fields
   const [name, setName] = useState("");
@@ -93,11 +113,13 @@ export function ProfileForm({
   const [medicaidId, setMedicaidId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
+  const [deadline, setDeadline] = useState(initialDeadline);
 
   // Form state
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [ageHint, setAgeHint] = useState<string | null>(null);
+  const [isSkipping, setIsSkipping] = useState(false);
 
   const validateName = (value: string): boolean => {
     if (!value.trim()) {
@@ -229,6 +251,28 @@ export function ProfileForm({
     return true;
   };
 
+  const validateDeadline = (value: string): boolean => {
+    if (value) {
+      const deadlineDate = new Date(value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (deadlineDate < today) {
+        setErrors((prev) => ({
+          ...prev,
+          deadline: "Deadline must be in the future",
+        }));
+        return false;
+      }
+    }
+    setErrors((prev) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { deadline, ...rest } = prev;
+      return rest;
+    });
+    return true;
+  };
+
   const handleNameChange = (value: string) => {
     setName(value);
     if (value) validateName(value);
@@ -259,6 +303,64 @@ export function ProfileForm({
     validateEmail(value);
   };
 
+  const handleDeadlineChange = (value: string) => {
+    setDeadline(value);
+    validateDeadline(value);
+  };
+
+  const handleSkipClick = async () => {
+    // Validate all required fields first
+    const nameValid = validateName(name);
+    const stateValid = validateState(state);
+    const dobValid = validateDateOfBirth(dateOfBirth);
+    const medicaidValid = validateMedicaidId(medicaidId);
+    const phoneValid = validatePhone(phoneNumber);
+    const emailValid = validateEmail(email);
+    const deadlineValid = validateDeadline(deadline);
+
+    if (
+      !nameValid ||
+      !stateValid ||
+      !dobValid ||
+      !medicaidValid ||
+      !phoneValid ||
+      !emailValid ||
+      !deadlineValid
+    ) {
+      return;
+    }
+
+    setIsSkipping(true);
+    setSaving(true);
+
+    try {
+      const profile: Omit<UserProfile, "id" | "createdAt" | "updatedAt"> = {
+        name: name.trim(),
+        state,
+        dateOfBirth, // Will be encrypted by storage layer
+        medicaidId: medicaidId.trim() || undefined,
+        phoneNumber: phoneNumber ? formatPhoneNumber(phoneNumber) : undefined,
+        email: email.trim() || undefined,
+        privacyNoticeAcknowledged: true,
+        privacyNoticeAcknowledgedAt: privacyAcknowledgedAt,
+        version: 2,
+      };
+
+      // Call onSkip with profile data
+      if (onSkip) {
+        await onSkip(profile);
+      }
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      setErrors({
+        submit:
+          "We couldn't save your profile. Please check your information and try again.",
+      });
+      setSaving(false);
+      setIsSkipping(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -269,6 +371,7 @@ export function ProfileForm({
     const medicaidValid = validateMedicaidId(medicaidId);
     const phoneValid = validatePhone(phoneNumber);
     const emailValid = validateEmail(email);
+    const deadlineValid = validateDeadline(deadline);
 
     if (
       !nameValid ||
@@ -276,7 +379,8 @@ export function ProfileForm({
       !dobValid ||
       !medicaidValid ||
       !phoneValid ||
-      !emailValid
+      !emailValid ||
+      !deadlineValid
     ) {
       return;
     }
@@ -317,6 +421,72 @@ export function ProfileForm({
         margin: "0 auto",
       }}
     >
+      {showIntroduction && (
+        <Box sx={{ mb: 4 }}>
+          {/* Header */}
+          <Box sx={{ textAlign: "center", mb: 3 }}>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: 700 }}
+            >
+              Welcome to HourKeep
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Keep your hours, and keep your coverage.
+            </Typography>
+          </Box>
+
+          {/* How HourKeep Works */}
+          <Paper
+            sx={{
+              p: 3,
+              mb: 3,
+              bgcolor: "primary.50",
+              border: "1px solid",
+              borderColor: "primary.200",
+            }}
+          >
+            <Typography variant="h6" gutterBottom fontWeight={600}>
+              Here&apos;s how HourKeep works:
+            </Typography>
+
+            <List>
+              <ListItem>
+                <ListItemIcon>
+                  <TrendingUpIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Log your hours or income"
+                  secondary="Track work, volunteer, school, and training hours—or just track your income"
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <AssessmentIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="See your progress"
+                  secondary="Know if you're meeting your requirements"
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <FileDownloadIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Export when needed"
+                  secondary="Generate reports to submit to your state"
+                />
+              </ListItem>
+            </List>
+          </Paper>
+        </Box>
+      )}
+
       <Typography
         variant="h5"
         component="h2"
@@ -404,6 +574,30 @@ export function ProfileForm({
             {ageHint}
           </Alert>
         )}
+
+        {showDeadlineField && (
+          <TextField
+            type="date"
+            label="Response Deadline"
+            value={deadline}
+            onChange={(e) => handleDeadlineChange(e.target.value)}
+            error={!!errors.deadline}
+            helperText={
+              errors.deadline ||
+              (deadline
+                ? `You have ${Math.ceil((new Date(deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days to respond`
+                : "When do you need to respond to your notice?")
+            }
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              min: new Date().toISOString().split("T")[0],
+            }}
+            sx={{ mb: 2 }}
+          />
+        )}
       </Box>
 
       <Divider sx={{ mb: 4 }} />
@@ -460,6 +654,27 @@ export function ProfileForm({
         />
       </Box>
 
+      {showIntroduction && (
+        <Paper
+          sx={{
+            p: 3,
+            mb: 3,
+            bgcolor: "grey.50",
+            border: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Typography variant="body1" color="text.secondary" paragraph>
+            After setting up your profile, we&apos;ll ask a few questions to
+            help you understand the easiest way to maintain your coverage.
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            The assessment takes about 5 minutes and will give you personalized
+            recommendations.
+          </Typography>
+        </Paper>
+      )}
+
       <Button
         type="submit"
         variant="contained"
@@ -470,10 +685,32 @@ export function ProfileForm({
         sx={{
           minHeight: 48,
           fontSize: "1.1rem",
+          mb: onSkip ? 2 : 0,
         }}
       >
-        {saving ? "Saving..." : "Complete Setup"}
+        {saving
+          ? "Saving..."
+          : showIntroduction
+            ? "Start HourKeep Assessment"
+            : "Complete Setup"}
       </Button>
+
+      {onSkip && (
+        <Button
+          variant="outlined"
+          fullWidth
+          size="large"
+          onClick={handleSkipClick}
+          disabled={saving || !name.trim() || !state || !dateOfBirth}
+          startIcon={isSkipping ? <CircularProgress size={20} /> : null}
+          sx={{
+            minHeight: 48,
+            fontSize: "1.1rem",
+          }}
+        >
+          {isSkipping ? "Saving..." : "Skip for Now"}
+        </Button>
+      )}
     </Box>
   );
 }

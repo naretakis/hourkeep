@@ -10,12 +10,16 @@ import {
 interface IntroductionScreenProps {
   onGetStarted: () => void;
   onSkip: () => void;
+  variant?: "assessment" | "onboarding"; // New prop to control content
 }
 
 export function IntroductionScreen({
   onGetStarted,
   onSkip,
+  variant = "assessment", // Default to assessment for backward compatibility
 }: IntroductionScreenProps) {
+  const isOnboarding = variant === "onboarding";
+
   return (
     <Box
       sx={{
@@ -54,7 +58,7 @@ export function IntroductionScreen({
           mb: 2,
         }}
       >
-        How to HourKeep
+        {isOnboarding ? "Welcome to HourKeep" : "How to HourKeep"}
       </Typography>
 
       {/* Description */}
@@ -74,10 +78,14 @@ export function IntroductionScreen({
           color="text.secondary"
           paragraph
         >
-          Discover the easiest way to keep your hours, and keep your coverage.
+          {isOnboarding
+            ? "Track your work hours to maintain your Medicaid coverage."
+            : "Discover the easiest way to keep your hours, and keep your coverage."}
         </Typography>
         <Typography variant="body1" align="center" color="text.secondary">
-          This will take about 5 minutes.
+          {isOnboarding
+            ? "This will take about 2 minutes."
+            : "This will take about 5 minutes."}
         </Typography>
       </Paper>
 
@@ -86,7 +94,9 @@ export function IntroductionScreen({
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <CheckCircleIcon sx={{ color: "success.main", flexShrink: 0 }} />
           <Typography variant="body2" color="text.secondary">
-            Check if you&apos;re exempt from work requirements
+            {isOnboarding
+              ? "Understand what you need to do"
+              : "Check if you're exempt from work requirements"}
           </Typography>
         </Box>
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
@@ -120,7 +130,7 @@ export function IntroductionScreen({
       >
         <AccessTimeIcon sx={{ color: "info.main", fontSize: 20 }} />
         <Typography variant="body2" color="info.main">
-          Takes about 5 minutes
+          {isOnboarding ? "Takes about 2 minutes" : "Takes about 5 minutes"}
         </Typography>
       </Box>
 
