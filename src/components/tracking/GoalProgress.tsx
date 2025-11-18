@@ -76,7 +76,14 @@ export function GoalProgress({
                 ? `${daysRemaining} days left`
                 : "Deadline passed"
             }
-            color={daysRemaining > 7 ? "primary" : "warning"}
+            sx={{
+              bgcolor: daysRemaining > 7 ? "primary.main" : "warning.main",
+              color: "white",
+              fontWeight: 600,
+              "& .MuiChip-icon": {
+                color: "white",
+              },
+            }}
             size="small"
           />
         )}

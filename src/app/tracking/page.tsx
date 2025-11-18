@@ -644,14 +644,27 @@ export default function TrackingPage() {
 
         {/* Income Tracking UI */}
         {complianceMode === "income" && userId && (
-          <Box sx={{ mt: 3 }}>
-            <IncomeDashboard
-              userId={userId}
-              currentMonth={format(new Date(), "yyyy-MM")}
-              isSeasonalWorker={isSeasonalWorker}
-              onSeasonalWorkerToggle={handleSeasonalWorkerToggle}
-            />
-          </Box>
+          <>
+            {/* Goal Progress - show if user has onboarding context */}
+            {userProfile?.onboardingContext && (
+              <Box sx={{ mt: 3 }}>
+                <GoalProgress
+                  onboardingContext={userProfile.onboardingContext}
+                  monthlyCompliance={monthlyCompliance}
+                  onAddMonth={handleAddMonth}
+                />
+              </Box>
+            )}
+
+            <Box sx={{ mt: 3 }}>
+              <IncomeDashboard
+                userId={userId}
+                currentMonth={format(new Date(), "yyyy-MM")}
+                isSeasonalWorker={isSeasonalWorker}
+                onSeasonalWorkerToggle={handleSeasonalWorkerToggle}
+              />
+            </Box>
+          </>
         )}
 
         <DateActivityMenu

@@ -7,11 +7,13 @@ import { db } from "@/lib/db";
 import { getProfile } from "@/lib/storage/profile";
 import { IntroductionScreen } from "@/components/assessment/IntroductionScreen";
 import { ProgressIndicator } from "@/components/assessment/ProgressIndicator";
-import { QuestionWrapper } from "@/components/assessment/QuestionWrapper";
 import {
   NoticeQuestion,
   NoticeFollowUp,
+  NoticeFollowUpWithNotice,
 } from "@/components/assessment/NoticeQuestion";
+import { NoticeDetailsQuestion } from "@/components/onboarding/NoticeDetailsQuestion";
+import { GettingStartedContextual } from "@/components/onboarding/GettingStartedContextual";
 import { ExemptionQuestion as ExemptionQuestionComponent } from "@/components/exemptions/ExemptionQuestion";
 import { SingleChoiceQuestion } from "@/components/assessment/SingleChoiceQuestion";
 import { MultipleChoiceQuestion } from "@/components/assessment/MultipleChoiceQuestion";
@@ -20,7 +22,11 @@ import {
   HoursConverter,
   IncomeConverter,
 } from "@/components/assessment/EstimationTools";
-import { AssessmentResponses, PayFrequency } from "@/types/assessment";
+import {
+  AssessmentResponses,
+  PayFrequency,
+  Recommendation,
+} from "@/types/assessment";
 import { ExemptionResponses } from "@/types/exemptions";
 import { allQuestions as exemptionQuestions } from "@/lib/exemptions/questions";
 import { calculateExemption } from "@/lib/exemptions/calculator";
@@ -32,11 +38,20 @@ import {
   completeAssessmentProgress,
   getLatestAssessmentResult,
 } from "@/lib/storage/assessment";
+import {
+  setComplianceMode,
+  setSeasonalWorkerStatus,
+} from "@/lib/storage/income";
+import { updateProfile } from "@/lib/storage/profile";
+import { format } from "date-fns";
+import { OnboardingContext } from "@/types";
 
 type AssessmentStep =
   | "intro"
   | "notice"
+  | "noticeDetails"
   | "notice-followup"
+  | "noticeFollowUpWithNotice"
   | "exemption"
   | "work-job"
   | "work-seasonal"
@@ -48,6 +63,7 @@ type AssessmentStep =
   | "activities-volunteer"
   | "activities-school"
   | "activities-workprogram"
+  | "gettingStarted"
   | "results";
 
 export default function HowToHourKeepPage() {
@@ -68,6 +84,14 @@ export default function HowToHourKeepPage() {
   >(undefined);
   const [seasonalStatus, setSeasonalStatus] = useState<
     "yes" | "no" | "not-sure" | undefined
+  >(undefined);
+  const [hasNotice, setHasNotice] = useState(false);
+  const [monthsRequired, setMonthsRequired] = useState<number | undefined>(
+    undefined,
+  );
+  const [deadline, setDeadline] = useState<string | undefined>(undefined);
+  const [recommendation, setRecommendation] = useState<
+    Recommendation | undefined
   >(undefined);
 
   // Load user and any existing progress
@@ -151,6 +175,21 @@ export default function HowToHourKeepPage() {
           ) {
             setSixMonthTotal(latestResult.responses.monthlyIncome * 6);
           }
+
+          // Pre-populate notice context if available
+          if (latestResult.responses.noticeContext) {
+            setHasNotice(true);
+            setMonthsRequired(
+              latestResult.responses.noticeContext.monthsRequired,
+            );
+            if (latestResult.responses.noticeContext.deadline) {
+              setDeadline(
+                latestResult.responses.noticeContext.deadline
+                  .toISOString()
+                  .split("T")[0],
+              );
+            }
+          }
         } else {
           // Start fresh with pre-filled DOB
           setResponses(initialResponses);
@@ -172,17 +211,19 @@ export default function HowToHourKeepPage() {
 
     let progress = 0;
 
-    // Section 1: Initial questions (0-20%)
-    if (currentStep === "notice") progress = 5;
-    else if (currentStep === "notice-followup") progress = 10;
-    // Section 2: Exemption questions (20-70%)
+    // Section 1: Initial questions (15-25%)
+    if (currentStep === "notice") progress = 15;
+    else if (currentStep === "noticeDetails") progress = 20;
+    else if (currentStep === "noticeFollowUpWithNotice") progress = 25;
+    else if (currentStep === "notice-followup") progress = 25;
+    // Section 2: Exemption questions (25-60%)
     else if (currentStep === "exemption") {
-      // 12 exemption questions spanning 50% of progress
-      const exemptionProgress = (exemptionQuestionIndex / 12) * 50;
-      progress = 20 + exemptionProgress;
+      // 12 exemption questions spanning 35% of progress
+      const exemptionProgress = (exemptionQuestionIndex / 12) * 35;
+      progress = 25 + exemptionProgress;
     }
 
-    // Section 3: Work/Path questions (70-95%)
+    // Section 3: Work/Path questions (60-95%)
     else if (
       currentStep.startsWith("work") ||
       currentStep.startsWith("activities")
@@ -191,15 +232,24 @@ export default function HowToHourKeepPage() {
       const workSteps = stepHistory.filter(
         (s) => s.startsWith("work") || s.startsWith("activities"),
       ).length;
-      progress = 70 + Math.min(workSteps * 5, 25);
+      progress = 60 + Math.min(workSteps * 5, 35);
     }
+
+    // Getting Started (95%)
+    else if (currentStep === "gettingStarted") progress = 95;
 
     return progress;
   }, [currentStep, exemptionQuestionIndex, stepHistory]);
 
   // Auto-save progress
   useEffect(() => {
-    if (!userId || currentStep === "intro" || currentStep === "results") return;
+    if (
+      !userId ||
+      currentStep === "intro" ||
+      currentStep === "results" ||
+      currentStep === "gettingStarted"
+    )
+      return;
 
     const saveProgress = async () => {
       try {
@@ -247,16 +297,29 @@ export default function HowToHourKeepPage() {
   };
 
   const handleNoticeAnswer = (receivedNotice: boolean) => {
+    setHasNotice(receivedNotice);
     setResponses({
       ...responses,
       receivedAgencyNotice: receivedNotice,
     });
 
     if (receivedNotice) {
-      advanceStep("notice-followup");
+      advanceStep("noticeDetails");
     } else {
-      advanceStep("exemption");
+      advanceStep("notice-followup");
     }
+  };
+
+  const handleNoticeDetailsComplete = () => {
+    advanceStep("noticeFollowUpWithNotice");
+  };
+
+  const handleMonthsChange = (months: number) => {
+    setMonthsRequired(months);
+  };
+
+  const handleDeadlineChange = (deadlineValue: string) => {
+    setDeadline(deadlineValue);
   };
 
   const handleNoticeFollowUp = (checkExemption: boolean) => {
@@ -442,12 +505,24 @@ export default function HowToHourKeepPage() {
     const finalResponses: AssessmentResponses = {
       ...responses,
       exemption: exemptionResponses,
+      noticeContext:
+        hasNotice && (monthsRequired || deadline)
+          ? {
+              monthsRequired,
+              deadline: deadline ? new Date(deadline) : undefined,
+            }
+          : undefined,
     } as AssessmentResponses;
 
-    const recommendation = calculateRecommendation(finalResponses);
+    const calculatedRecommendation = calculateRecommendation(finalResponses);
+    setRecommendation(calculatedRecommendation);
 
     try {
-      await saveAssessmentResult(userId, finalResponses, recommendation);
+      await saveAssessmentResult(
+        userId,
+        finalResponses,
+        calculatedRecommendation,
+      );
 
       // Clean up progress
       const progress = await getAssessmentProgress(userId);
@@ -455,10 +530,68 @@ export default function HowToHourKeepPage() {
         await completeAssessmentProgress(progress.id);
       }
 
-      // Navigate to results
-      router.push("/how-to-hourkeep/results");
+      // Navigate to getting started screen
+      advanceStep("gettingStarted");
     } catch (error) {
       console.error("Error saving assessment result:", error);
+    }
+  };
+
+  const handleStartTracking = async () => {
+    if (!recommendation || !userId) {
+      router.push("/tracking");
+      return;
+    }
+
+    try {
+      // Configure dashboard based on recommendation
+      const currentMonth = format(new Date(), "yyyy-MM");
+      const { primaryMethod } = recommendation;
+
+      if (primaryMethod === "income-tracking") {
+        await setComplianceMode(userId, currentMonth, "income");
+        await setSeasonalWorkerStatus(userId, currentMonth, false);
+      } else if (primaryMethod === "seasonal-income-tracking") {
+        await setComplianceMode(userId, currentMonth, "income");
+        await setSeasonalWorkerStatus(userId, currentMonth, true);
+      } else if (primaryMethod === "hour-tracking") {
+        await setComplianceMode(userId, currentMonth, "hours");
+      }
+
+      // Update profile's onboarding context with new notice details
+      const profile = await getProfile(userId);
+      if (profile) {
+        // Only update onboarding context if user provided notice details
+        // Otherwise, preserve existing context
+        const updatedOnboardingContext: OnboardingContext = hasNotice
+          ? {
+              hasNotice,
+              monthsRequired,
+              deadline: deadline ? new Date(deadline) : undefined,
+              completedAt: new Date(),
+            }
+          : {
+              // User said no to notice, preserve existing context or set defaults
+              hasNotice: false,
+              monthsRequired: profile.onboardingContext?.monthsRequired,
+              deadline: profile.onboardingContext?.deadline,
+              completedAt: new Date(),
+            };
+
+        await updateProfile(userId, {
+          onboardingContext: updatedOnboardingContext,
+        });
+      }
+
+      // Dispatch event to notify dashboard of assessment completion
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("assessment-completed"));
+      }
+
+      router.push("/tracking");
+    } catch (error) {
+      console.error("Error configuring dashboard:", error);
+      router.push("/tracking");
     }
   };
 
@@ -498,22 +631,48 @@ export default function HowToHourKeepPage() {
 
         {/* Notice Question */}
         {currentStep === "notice" && (
-          <QuestionWrapper
-            onBack={stepHistory.length > 0 ? handleBack : undefined}
-            showContinue={false}
-          >
-            <NoticeQuestion onAnswer={handleNoticeAnswer} />
-          </QuestionWrapper>
+          <Box sx={{ py: 2 }}>
+            <NoticeQuestion
+              onAnswer={handleNoticeAnswer}
+              onBack={stepHistory.length > 0 ? handleBack : undefined}
+            />
+          </Box>
+        )}
+
+        {/* Notice Details */}
+        {currentStep === "noticeDetails" && (
+          <Box sx={{ py: 2 }}>
+            <NoticeDetailsQuestion
+              monthsRequired={monthsRequired}
+              deadline={deadline}
+              onMonthsChange={handleMonthsChange}
+              onDeadlineChange={handleDeadlineChange}
+              onBack={handleBack}
+              onContinue={handleNoticeDetailsComplete}
+            />
+          </Box>
+        )}
+
+        {/* Notice Follow-up With Notice */}
+        {currentStep === "noticeFollowUpWithNotice" && (
+          <Box sx={{ py: 2 }}>
+            <NoticeFollowUpWithNotice
+              onCheckExemption={() => handleNoticeFollowUp(true)}
+              onSkipToWork={() => handleNoticeFollowUp(false)}
+              onBack={handleBack}
+            />
+          </Box>
         )}
 
         {/* Notice Follow-up */}
         {currentStep === "notice-followup" && (
-          <QuestionWrapper onBack={handleBack} showContinue={false}>
+          <Box sx={{ py: 2 }}>
             <NoticeFollowUp
               onCheckExemption={() => handleNoticeFollowUp(true)}
               onSkipToWork={() => handleNoticeFollowUp(false)}
+              onBack={handleBack}
             />
-          </QuestionWrapper>
+          </Box>
         )}
 
         {/* Exemption Questions */}
@@ -776,7 +935,7 @@ export default function HowToHourKeepPage() {
           <Box sx={{ py: 2 }}>
             <SingleChoiceQuestion
               question="Is your work seasonal?"
-              helperText="Seasonal work means your income or hours vary significantly by season—like farming, tourism, construction, or holiday retail. This includes work you do some months but not others."
+              helperText="Seasonal work means your income or hours vary significantly by season"
               options={[
                 { value: "yes", label: "Yes, my work is seasonal" },
                 { value: "no", label: "No, it's year-round" },
@@ -994,6 +1153,17 @@ export default function HowToHourKeepPage() {
               />
             </Box>
           </Box>
+        )}
+
+        {/* Getting Started */}
+        {currentStep === "gettingStarted" && (
+          <GettingStartedContextual
+            hasNotice={hasNotice}
+            monthsRequired={monthsRequired}
+            deadline={deadline ? new Date(deadline) : undefined}
+            recommendation={recommendation}
+            onStartTracking={handleStartTracking}
+          />
         )}
       </Box>
     </Container>

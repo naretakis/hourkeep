@@ -162,9 +162,9 @@ export function AssessmentBadge({
     <Paper
       sx={{
         p: 3,
-        bgcolor: "info.50",
+        bgcolor: "primary.50",
         border: "2px solid",
-        borderColor: "info.main",
+        borderColor: "primary.main",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
@@ -173,7 +173,7 @@ export function AssessmentBadge({
             width: 48,
             height: 48,
             borderRadius: "50%",
-            bgcolor: "info.main",
+            bgcolor: "primary.main",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -195,7 +195,7 @@ export function AssessmentBadge({
           >
             <Typography
               variant="h6"
-              sx={{ color: "info.main", fontWeight: 600 }}
+              sx={{ color: "primary.main", fontWeight: 600 }}
             >
               Recommended:
             </Typography>
@@ -203,7 +203,7 @@ export function AssessmentBadge({
               label={getComplianceMethodLabel(recommendation.primaryMethod)}
               size="small"
               sx={{
-                bgcolor: "info.main",
+                bgcolor: "primary.main",
                 color: "white",
                 fontWeight: 600,
               }}
@@ -218,9 +218,9 @@ export function AssessmentBadge({
               size="small"
               onClick={onViewDetails}
               sx={{
-                bgcolor: "info.main",
+                bgcolor: "primary.main",
                 "&:hover": {
-                  bgcolor: "info.dark",
+                  bgcolor: "primary.dark",
                 },
               }}
             >

@@ -415,6 +415,10 @@ export default function OnboardingPage() {
   // Handle getting started completion
   const handleStartTracking = () => {
     setRedirecting(true);
+    // Dispatch event to ensure dashboard reloads with latest data
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("assessment-completed"));
+    }
     router.push("/tracking");
   };
 

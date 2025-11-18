@@ -167,15 +167,15 @@ export function DashboardGuidance({
     <Card
       ref={cardRef}
       sx={{
-        backgroundColor: "info.lighter",
+        backgroundColor: "primary.50",
         border: "2px solid",
-        borderColor: "info.light",
+        borderColor: "primary.main",
         boxShadow: 2,
         transition: "all 0.3s ease-in-out",
         ...(highlight && {
           boxShadow: 6,
           transform: "scale(1.02)",
-          borderColor: "info.main",
+          borderColor: "primary.dark",
         }),
       }}
     >
@@ -193,7 +193,7 @@ export function DashboardGuidance({
             variant="h6"
             sx={{
               fontWeight: 600,
-              color: "info.dark",
+              color: "primary.main",
               display: "flex",
               alignItems: "center",
               gap: 1,
@@ -255,7 +255,7 @@ export function DashboardGuidance({
                 <ListItemIcon
                   sx={{
                     minWidth: 40,
-                    color: "info.main",
+                    color: "primary.main",
                     mt: 0.25,
                   }}
                 >
@@ -273,7 +273,7 @@ export function DashboardGuidance({
                   <Box
                     sx={{
                       ml: 1,
-                      color: "info.main",
+                      color: "primary.main",
                       display: "flex",
                       alignItems: "center",
                     }}

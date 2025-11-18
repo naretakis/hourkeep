@@ -29,6 +29,12 @@ export interface AssessmentResponses {
   receivedAgencyNotice?: boolean;
   skipToWorkQuestions?: boolean; // User choice after notice
 
+  // Notice context (NEW)
+  noticeContext?: {
+    monthsRequired?: number;
+    deadline?: Date;
+  };
+
   // Exemption responses (reusing existing type)
   exemption: ExemptionResponses;
 
