@@ -15,6 +15,7 @@ Fixed conditional logic in the assessment/onboarding flow that was showing irrel
 
 - **Skip work questions for non-workers** - Users who select "No" to having a job now skip directly to the activities question instead of being asked about seasonal work, income, and hours
 - **Removed redundant seasonal question** - Consolidated the separate "Is your work seasonal?" step into the job status question
+- **Removed unused payment frequency question** - The "How often do you get paid?" question was collected but never used in recommendations, so it's been removed to streamline the flow
 
 #### Improvements
 
@@ -26,12 +27,21 @@ Fixed conditional logic in the assessment/onboarding flow that was showing irrel
 - **Proper routing for gig workers** - Gig/freelance workers now go through the regular income flow instead of being incorrectly routed to seasonal income averaging
 - **Seasonal workers get 6-month averaging** - Only true seasonal workers (construction, agriculture, tourism) are routed to the 6-month income averaging flow
 
-#### Technical Details
+### Refactored - Unified Assessment Flow Component
 
-- Updated both `how-to-hourkeep/page.tsx` and `onboarding/page.tsx` with consistent logic
-- Removed `work-seasonal` step from both flows
-- Updated `jobStatus` type to include `"yes-gig"` option
-- Fixed pre-population logic when retaking assessment
+Extracted the shared assessment logic into a single reusable component to eliminate code duplication.
+
+#### Changes
+
+- **New `AssessmentFlow` component** - Created `src/components/assessment/AssessmentFlow.tsx` containing all assessment step logic, state management, and UI
+- **Simplified page components** - Both `how-to-hourkeep/page.tsx` (~100 lines) and `onboarding/page.tsx` (~130 lines) now use the shared component
+- **Single source of truth** - Changes to questions or routing logic only need to be made once
+
+#### Benefits
+
+- Reduced ~2000 lines of duplicated code to ~200 lines of shared code
+- Guaranteed consistent behavior between onboarding and retake assessment flows
+- Easier maintenance and testing
 
 ---
 
