@@ -27,6 +27,18 @@ Fixed conditional logic in the assessment/onboarding flow that was showing irrel
 - **Proper routing for gig workers** - Gig/freelance workers now go through the regular income flow instead of being incorrectly routed to seasonal income averaging
 - **Seasonal workers get 6-month averaging** - Only true seasonal workers (construction, agriculture, tourism) are routed to the 6-month income averaging flow
 
+### Improved - Alternative Methods Messaging
+
+Enhanced the assessment results and completion screens to show users how close they are to meeting alternative compliance thresholds.
+
+#### Changes
+
+- **Specific numbers for near-threshold users** - Instead of generic "not an option" messages, users now see exactly how close they are (e.g., "You're at 72 hours/month — just 8 more hours to reach 80")
+- **Income tracking guidance** - Shows current income and how much more is needed to reach $580 threshold
+- **Hour tracking guidance** - Shows total hours from all activities and how many more are needed to reach 80
+- **Threshold proximity detection** - "Close" messaging appears when within 20 hours or $100 of thresholds
+- **Consistent messaging** - Same improved messaging on both assessment results page and assessment complete screen
+
 ### Refactored - Unified Assessment Flow Component
 
 Extracted the shared assessment logic into a single reusable component to eliminate code duplication.

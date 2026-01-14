@@ -605,6 +605,7 @@ export function AssessmentFlow({
           monthsRequired={monthsRequired}
           deadline={deadline ? new Date(deadline) : undefined}
           recommendation={recommendation}
+          responses={responses}
           onStartTracking={handleStartTracking}
         />
       )}

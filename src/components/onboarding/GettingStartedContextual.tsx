@@ -23,7 +23,7 @@ import {
   FileDownload as FileDownloadIcon,
   Add as AddIcon,
 } from "@mui/icons-material";
-import { Recommendation } from "@/types/assessment";
+import { Recommendation, AssessmentResponses } from "@/types/assessment";
 import {
   getComplianceMethodLabel,
   getComplianceMethodDescription,
@@ -34,6 +34,7 @@ interface GettingStartedContextualProps {
   monthsRequired?: number;
   deadline?: Date;
   recommendation?: Recommendation;
+  responses?: Partial<AssessmentResponses>;
   onStartTracking: () => void;
 }
 
@@ -42,6 +43,7 @@ export function GettingStartedContextual({
   monthsRequired,
   deadline,
   recommendation,
+  responses,
   onStartTracking,
 }: GettingStartedContextualProps) {
   const calculateDaysRemaining = () => {
@@ -285,7 +287,16 @@ export function GettingStartedContextual({
                         <Typography variant="caption">
                           {method === "income-tracking" &&
                             !isAvailable &&
-                            "You're not currently earning $580/month. If your income increases, you can switch to this easier method."}
+                            (() => {
+                              const income = responses?.monthlyIncome || 0;
+                              const needed = 580 - income;
+                              if (income > 0 && needed <= 100) {
+                                return `You're at $${income}/month — just $${needed} away from the $580 threshold. A small income increase would let you use this easier method.`;
+                              } else if (income > 0) {
+                                return `You're at $${income}/month. If your income increases to $580 or more, you can switch to this easier method.`;
+                              }
+                              return "You're not currently earning $580/month. If your income increases, you can switch to this easier method.";
+                            })()}
                           {method === "income-tracking" &&
                             isAlternative &&
                             "This also works for you, but we recommended hour tracking based on your situation."}
@@ -297,7 +308,19 @@ export function GettingStartedContextual({
                             "This also works for you, but we recommended a simpler option."}
                           {method === "hour-tracking" &&
                             !isAvailable &&
-                            "You're not currently at 80 hours/month. If you add more activities, you can use this method."}
+                            (() => {
+                              const totalHours = (responses?.monthlyWorkHours || 0) +
+                                (responses?.volunteerHoursPerMonth || 0) +
+                                (responses?.schoolHoursPerMonth || 0) +
+                                (responses?.workProgramHoursPerMonth || 0);
+                              const needed = 80 - totalHours;
+                              if (totalHours > 0 && needed <= 20) {
+                                return `You're at ${totalHours} hours/month — just ${needed} more hours to reach 80. Adding a bit more work, volunteering, or school time would get you there.`;
+                              } else if (totalHours > 0) {
+                                return `You're at ${totalHours} hours/month. If you add more activities to reach 80/month, you can use this method.`;
+                              }
+                              return "You're not currently at 80 hours/month. If you add more activities, you can use this method.";
+                            })()}
                           {method === "hour-tracking" &&
                             isAlternative &&
                             recommendation.primaryMethod ===
