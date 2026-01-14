@@ -54,7 +54,6 @@ type OnboardingStep =
   | "noticeDetails"
   | "exemption"
   | "work-job"
-  | "work-seasonal"
   | "work-frequency"
   | "work-income"
   | "work-income-seasonal"
@@ -73,7 +72,7 @@ interface OnboardingState {
   assessmentResponses: Partial<AssessmentResponses>;
   recommendation?: Recommendation;
   exemptionQuestionIndex: number;
-  jobStatus?: "yes" | "no" | "sometimes";
+  jobStatus?: "yes" | "yes-gig" | "yes-seasonal" | "no";
   seasonalStatus?: "yes" | "no" | "not-sure";
   sixMonthTotal?: number;
   profileData?: {
@@ -444,7 +443,6 @@ export default function OnboardingPage() {
     // Work and activities questions (60-95%)
     const workSteps = [
       "work-job",
-      "work-seasonal",
       "work-frequency",
       "work-income",
       "work-income-seasonal",
@@ -631,66 +629,41 @@ export default function OnboardingPage() {
                   question="Do you currently have a job?"
                   helperText="This includes full-time, part-time, gig work, or self-employment"
                   options={[
-                    { value: "yes", label: "Yes" },
+                    { value: "yes", label: "Yes, year-round" },
+                    { value: "yes-gig", label: "Yes, but my hours/income vary (gig work, freelance, etc.)" },
+                    { value: "yes-seasonal", label: "Yes, seasonal work (construction, agriculture, tourism, etc.)" },
                     { value: "no", label: "No" },
-                    { value: "sometimes", label: "Sometimes" },
                   ]}
                   value={onboardingState.jobStatus}
                   onChange={(value) => {
-                    const status = value as "yes" | "no" | "sometimes";
+                    const status = value as "yes" | "yes-gig" | "yes-seasonal" | "no";
                     setOnboardingState((prev) => ({
                       ...prev,
                       jobStatus: status,
+                      seasonalStatus: status === "yes-seasonal" ? "yes" : "no",
                       assessmentResponses: {
                         ...prev.assessmentResponses,
-                        hasJob: status === "yes" || status === "sometimes",
-                      },
-                    }));
-                  }}
-                  onNext={() => advanceStep("work-seasonal")}
-                  onBack={handleBack}
-                  isFirst={stepHistory.length === 0}
-                />
-              )}
-
-              {step === "work-seasonal" && (
-                <SingleChoiceQuestion
-                  question="Is your work seasonal?"
-                  helperText="Seasonal work means your income or hours vary significantly by season"
-                  options={[
-                    { value: "yes", label: "Yes, my work is seasonal" },
-                    { value: "no", label: "No, it's year-round" },
-                    { value: "not-sure", label: "Not sure" },
-                  ]}
-                  value={onboardingState.seasonalStatus}
-                  onChange={(value) => {
-                    const status = value as "yes" | "no" | "not-sure";
-                    setOnboardingState((prev) => ({
-                      ...prev,
-                      seasonalStatus: status,
-                      assessmentResponses: {
-                        ...prev.assessmentResponses,
-                        isSeasonalWork: status === "yes",
+                        hasJob: status !== "no",
+                        isSeasonalWork: status === "yes-seasonal",
                       },
                     }));
                   }}
                   onNext={() => {
-                    if (
-                      !onboardingState.assessmentResponses.hasJob &&
-                      !onboardingState.assessmentResponses.isSeasonalWork
-                    ) {
+                    // No job → skip to other activities
+                    if (onboardingState.jobStatus === "no") {
                       advanceStep("activities");
-                    } else if (
-                      onboardingState.assessmentResponses.isSeasonalWork
-                    ) {
+                    }
+                    // Seasonal job → ask about 6-month income (for averaging)
+                    else if (onboardingState.jobStatus === "yes-seasonal") {
                       advanceStep("work-income-seasonal");
-                    } else if (onboardingState.assessmentResponses.hasJob) {
+                    }
+                    // Year-round or gig work → regular income flow
+                    else {
                       advanceStep("work-frequency");
-                    } else {
-                      advanceStep("activities");
                     }
                   }}
                   onBack={handleBack}
+                  isFirst={stepHistory.length === 0}
                 />
               )}
 

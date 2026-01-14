@@ -54,7 +54,6 @@ type AssessmentStep =
   | "noticeFollowUpWithNotice"
   | "exemption"
   | "work-job"
-  | "work-seasonal"
   | "work-frequency"
   | "work-income"
   | "work-income-seasonal"
@@ -80,7 +79,7 @@ export default function HowToHourKeepPage() {
     undefined,
   );
   const [jobStatus, setJobStatus] = useState<
-    "yes" | "no" | "sometimes" | undefined
+    "yes" | "yes-gig" | "yes-seasonal" | "no" | undefined
   >(undefined);
   const [seasonalStatus, setSeasonalStatus] = useState<
     "yes" | "no" | "not-sure" | undefined
@@ -159,7 +158,16 @@ export default function HowToHourKeepPage() {
           // Also pre-populate derived state for UI
           if (latestResult.responses.hasJob !== undefined) {
             const hasJob = latestResult.responses.hasJob;
-            setJobStatus(hasJob ? "yes" : "no");
+            const isSeasonal = latestResult.responses.isSeasonalWork;
+            if (!hasJob) {
+              setJobStatus("no");
+            } else if (isSeasonal) {
+              setJobStatus("yes-seasonal");
+            } else {
+              // Default to "yes" for year-round; we can't distinguish gig from regular
+              // from stored data, but that's fine since they route the same way
+              setJobStatus("yes");
+            }
           }
 
           if (latestResult.responses.isSeasonalWork !== undefined) {
@@ -739,20 +747,37 @@ export default function HowToHourKeepPage() {
               question="Do you currently have a job?"
               helperText="This includes full-time, part-time, gig work, or self-employment"
               options={[
-                { value: "yes", label: "Yes" },
+                { value: "yes", label: "Yes, year-round" },
+                { value: "yes-gig", label: "Yes, but my hours/income vary (gig work, freelance, etc.)" },
+                { value: "yes-seasonal", label: "Yes, seasonal work (construction, agriculture, tourism, etc.)" },
                 { value: "no", label: "No" },
-                { value: "sometimes", label: "Sometimes" },
               ]}
               value={jobStatus}
               onChange={(value) => {
-                const status = value as "yes" | "no" | "sometimes";
+                const status = value as "yes" | "yes-gig" | "yes-seasonal" | "no";
                 setJobStatus(status);
                 setResponses({
                   ...responses,
-                  hasJob: status === "yes" || status === "sometimes",
+                  hasJob: status !== "no",
+                  isSeasonalWork: status === "yes-seasonal",
                 });
+                // Update seasonal status UI state
+                setSeasonalStatus(status === "yes-seasonal" ? "yes" : "no");
               }}
-              onNext={() => advanceStep("work-seasonal")}
+              onNext={() => {
+                // No job → skip to other activities
+                if (jobStatus === "no") {
+                  advanceStep("activities");
+                }
+                // Seasonal job → ask about 6-month income (for averaging)
+                else if (jobStatus === "yes-seasonal") {
+                  advanceStep("work-income-seasonal");
+                }
+                // Year-round or gig work → regular income flow
+                else {
+                  advanceStep("work-frequency");
+                }
+              }}
               onBack={stepHistory.length > 0 ? handleBack : undefined}
               isFirst={stepHistory.length === 0}
             />
@@ -789,12 +814,8 @@ export default function HowToHourKeepPage() {
                   });
                 }}
                 onNext={() => {
-                  // After seasonal income, ask about hours if they have a job
-                  if (responses.hasJob) {
-                    advanceStep("work-hours");
-                  } else {
-                    advanceStep("activities");
-                  }
+                  // After seasonal income, ask about work hours
+                  advanceStep("work-hours");
                 }}
                 onBack={handleBack}
               />
@@ -927,49 +948,6 @@ export default function HowToHourKeepPage() {
                 }}
               />
             </Box>
-          </Box>
-        )}
-
-        {/* Work Questions - Seasonal (now asked earlier) */}
-        {currentStep === "work-seasonal" && (
-          <Box sx={{ py: 2 }}>
-            <SingleChoiceQuestion
-              question="Is your work seasonal?"
-              helperText="Seasonal work means your income or hours vary significantly by season"
-              options={[
-                { value: "yes", label: "Yes, my work is seasonal" },
-                { value: "no", label: "No, it's year-round" },
-                { value: "not-sure", label: "Not sure" },
-              ]}
-              value={seasonalStatus}
-              onChange={(value) => {
-                const status = value as "yes" | "no" | "not-sure";
-                setSeasonalStatus(status);
-                setResponses({
-                  ...responses,
-                  isSeasonalWork: status === "yes",
-                });
-              }}
-              onNext={() => {
-                // If no job and not seasonal, skip to activities
-                if (!responses.hasJob && !responses.isSeasonalWork) {
-                  advanceStep("activities");
-                }
-                // If seasonal work, ask about 6-month income
-                else if (responses.isSeasonalWork) {
-                  advanceStep("work-income-seasonal");
-                }
-                // If has job but not seasonal, ask about payment frequency
-                else if (responses.hasJob) {
-                  advanceStep("work-frequency");
-                }
-                // Otherwise skip to activities
-                else {
-                  advanceStep("activities");
-                }
-              }}
-              onBack={handleBack}
-            />
           </Box>
         )}
 

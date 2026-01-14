@@ -5,6 +5,36 @@ All notable changes to HourKeep will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.2.0] - 2025-01-14
+
+### Fixed - Assessment Flow Routing
+
+Fixed conditional logic in the assessment/onboarding flow that was showing irrelevant questions based on previous answers.
+
+#### Bug Fixes
+
+- **Skip work questions for non-workers** - Users who select "No" to having a job now skip directly to the activities question instead of being asked about seasonal work, income, and hours
+- **Removed redundant seasonal question** - Consolidated the separate "Is your work seasonal?" step into the job status question
+
+#### Improvements
+
+- **Clearer job status options** - Replaced ambiguous "Sometimes" option with four distinct choices:
+  - "Yes, year-round" - regular employment
+  - "Yes, but my hours/income vary (gig work, freelance, etc.)" - irregular but not seasonal
+  - "Yes, seasonal work (construction, agriculture, tourism, etc.)" - true seasonal workers
+  - "No" - not currently employed
+- **Proper routing for gig workers** - Gig/freelance workers now go through the regular income flow instead of being incorrectly routed to seasonal income averaging
+- **Seasonal workers get 6-month averaging** - Only true seasonal workers (construction, agriculture, tourism) are routed to the 6-month income averaging flow
+
+#### Technical Details
+
+- Updated both `how-to-hourkeep/page.tsx` and `onboarding/page.tsx` with consistent logic
+- Removed `work-seasonal` step from both flows
+- Updated `jobStatus` type to include `"yes-gig"` option
+- Fixed pre-population logic when retaking assessment
+
+---
+
 ## [7.1.0] - 2025-11-18
 
 ### Changed - UX Language Refinement & UI Simplification
