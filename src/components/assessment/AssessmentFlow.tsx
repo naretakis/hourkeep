@@ -19,10 +19,7 @@ import {
   HoursConverter,
   IncomeConverter,
 } from "@/components/assessment/EstimationTools";
-import {
-  AssessmentResponses,
-  Recommendation,
-} from "@/types/assessment";
+import { AssessmentResponses, Recommendation } from "@/types/assessment";
 import { ExemptionResponses } from "@/types/exemptions";
 import { allQuestions as exemptionQuestions } from "@/lib/exemptions/questions";
 import { calculateExemption } from "@/lib/exemptions/calculator";
@@ -63,14 +60,20 @@ export interface AssessmentFlowProps {
   onComplete: (
     responses: AssessmentResponses,
     recommendation: Recommendation,
-    noticeContext: { hasNotice: boolean; monthsRequired?: number; deadline?: string }
+    noticeContext: {
+      hasNotice: boolean;
+      monthsRequired?: number;
+      deadline?: string;
+    },
   ) => void;
   onSkip?: () => void;
   saveProgress?: boolean;
 }
 
 // Helper to compute initial job status from responses
-function getInitialJobStatus(responses?: Partial<AssessmentResponses>): "yes" | "yes-gig" | "yes-seasonal" | "no" | undefined {
+function getInitialJobStatus(
+  responses?: Partial<AssessmentResponses>,
+): "yes" | "yes-gig" | "yes-seasonal" | "no" | undefined {
   if (responses?.hasJob === undefined) return undefined;
   if (!responses.hasJob) return "no";
   if (responses.isSeasonalWork) return "yes-seasonal";
@@ -87,32 +90,34 @@ export function AssessmentFlow({
   saveProgress = true,
 }: AssessmentFlowProps) {
   const [currentStep, setCurrentStep] = useState<AssessmentStep>(
-    showIntro ? "intro" : "notice"
+    showIntro ? "intro" : "notice",
   );
   const [stepHistory, setStepHistory] = useState<AssessmentStep[]>([]);
   const [responses, setResponses] = useState<Partial<AssessmentResponses>>(
-    initialResponses || { exemption: {} }
+    initialResponses || { exemption: {} },
   );
   const [exemptionQuestionIndex, setExemptionQuestionIndex] = useState(0);
   const [sixMonthTotal, setSixMonthTotal] = useState<number | undefined>(
     initialResponses?.isSeasonalWork && initialResponses?.monthlyIncome
       ? initialResponses.monthlyIncome * 6
-      : undefined
+      : undefined,
   );
   const [jobStatus, setJobStatus] = useState<
     "yes" | "yes-gig" | "yes-seasonal" | "no" | undefined
   >(getInitialJobStatus(initialResponses));
   // seasonalStatus is only used internally for UI, derived from jobStatus
-  const [hasNotice, setHasNotice] = useState(initialNoticeContext?.hasNotice || false);
+  const [hasNotice, setHasNotice] = useState(
+    initialNoticeContext?.hasNotice || false,
+  );
   const [monthsRequired, setMonthsRequired] = useState<number | undefined>(
-    initialNoticeContext?.monthsRequired
+    initialNoticeContext?.monthsRequired,
   );
   const [deadline, setDeadline] = useState<string | undefined>(
-    initialNoticeContext?.deadline
+    initialNoticeContext?.deadline,
   );
-  const [recommendation, setRecommendation] = useState<Recommendation | undefined>(
-    undefined
-  );
+  const [recommendation, setRecommendation] = useState<
+    Recommendation | undefined
+  >(undefined);
 
   const getStepNumber = useCallback((): number => {
     let progress = 0;
@@ -128,7 +133,7 @@ export function AssessmentFlow({
       currentStep.startsWith("activities")
     ) {
       const workSteps = stepHistory.filter(
-        (s) => s.startsWith("work") || s.startsWith("activities")
+        (s) => s.startsWith("work") || s.startsWith("activities"),
       ).length;
       progress = 60 + Math.min(workSteps * 5, 35);
     } else if (currentStep === "gettingStarted") progress = 95;
@@ -137,7 +142,13 @@ export function AssessmentFlow({
 
   // Auto-save progress
   useEffect(() => {
-    if (!saveProgress || !userId || currentStep === "intro" || currentStep === "gettingStarted") return;
+    if (
+      !saveProgress ||
+      !userId ||
+      currentStep === "intro" ||
+      currentStep === "gettingStarted"
+    )
+      return;
     const doSave = async () => {
       try {
         const stepNumber = getStepNumber();
@@ -175,9 +186,11 @@ export function AssessmentFlow({
     }
   };
 
-  const handleNoticeDetailsComplete = () => advanceStep("noticeFollowUpWithNotice");
+  const handleNoticeDetailsComplete = () =>
+    advanceStep("noticeFollowUpWithNotice");
   const handleMonthsChange = (months: number) => setMonthsRequired(months);
-  const handleDeadlineChange = (deadlineValue: string) => setDeadline(deadlineValue);
+  const handleDeadlineChange = (deadlineValue: string) =>
+    setDeadline(deadlineValue);
 
   const handleNoticeFollowUp = (checkExemption: boolean) => {
     if (checkExemption) {
@@ -187,21 +200,48 @@ export function AssessmentFlow({
     }
   };
 
-  const handleExemptionAnswer = (questionId: string, answer: boolean | Date) => {
+  const handleExemptionAnswer = (
+    questionId: string,
+    answer: boolean | Date,
+  ) => {
     const updatedExemption = { ...responses.exemption };
     switch (questionId) {
-      case "age-dob": updatedExemption.dateOfBirth = answer as Date; break;
-      case "family-pregnant": updatedExemption.isPregnantOrPostpartum = answer as boolean; break;
-      case "family-child": updatedExemption.hasDependentChild13OrYounger = answer as boolean; break;
-      case "family-disabled-dependent": updatedExemption.isParentGuardianOfDisabled = answer as boolean; break;
-      case "health-medicare": updatedExemption.isOnMedicare = answer as boolean; break;
-      case "health-non-magi": updatedExemption.isEligibleForNonMAGI = answer as boolean; break;
-      case "health-disabled-veteran": updatedExemption.isDisabledVeteran = answer as boolean; break;
-      case "health-medically-frail": updatedExemption.isMedicallyFrail = answer as boolean; break;
-      case "program-snap-tanf": updatedExemption.isOnSNAPOrTANFMeetingRequirements = answer as boolean; break;
-      case "program-rehab": updatedExemption.isInRehabProgram = answer as boolean; break;
-      case "other-incarcerated": updatedExemption.isIncarceratedOrRecentlyReleased = answer as boolean; break;
-      case "other-tribal": updatedExemption.hasTribalStatus = answer as boolean; break;
+      case "age-dob":
+        updatedExemption.dateOfBirth = answer as Date;
+        break;
+      case "family-pregnant":
+        updatedExemption.isPregnantOrPostpartum = answer as boolean;
+        break;
+      case "family-child":
+        updatedExemption.hasDependentChild13OrYounger = answer as boolean;
+        break;
+      case "family-disabled-dependent":
+        updatedExemption.isParentGuardianOfDisabled = answer as boolean;
+        break;
+      case "health-medicare":
+        updatedExemption.isOnMedicare = answer as boolean;
+        break;
+      case "health-non-magi":
+        updatedExemption.isEligibleForNonMAGI = answer as boolean;
+        break;
+      case "health-disabled-veteran":
+        updatedExemption.isDisabledVeteran = answer as boolean;
+        break;
+      case "health-medically-frail":
+        updatedExemption.isMedicallyFrail = answer as boolean;
+        break;
+      case "program-snap-tanf":
+        updatedExemption.isOnSNAPOrTANFMeetingRequirements = answer as boolean;
+        break;
+      case "program-rehab":
+        updatedExemption.isInRehabProgram = answer as boolean;
+        break;
+      case "other-incarcerated":
+        updatedExemption.isIncarceratedOrRecentlyReleased = answer as boolean;
+        break;
+      case "other-tribal":
+        updatedExemption.hasTribalStatus = answer as boolean;
+        break;
     }
     setResponses({ ...responses, exemption: updatedExemption });
   };
@@ -220,21 +260,73 @@ export function AssessmentFlow({
     for (let i = 0; i <= exemptionQuestionIndex; i++) {
       const questionId = exemptionQuestions[i].id;
       switch (questionId) {
-        case "age-dob": if (responses.exemption.dateOfBirth) answeredQuestions.dateOfBirth = responses.exemption.dateOfBirth; break;
-        case "family-pregnant": if (responses.exemption.isPregnantOrPostpartum !== undefined) answeredQuestions.isPregnantOrPostpartum = responses.exemption.isPregnantOrPostpartum; break;
-        case "family-child": if (responses.exemption.hasDependentChild13OrYounger !== undefined) answeredQuestions.hasDependentChild13OrYounger = responses.exemption.hasDependentChild13OrYounger; break;
-        case "family-disabled-dependent": if (responses.exemption.isParentGuardianOfDisabled !== undefined) answeredQuestions.isParentGuardianOfDisabled = responses.exemption.isParentGuardianOfDisabled; break;
-        case "health-medicare": if (responses.exemption.isOnMedicare !== undefined) answeredQuestions.isOnMedicare = responses.exemption.isOnMedicare; break;
-        case "health-non-magi": if (responses.exemption.isEligibleForNonMAGI !== undefined) answeredQuestions.isEligibleForNonMAGI = responses.exemption.isEligibleForNonMAGI; break;
-        case "health-disabled-veteran": if (responses.exemption.isDisabledVeteran !== undefined) answeredQuestions.isDisabledVeteran = responses.exemption.isDisabledVeteran; break;
-        case "health-medically-frail": if (responses.exemption.isMedicallyFrail !== undefined) answeredQuestions.isMedicallyFrail = responses.exemption.isMedicallyFrail; break;
-        case "program-snap-tanf": if (responses.exemption.isOnSNAPOrTANFMeetingRequirements !== undefined) answeredQuestions.isOnSNAPOrTANFMeetingRequirements = responses.exemption.isOnSNAPOrTANFMeetingRequirements; break;
-        case "program-rehab": if (responses.exemption.isInRehabProgram !== undefined) answeredQuestions.isInRehabProgram = responses.exemption.isInRehabProgram; break;
-        case "other-incarcerated": if (responses.exemption.isIncarceratedOrRecentlyReleased !== undefined) answeredQuestions.isIncarceratedOrRecentlyReleased = responses.exemption.isIncarceratedOrRecentlyReleased; break;
-        case "other-tribal": if (responses.exemption.hasTribalStatus !== undefined) answeredQuestions.hasTribalStatus = responses.exemption.hasTribalStatus; break;
+        case "age-dob":
+          if (responses.exemption.dateOfBirth)
+            answeredQuestions.dateOfBirth = responses.exemption.dateOfBirth;
+          break;
+        case "family-pregnant":
+          if (responses.exemption.isPregnantOrPostpartum !== undefined)
+            answeredQuestions.isPregnantOrPostpartum =
+              responses.exemption.isPregnantOrPostpartum;
+          break;
+        case "family-child":
+          if (responses.exemption.hasDependentChild13OrYounger !== undefined)
+            answeredQuestions.hasDependentChild13OrYounger =
+              responses.exemption.hasDependentChild13OrYounger;
+          break;
+        case "family-disabled-dependent":
+          if (responses.exemption.isParentGuardianOfDisabled !== undefined)
+            answeredQuestions.isParentGuardianOfDisabled =
+              responses.exemption.isParentGuardianOfDisabled;
+          break;
+        case "health-medicare":
+          if (responses.exemption.isOnMedicare !== undefined)
+            answeredQuestions.isOnMedicare = responses.exemption.isOnMedicare;
+          break;
+        case "health-non-magi":
+          if (responses.exemption.isEligibleForNonMAGI !== undefined)
+            answeredQuestions.isEligibleForNonMAGI =
+              responses.exemption.isEligibleForNonMAGI;
+          break;
+        case "health-disabled-veteran":
+          if (responses.exemption.isDisabledVeteran !== undefined)
+            answeredQuestions.isDisabledVeteran =
+              responses.exemption.isDisabledVeteran;
+          break;
+        case "health-medically-frail":
+          if (responses.exemption.isMedicallyFrail !== undefined)
+            answeredQuestions.isMedicallyFrail =
+              responses.exemption.isMedicallyFrail;
+          break;
+        case "program-snap-tanf":
+          if (
+            responses.exemption.isOnSNAPOrTANFMeetingRequirements !== undefined
+          )
+            answeredQuestions.isOnSNAPOrTANFMeetingRequirements =
+              responses.exemption.isOnSNAPOrTANFMeetingRequirements;
+          break;
+        case "program-rehab":
+          if (responses.exemption.isInRehabProgram !== undefined)
+            answeredQuestions.isInRehabProgram =
+              responses.exemption.isInRehabProgram;
+          break;
+        case "other-incarcerated":
+          if (
+            responses.exemption.isIncarceratedOrRecentlyReleased !== undefined
+          )
+            answeredQuestions.isIncarceratedOrRecentlyReleased =
+              responses.exemption.isIncarceratedOrRecentlyReleased;
+          break;
+        case "other-tribal":
+          if (responses.exemption.hasTribalStatus !== undefined)
+            answeredQuestions.hasTribalStatus =
+              responses.exemption.hasTribalStatus;
+          break;
       }
     }
-    const exemptionResult = calculateExemption(answeredQuestions as ExemptionResponses);
+    const exemptionResult = calculateExemption(
+      answeredQuestions as ExemptionResponses,
+    );
     if (exemptionResult.isExempt) {
       completeAssessment(responses.exemption);
       return;
@@ -250,16 +342,24 @@ export function AssessmentFlow({
     const finalResponses: AssessmentResponses = {
       ...responses,
       exemption: exemptionResponses,
-      noticeContext: hasNotice && (monthsRequired || deadline)
-        ? { monthsRequired, deadline: deadline ? new Date(deadline) : undefined }
-        : undefined,
+      noticeContext:
+        hasNotice && (monthsRequired || deadline)
+          ? {
+              monthsRequired,
+              deadline: deadline ? new Date(deadline) : undefined,
+            }
+          : undefined,
     } as AssessmentResponses;
 
     const calculatedRecommendation = calculateRecommendation(finalResponses);
     setRecommendation(calculatedRecommendation);
 
     try {
-      await saveAssessmentResult(userId, finalResponses, calculatedRecommendation);
+      await saveAssessmentResult(
+        userId,
+        finalResponses,
+        calculatedRecommendation,
+      );
       if (saveProgress) {
         const progress = await getAssessmentProgress(userId);
         if (progress?.id) {
@@ -282,19 +382,32 @@ export function AssessmentFlow({
     const questionId = exemptionQuestions[exemptionQuestionIndex].id;
     const exemption = responses.exemption;
     switch (questionId) {
-      case "age-dob": return exemption?.dateOfBirth ?? null;
-      case "family-pregnant": return exemption?.isPregnantOrPostpartum ?? null;
-      case "family-child": return exemption?.hasDependentChild13OrYounger ?? null;
-      case "family-disabled-dependent": return exemption?.isParentGuardianOfDisabled ?? null;
-      case "health-medicare": return exemption?.isOnMedicare ?? null;
-      case "health-non-magi": return exemption?.isEligibleForNonMAGI ?? null;
-      case "health-disabled-veteran": return exemption?.isDisabledVeteran ?? null;
-      case "health-medically-frail": return exemption?.isMedicallyFrail ?? null;
-      case "program-snap-tanf": return exemption?.isOnSNAPOrTANFMeetingRequirements ?? null;
-      case "program-rehab": return exemption?.isInRehabProgram ?? null;
-      case "other-incarcerated": return exemption?.isIncarceratedOrRecentlyReleased ?? null;
-      case "other-tribal": return exemption?.hasTribalStatus ?? null;
-      default: return null;
+      case "age-dob":
+        return exemption?.dateOfBirth ?? null;
+      case "family-pregnant":
+        return exemption?.isPregnantOrPostpartum ?? null;
+      case "family-child":
+        return exemption?.hasDependentChild13OrYounger ?? null;
+      case "family-disabled-dependent":
+        return exemption?.isParentGuardianOfDisabled ?? null;
+      case "health-medicare":
+        return exemption?.isOnMedicare ?? null;
+      case "health-non-magi":
+        return exemption?.isEligibleForNonMAGI ?? null;
+      case "health-disabled-veteran":
+        return exemption?.isDisabledVeteran ?? null;
+      case "health-medically-frail":
+        return exemption?.isMedicallyFrail ?? null;
+      case "program-snap-tanf":
+        return exemption?.isOnSNAPOrTANFMeetingRequirements ?? null;
+      case "program-rehab":
+        return exemption?.isInRehabProgram ?? null;
+      case "other-incarcerated":
+        return exemption?.isIncarceratedOrRecentlyReleased ?? null;
+      case "other-tribal":
+        return exemption?.hasTribalStatus ?? null;
+      default:
+        return null;
     }
   };
 
@@ -307,7 +420,10 @@ export function AssessmentFlow({
 
       {/* Introduction */}
       {currentStep === "intro" && (
-        <IntroductionScreen onGetStarted={handleIntroGetStarted} onSkip={handleIntroSkip} />
+        <IntroductionScreen
+          onGetStarted={handleIntroGetStarted}
+          onSkip={handleIntroSkip}
+        />
       )}
 
       {/* Notice Question */}
@@ -363,10 +479,17 @@ export function AssessmentFlow({
             question={exemptionQuestions[exemptionQuestionIndex]}
             value={getExemptionValue()}
             onChange={(answer) =>
-              handleExemptionAnswer(exemptionQuestions[exemptionQuestionIndex].id, answer as boolean | Date)
+              handleExemptionAnswer(
+                exemptionQuestions[exemptionQuestionIndex].id,
+                answer as boolean | Date,
+              )
             }
             onNext={handleExemptionContinue}
-            onBack={exemptionQuestionIndex > 0 || stepHistory.length > 0 ? handleExemptionBack : undefined}
+            onBack={
+              exemptionQuestionIndex > 0 || stepHistory.length > 0
+                ? handleExemptionBack
+                : undefined
+            }
             isFirst={exemptionQuestionIndex === 0 && stepHistory.length === 0}
           />
         </Box>
@@ -380,8 +503,16 @@ export function AssessmentFlow({
             helperText="This includes full-time, part-time, gig work, or self-employment"
             options={[
               { value: "yes", label: "Yes, year-round" },
-              { value: "yes-gig", label: "Yes, but my hours/income vary (gig work, freelance, etc.)" },
-              { value: "yes-seasonal", label: "Yes, seasonal work (construction, agriculture, tourism, etc.)" },
+              {
+                value: "yes-gig",
+                label:
+                  "Yes, but my hours/income vary (gig work, freelance, etc.)",
+              },
+              {
+                value: "yes-seasonal",
+                label:
+                  "Yes, seasonal work (construction, agriculture, tourism, etc.)",
+              },
               { value: "no", label: "No" },
             ]}
             value={jobStatus}
@@ -396,7 +527,8 @@ export function AssessmentFlow({
             }}
             onNext={() => {
               if (jobStatus === "no") advanceStep("activities");
-              else if (jobStatus === "yes-seasonal") advanceStep("work-income-seasonal");
+              else if (jobStatus === "yes-seasonal")
+                advanceStep("work-income-seasonal");
               else advanceStep("work-income");
             }}
             onBack={stepHistory.length > 0 ? handleBack : undefined}
@@ -415,7 +547,10 @@ export function AssessmentFlow({
               value={sixMonthTotal}
               onChange={(value) => {
                 setSixMonthTotal(value);
-                setResponses({ ...responses, monthlyIncome: value ? Math.round(value / 6) : undefined });
+                setResponses({
+                  ...responses,
+                  monthlyIncome: value ? Math.round(value / 6) : undefined,
+                });
               }}
               label="Total 6-Month Income"
               prefix="$"
@@ -425,21 +560,35 @@ export function AssessmentFlow({
               notSureChecked={responses.monthlyIncome === 0}
               onNotSureChange={(checked) => {
                 setSixMonthTotal(undefined);
-                setResponses({ ...responses, monthlyIncome: checked ? 0 : undefined });
+                setResponses({
+                  ...responses,
+                  monthlyIncome: checked ? 0 : undefined,
+                });
               }}
               onNext={() => advanceStep("work-hours")}
               onBack={handleBack}
             />
-            {responses.monthlyIncome !== undefined && responses.monthlyIncome > 0 && (
-              <Box sx={{ mt: 2, p: 2, bgcolor: "info.50", borderRadius: 2, border: "1px solid", borderColor: "info.200" }}>
-                <Typography variant="body2" color="info.main">
-                  <strong>Monthly average:</strong> ${responses.monthlyIncome}/month
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Calculated: ${sixMonthTotal} ÷ 6 months
-                </Typography>
-              </Box>
-            )}
+            {responses.monthlyIncome !== undefined &&
+              responses.monthlyIncome > 0 && (
+                <Box
+                  sx={{
+                    mt: 2,
+                    p: 2,
+                    bgcolor: "info.50",
+                    borderRadius: 2,
+                    border: "1px solid",
+                    borderColor: "info.200",
+                  }}
+                >
+                  <Typography variant="body2" color="info.main">
+                    <strong>Monthly average:</strong> ${responses.monthlyIncome}
+                    /month
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Calculated: ${sixMonthTotal} ÷ 6 months
+                  </Typography>
+                </Box>
+              )}
           </Box>
         </Box>
       )}
@@ -452,18 +601,29 @@ export function AssessmentFlow({
               question="About how much do you earn per month?"
               helperText="Enter your average monthly income from work"
               value={responses.monthlyIncome}
-              onChange={(value) => setResponses({ ...responses, monthlyIncome: value })}
+              onChange={(value) =>
+                setResponses({ ...responses, monthlyIncome: value })
+              }
               label="Monthly Income"
               prefix="$"
               min={0}
               step={1}
               allowNotSure={true}
               notSureChecked={responses.monthlyIncome === 0}
-              onNotSureChange={(checked) => setResponses({ ...responses, monthlyIncome: checked ? 0 : undefined })}
+              onNotSureChange={(checked) =>
+                setResponses({
+                  ...responses,
+                  monthlyIncome: checked ? 0 : undefined,
+                })
+              }
               onNext={() => advanceStep("work-hours")}
               onBack={handleBack}
             />
-            <IncomeConverter onUseValue={(value) => setResponses({ ...responses, monthlyIncome: value })} />
+            <IncomeConverter
+              onUseValue={(value) =>
+                setResponses({ ...responses, monthlyIncome: value })
+              }
+            />
           </Box>
         </Box>
       )}
@@ -476,18 +636,29 @@ export function AssessmentFlow({
               question="About how many hours per month do you work?"
               helperText="Enter your average monthly work hours"
               value={responses.monthlyWorkHours}
-              onChange={(value) => setResponses({ ...responses, monthlyWorkHours: value })}
+              onChange={(value) =>
+                setResponses({ ...responses, monthlyWorkHours: value })
+              }
               label="Monthly Hours"
               suffix="hours"
               min={0}
               step={1}
               allowNotSure={true}
               notSureChecked={responses.monthlyWorkHours === 0}
-              onNotSureChange={(checked) => setResponses({ ...responses, monthlyWorkHours: checked ? 0 : undefined })}
+              onNotSureChange={(checked) =>
+                setResponses({
+                  ...responses,
+                  monthlyWorkHours: checked ? 0 : undefined,
+                })
+              }
               onNext={() => advanceStep("activities")}
               onBack={handleBack}
             />
-            <HoursConverter onUseValue={(value) => setResponses({ ...responses, monthlyWorkHours: value })} />
+            <HoursConverter
+              onUseValue={(value) =>
+                setResponses({ ...responses, monthlyWorkHours: value })
+              }
+            />
           </Box>
         </Box>
       )}
@@ -505,14 +676,25 @@ export function AssessmentFlow({
             ]}
             values={responses.otherActivities || {}}
             onChange={(value, checked) => {
-              setResponses({ ...responses, otherActivities: { ...responses.otherActivities, [value]: checked } });
+              setResponses({
+                ...responses,
+                otherActivities: {
+                  ...responses.otherActivities,
+                  [value]: checked,
+                },
+              });
             }}
             onNext={() => {
-              const hasActivities = Object.values(responses.otherActivities || {}).some((v) => v === true);
+              const hasActivities = Object.values(
+                responses.otherActivities || {},
+              ).some((v) => v === true);
               if (hasActivities) {
-                if (responses.otherActivities?.volunteer) advanceStep("activities-volunteer");
-                else if (responses.otherActivities?.school) advanceStep("activities-school");
-                else if (responses.otherActivities?.workProgram) advanceStep("activities-workprogram");
+                if (responses.otherActivities?.volunteer)
+                  advanceStep("activities-volunteer");
+                else if (responses.otherActivities?.school)
+                  advanceStep("activities-school");
+                else if (responses.otherActivities?.workProgram)
+                  advanceStep("activities-workprogram");
               } else {
                 completeAssessment(responses.exemption as ExemptionResponses);
               }
@@ -529,22 +711,36 @@ export function AssessmentFlow({
             <NumberInputQuestion
               question="How many hours per month do you volunteer?"
               value={responses.volunteerHoursPerMonth}
-              onChange={(value) => setResponses({ ...responses, volunteerHoursPerMonth: value })}
+              onChange={(value) =>
+                setResponses({ ...responses, volunteerHoursPerMonth: value })
+              }
               label="Monthly Volunteer Hours"
               suffix="hours"
               min={0}
               step={1}
               allowNotSure={true}
               notSureChecked={responses.volunteerHoursPerMonth === 0}
-              onNotSureChange={(checked) => setResponses({ ...responses, volunteerHoursPerMonth: checked ? 0 : undefined })}
+              onNotSureChange={(checked) =>
+                setResponses({
+                  ...responses,
+                  volunteerHoursPerMonth: checked ? 0 : undefined,
+                })
+              }
               onNext={() => {
-                if (responses.otherActivities?.school) advanceStep("activities-school");
-                else if (responses.otherActivities?.workProgram) advanceStep("activities-workprogram");
-                else completeAssessment(responses.exemption as ExemptionResponses);
+                if (responses.otherActivities?.school)
+                  advanceStep("activities-school");
+                else if (responses.otherActivities?.workProgram)
+                  advanceStep("activities-workprogram");
+                else
+                  completeAssessment(responses.exemption as ExemptionResponses);
               }}
               onBack={handleBack}
             />
-            <HoursConverter onUseValue={(value) => setResponses({ ...responses, volunteerHoursPerMonth: value })} />
+            <HoursConverter
+              onUseValue={(value) =>
+                setResponses({ ...responses, volunteerHoursPerMonth: value })
+              }
+            />
           </Box>
         </Box>
       )}
@@ -556,21 +752,34 @@ export function AssessmentFlow({
             <NumberInputQuestion
               question="How many hours per month do you attend school?"
               value={responses.schoolHoursPerMonth}
-              onChange={(value) => setResponses({ ...responses, schoolHoursPerMonth: value })}
+              onChange={(value) =>
+                setResponses({ ...responses, schoolHoursPerMonth: value })
+              }
               label="Monthly School Hours"
               suffix="hours"
               min={0}
               step={1}
               allowNotSure={true}
               notSureChecked={responses.schoolHoursPerMonth === 0}
-              onNotSureChange={(checked) => setResponses({ ...responses, schoolHoursPerMonth: checked ? 0 : undefined })}
+              onNotSureChange={(checked) =>
+                setResponses({
+                  ...responses,
+                  schoolHoursPerMonth: checked ? 0 : undefined,
+                })
+              }
               onNext={() => {
-                if (responses.otherActivities?.workProgram) advanceStep("activities-workprogram");
-                else completeAssessment(responses.exemption as ExemptionResponses);
+                if (responses.otherActivities?.workProgram)
+                  advanceStep("activities-workprogram");
+                else
+                  completeAssessment(responses.exemption as ExemptionResponses);
               }}
               onBack={handleBack}
             />
-            <HoursConverter onUseValue={(value) => setResponses({ ...responses, schoolHoursPerMonth: value })} />
+            <HoursConverter
+              onUseValue={(value) =>
+                setResponses({ ...responses, schoolHoursPerMonth: value })
+              }
+            />
           </Box>
         </Box>
       )}
@@ -582,18 +791,31 @@ export function AssessmentFlow({
             <NumberInputQuestion
               question="How many hours per month do you participate in work programs?"
               value={responses.workProgramHoursPerMonth}
-              onChange={(value) => setResponses({ ...responses, workProgramHoursPerMonth: value })}
+              onChange={(value) =>
+                setResponses({ ...responses, workProgramHoursPerMonth: value })
+              }
               label="Monthly Work Program Hours"
               suffix="hours"
               min={0}
               step={1}
               allowNotSure={true}
               notSureChecked={responses.workProgramHoursPerMonth === 0}
-              onNotSureChange={(checked) => setResponses({ ...responses, workProgramHoursPerMonth: checked ? 0 : undefined })}
-              onNext={() => completeAssessment(responses.exemption as ExemptionResponses)}
+              onNotSureChange={(checked) =>
+                setResponses({
+                  ...responses,
+                  workProgramHoursPerMonth: checked ? 0 : undefined,
+                })
+              }
+              onNext={() =>
+                completeAssessment(responses.exemption as ExemptionResponses)
+              }
               onBack={handleBack}
             />
-            <HoursConverter onUseValue={(value) => setResponses({ ...responses, workProgramHoursPerMonth: value })} />
+            <HoursConverter
+              onUseValue={(value) =>
+                setResponses({ ...responses, workProgramHoursPerMonth: value })
+              }
+            />
           </Box>
         </Box>
       )}

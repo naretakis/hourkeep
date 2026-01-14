@@ -64,16 +64,14 @@ export default function AssessmentResultsPage() {
   const handleStartMethod = async () => {
     if (!result) return;
 
-    // Set the appropriate compliance mode based on recommendation
     try {
       const profiles = await db.profiles.toArray();
       if (profiles.length > 0) {
         const { setComplianceMode, setSeasonalWorkerStatus } = await import(
           "@/lib/storage/income"
         );
-        const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM format
+        const currentMonth = new Date().toISOString().slice(0, 7);
 
-        // Set compliance mode based on recommendation
         if (result.recommendation.primaryMethod === "income-tracking") {
           await setComplianceMode(profiles[0].id, currentMonth, "income");
           await setSeasonalWorkerStatus(profiles[0].id, currentMonth, false);
@@ -85,14 +83,92 @@ export default function AssessmentResultsPage() {
         } else if (result.recommendation.primaryMethod === "hour-tracking") {
           await setComplianceMode(profiles[0].id, currentMonth, "hours");
         }
-        // For exemption, default to hours mode but user doesn't need to track
       }
     } catch (error) {
       console.error("Error setting compliance mode:", error);
     }
 
-    // Navigate to tracking dashboard
     router.push("/tracking");
+  };
+
+  const getExemptMethodMessage = (method: string): string => {
+    if (method === "income-tracking") {
+      const income = result?.responses.monthlyIncome || 0;
+      if (income >= 580) {
+        return `You're earning $${income}/month, which meets the $580 threshold. Since you're exempt, you don't need to track this.`;
+      }
+      return "Since you're exempt, you don't need to track income. If your exemption status changes, this would be an option.";
+    }
+    if (method === "seasonal-income-tracking") {
+      return "Since you're exempt, you don't need to track seasonal income. If your exemption status changes, this would be an option.";
+    }
+    if (method === "hour-tracking") {
+      const totalHours =
+        (result?.responses.monthlyWorkHours || 0) +
+        (result?.responses.volunteerHoursPerMonth || 0) +
+        (result?.responses.schoolHoursPerMonth || 0) +
+        (result?.responses.workProgramHoursPerMonth || 0);
+      if (totalHours >= 80) {
+        return `You're at ${totalHours} hours/month, which meets the 80-hour requirement. Since you're exempt, you don't need to track this.`;
+      }
+      return "Since you're exempt, you don't need to track hours. If your exemption status changes, this would be an option.";
+    }
+    return "";
+  };
+
+  const getNonExemptMethodMessage = (
+    method: string,
+    isAlternative: boolean,
+  ): string => {
+    if (method === "income-tracking") {
+      if (isAlternative) {
+        return "This also works for you, but we recommended hour tracking because it might be simpler given your current situation.";
+      }
+      const income = result?.responses.monthlyIncome || 0;
+      const needed = 580 - income;
+      if (needed <= 0) {
+        return `You're earning $${income}/month, which already meets the $580 threshold. You could use this method instead.`;
+      } else if (income > 0 && needed <= 100) {
+        return `You're at $${income}/month — just $${needed} away from the $580 threshold. A small income increase would let you use this easier method.`;
+      } else if (income > 0) {
+        return `You're at $${income}/month. If your income increases to $580 or more, you can switch to this easier method.`;
+      }
+      return "You're not currently earning $580/month. If your income increases to $580 or more, you can switch to this easier method—just submit one paystub each month instead of tracking hours.";
+    }
+    if (method === "seasonal-income-tracking") {
+      if (isAlternative) {
+        return "This also works for you, but we recommended a simpler option based on your situation.";
+      }
+      return "This method is for people with seasonal work that averages $580/month over 6 months. If your work becomes seasonal, you can switch to this method.";
+    }
+    if (method === "hour-tracking") {
+      if (isAlternative) {
+        if (result?.recommendation.primaryMethod === "income-tracking") {
+          return "This also works for you, but income tracking is easier—just submit one paystub each month instead of tracking hours daily.";
+        }
+        if (
+          result?.recommendation.primaryMethod === "seasonal-income-tracking"
+        ) {
+          return "This also works for you, but seasonal income tracking might be easier for your situation.";
+        }
+        return "This also works for you.";
+      }
+      const totalHours =
+        (result?.responses.monthlyWorkHours || 0) +
+        (result?.responses.volunteerHoursPerMonth || 0) +
+        (result?.responses.schoolHoursPerMonth || 0) +
+        (result?.responses.workProgramHoursPerMonth || 0);
+      const needed = 80 - totalHours;
+      if (needed <= 0) {
+        return `You're at ${totalHours} hours/month, which already meets the 80-hour requirement. You could use this method instead.`;
+      } else if (totalHours > 0 && needed <= 20) {
+        return `You're at ${totalHours} hours/month — just ${needed} more hours to reach 80. Adding a bit more work, volunteering, or school time would get you there.`;
+      } else if (totalHours > 0) {
+        return `You're at ${totalHours} hours/month. If you add more work, volunteering, or school hours to reach 80/month, you can use this method.`;
+      }
+      return "You're not currently at 80 hours/month. If you add more work, volunteering, or school hours to reach 80/month, you can use this method.";
+    }
+    return "";
   };
 
   if (loading) {
@@ -135,14 +211,7 @@ export default function AssessmentResultsPage() {
   return (
     <Container maxWidth="md">
       <Box sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2 } }}>
-        {/* Success Icon */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            mb: 3,
-          }}
-        >
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
           <Box
             sx={{
               width: 80,
@@ -163,7 +232,6 @@ export default function AssessmentResultsPage() {
           </Box>
         </Box>
 
-        {/* Title */}
         <Typography
           variant="h4"
           component="h1"
@@ -178,7 +246,6 @@ export default function AssessmentResultsPage() {
           Your Recommended Path
         </Typography>
 
-        {/* Primary Recommendation */}
         <Paper
           sx={{
             p: 3,
@@ -199,17 +266,14 @@ export default function AssessmentResultsPage() {
           >
             {getComplianceMethodLabel(recommendation.primaryMethod)}
           </Typography>
-
           <Typography variant="body1" paragraph>
             {recommendation.reasoning}
           </Typography>
-
           <Typography variant="body2" color="text.secondary">
             {getComplianceMethodDescription(recommendation.primaryMethod)}
           </Typography>
         </Paper>
 
-        {/* All Methods - Expandable */}
         <Box id="alternatives" sx={{ mb: 3 }}>
           <Accordion
             sx={{
@@ -220,12 +284,7 @@ export default function AssessmentResultsPage() {
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              sx={{
-                bgcolor: "grey.50",
-                "&:hover": {
-                  bgcolor: "grey.100",
-                },
-              }}
+              sx={{ bgcolor: "grey.50", "&:hover": { bgcolor: "grey.100" } }}
             >
               <Typography variant="h6">See all compliance methods</Typography>
             </AccordionSummary>
@@ -238,7 +297,6 @@ export default function AssessmentResultsPage() {
               </Typography>
 
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {/* Show all methods including the recommended one */}
                 {(
                   [
                     "exemption",
@@ -252,7 +310,6 @@ export default function AssessmentResultsPage() {
                     recommendation.alternativeMethods.includes(method);
                   const isAvailable = isRecommended || isAlternative;
 
-                  // Skip exemption if not exempt
                   if (method === "exemption" && !isRecommended) {
                     return null;
                   }
@@ -308,17 +365,22 @@ export default function AssessmentResultsPage() {
                         )}
                         {!isAvailable && method !== "exemption" && (
                           <Chip
-                            label="Not an option right now"
+                            label={
+                              isExempt
+                                ? "Not needed"
+                                : "Not an option right now"
+                            }
                             size="small"
                             sx={{
-                              bgcolor: "grey.100",
-                              color: "text.secondary",
+                              bgcolor: isExempt ? "success.50" : "grey.100",
+                              color: isExempt
+                                ? "success.main"
+                                : "text.secondary",
                               fontWeight: 600,
                             }}
                           />
                         )}
                       </Box>
-
                       <Typography
                         variant="body2"
                         color="text.secondary"
@@ -326,60 +388,24 @@ export default function AssessmentResultsPage() {
                       >
                         {getComplianceMethodDescription(method)}
                       </Typography>
-
-                      {/* Explain why this method is or isn't the easiest */}
                       {!isRecommended && method !== "exemption" && (
                         <Alert
-                          severity={isAlternative ? "info" : "warning"}
+                          severity={
+                            isExempt
+                              ? "success"
+                              : isAlternative
+                                ? "info"
+                                : "warning"
+                          }
                           sx={{ mt: 1 }}
                         >
                           <Typography variant="body2">
-                            {method === "income-tracking" &&
-                              !isAvailable &&
-                              (() => {
-                                const income = result.responses.monthlyIncome || 0;
-                                const needed = 580 - income;
-                                if (income > 0 && needed <= 100) {
-                                  return `You're at $${income}/month — just $${needed} away from the $580 threshold. A small income increase would let you use this easier method.`;
-                                } else if (income > 0) {
-                                  return `You're at $${income}/month. If your income increases to $580 or more, you can switch to this easier method.`;
-                                }
-                                return "You're not currently earning $580/month. If your income increases to $580 or more, you can switch to this easier method—just submit one paystub each month instead of tracking hours.";
-                              })()}
-                            {method === "income-tracking" &&
-                              isAlternative &&
-                              "This also works for you, but we recommended hour tracking because it might be simpler given your current situation."}
-                            {method === "seasonal-income-tracking" &&
-                              !isAvailable &&
-                              "This method is for people with seasonal work that averages $580/month over 6 months. If your work becomes seasonal, you can switch to this method."}
-                            {method === "seasonal-income-tracking" &&
-                              isAlternative &&
-                              "This also works for you, but we recommended a simpler option based on your situation."}
-                            {method === "hour-tracking" &&
-                              !isAvailable &&
-                              (() => {
-                                const totalHours = (result.responses.monthlyWorkHours || 0) +
-                                  (result.responses.volunteerHoursPerMonth || 0) +
-                                  (result.responses.schoolHoursPerMonth || 0) +
-                                  (result.responses.workProgramHoursPerMonth || 0);
-                                const needed = 80 - totalHours;
-                                if (totalHours > 0 && needed <= 20) {
-                                  return `You're at ${totalHours} hours/month — just ${needed} more hours to reach 80. Adding a bit more work, volunteering, or school time would get you there.`;
-                                } else if (totalHours > 0) {
-                                  return `You're at ${totalHours} hours/month. If you add more work, volunteering, or school hours to reach 80/month, you can use this method.`;
-                                }
-                                return "You're not currently at 80 hours/month. If you add more work, volunteering, or school hours to reach 80/month, you can use this method.";
-                              })()}
-                            {method === "hour-tracking" &&
-                              isAlternative &&
-                              recommendation.primaryMethod ===
-                                "income-tracking" &&
-                              "This also works for you, but income tracking is easier—just submit one paystub each month instead of tracking hours daily."}
-                            {method === "hour-tracking" &&
-                              isAlternative &&
-                              recommendation.primaryMethod ===
-                                "seasonal-income-tracking" &&
-                              "This also works for you, but seasonal income tracking might be easier for your situation."}
+                            {isExempt
+                              ? getExemptMethodMessage(method)
+                              : getNonExemptMethodMessage(
+                                  method,
+                                  isAlternative,
+                                )}
                           </Typography>
                         </Alert>
                       )}
@@ -391,7 +417,6 @@ export default function AssessmentResultsPage() {
           </Accordion>
         </Box>
 
-        {/* Method Switching Info */}
         <Alert severity="info" icon={<InfoIcon />} sx={{ mb: 3 }}>
           You can switch methods anytime without losing data. All tracking
           methods remain accessible, and your previous data is preserved.
@@ -399,14 +424,7 @@ export default function AssessmentResultsPage() {
 
         <Divider sx={{ my: 3 }} />
 
-        {/* Action Buttons */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Button
             variant="contained"
             size="large"
@@ -419,12 +437,10 @@ export default function AssessmentResultsPage() {
               ? "Go to Dashboard"
               : `Start ${getComplianceMethodLabel(recommendation.primaryMethod)}`}
           </Button>
-
           <Button
             variant="outlined"
             size="large"
             onClick={async () => {
-              // Delete the current result so user can modify their answers
               if (result?.id) {
                 try {
                   await db.assessmentResults.delete(result.id);
@@ -439,7 +455,6 @@ export default function AssessmentResultsPage() {
           >
             Back to Assessment
           </Button>
-
           <Button
             variant="text"
             size="large"
@@ -447,9 +462,7 @@ export default function AssessmentResultsPage() {
             fullWidth
             sx={{
               color: "text.secondary",
-              "&:hover": {
-                bgcolor: "action.hover",
-              },
+              "&:hover": { bgcolor: "action.hover" },
             }}
           >
             Start Fresh

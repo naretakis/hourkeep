@@ -2,349 +2,229 @@
 
 **Keep Your Hours, Keep Your Coverage**
 
-A Progressive Web App (PWA) that helps you track work, volunteer, and education hours to maintain your Medicaid benefits.
+HourKeep is a privacy-focused Progressive Web App that helps Medicaid beneficiaries track work, volunteer, and education hours to maintain their health coverage. All data stays on your device—no accounts, no servers, no tracking.
 
-Start using HourKeep today: https://naretakis.github.io/hourkeep
+[Live App](https://hourkeep.app) · [Roadmap](ROADMAP.md) · [Report an Issue](https://github.com/naretakis/hourkeep/issues)
 
-[Here's our development roadmap](ROADMAP.md) - HourKeep's current and future features
+---
 
-## What It Does
+## Why HourKeep?
 
-HourKeep is a simple, privacy-focused app that helps you:
+Starting January 2027, Medicaid expansion adults must meet work requirements to maintain eligibility. HourKeep helps you:
 
-- **How to HourKeep** - Take a guided assessment to discover the easiest way to maintain your coverage
-- **Get personalized recommendations** - System analyzes your situation and suggests the best compliance method
-- **Check exemptions** - Find out if you're exempt from work requirements (you might not need to track at all!)
-- **Track hours OR income** - Choose to log activities (80 hours/month) or track income ($580/month)
-- **Flexible tracking** - Switch between hours and income modes anytime
-- **Capture documents** - Photograph or upload pay stubs, volunteer letters, and other verification documents
-- **Monitor compliance** - See your monthly total and compliance status in real-time
-- **Seasonal worker support** - 6-month income averaging for variable income
-- **Stay organized** - Visual calendar shows all your logged activities with document indicators
-- **Export data** - Generate comprehensive reports for agency submission
-- **Work offline** - All data stored locally on your device, no internet required
+- Understand if you're exempt from requirements (many people are)
+- Track hours (80/month) or income ($580/month) to stay compliant
+- Capture and organize verification documents
+- Export your records when it's time to submit to your agency
 
-## Key Features
+Everything runs locally in your browser. Your data never leaves your device.
 
-### Privacy & Profile
+---
 
-- ✅ **Privacy notice** - Clear explanation of data handling before you start
-- ✅ **Context-aware onboarding** - Personalized experience based on your situation (notice, applying, renewal, proactive)
-- ✅ **Notice details capture** - Record months required and deadline when you have a notice
-- ✅ **Goal progress tracking** - Dashboard shows progress toward your compliance goal
-- ✅ **Extended profile** - Name, state, date of birth, and optional contact info
-- ✅ **Secure encryption** - Sensitive data encrypted at rest
-- ✅ **Profile management** - View and edit your information anytime
+## Features
 
-### How to HourKeep Assessment
+### Guided Assessment
 
-- ✅ **Guided assessment** - Comprehensive questionnaire to find your easiest compliance path
-- ✅ **Personalized recommendations** - Smart analysis suggests optimal method based on your situation
-- ✅ **Four compliance paths** - Exemption, income tracking, seasonal income tracking, or hour tracking
-- ✅ **Notice screening** - Upfront question about agency communication
-- ✅ **Notice details capture** - Record months required and deadline when you have a notice
-- ✅ **Integrated exemption check** - Complete 5-category exemption screening built into flow
-- ✅ **Work situation analysis** - Questions about employment, income, and activities
-- ✅ **Estimation tools** - Simple calculators to convert weekly to monthly values
-- ✅ **Getting started guidance** - Contextual next steps based on your assessment results
-- ✅ **Dashboard configuration** - Automatically sets compliance mode based on recommendation
-- ✅ **Progress saving** - Resume incomplete assessments where you left off
-- ✅ **Assessment history** - Track how your situation changes over time
-- ✅ **Dashboard integration** - Prominent badge showing your status and recommendation
-- ✅ **Alternative methods** - View other viable options and make informed choices
+A step-by-step questionnaire analyzes your situation and recommends the easiest path to maintain coverage—whether that's claiming an exemption, tracking income, or logging hours.
 
-### Hours Tracking
+### Exemption Screening
 
-- ✅ **Activity logging** - Log work, volunteer, and education activities daily
-- ✅ **Visual calendar** - See all logged activities with indicators
-- ✅ **80-hour compliance** - Automatic monthly compliance calculations
-- ✅ **Activity definitions** - Clear explanations of what counts for each activity type
-- ✅ **Edge case examples** - 20+ scenarios showing what counts and what doesn't
-- ✅ **Duplicate activities** - Replicate entries across multiple dates
+Check if you qualify for an exemption based on age, family status, health conditions, program participation, or other criteria. If you're exempt, you don't need to track anything.
 
-### Income Tracking (NEW!)
+### Flexible Tracking
 
-- ✅ **Income entry logging** - Record income with dates, amounts, and sources
-- ✅ **Pay period conversion** - Automatic monthly equivalent (daily, weekly, bi-weekly, monthly)
-- ✅ **$580 threshold tracking** - Real-time progress toward income requirement
-- ✅ **Multiple income sources** - Track multiple jobs or income streams
-- ✅ **Seasonal worker support** - 6-month income averaging for variable income
-- ✅ **Compliance mode switching** - Choose hours or income tracking each month
-- ✅ **Duplicate income entries** - Replicate entries across multiple dates
+Choose what works for you:
+
+- **Hours mode**: Log work, volunteer, and education activities toward the 80-hour monthly requirement
+- **Income mode**: Track earnings toward the $580 monthly threshold with automatic pay period conversion
+- **Seasonal worker support**: 6-month income averaging for variable income
 
 ### Document Management
 
-- ✅ **Document capture** - Photograph or upload verification documents
-- ✅ **Smart image compression** - Automatic compression for large images
-- ✅ **Document viewer** - Full-size viewing with pinch-to-zoom
-- ✅ **Storage monitoring** - Track usage and get low-storage warnings
-- ✅ **Income documents** - Pay stubs, bank statements, gig work screenshots
+Photograph or upload pay stubs, volunteer letters, and other verification documents. Images are compressed automatically and linked to your entries.
 
-### Help & Guidance
+### Offline-First
 
-- ✅ **Contextual help system** - Get guidance right where you need it
-- ✅ **Income guidance** - Understand the $580/month threshold and seasonal worker rules
-- ✅ **Activity combinations** - Learn how to mix activities to reach 80 hours
+Works without internet. Install it on your phone like a native app. Your data persists in local storage.
 
-### Export & Offline
+### Privacy by Design
 
-- ✅ **Data export** - JSON or text format with activities and income
-- 🚧 **Comprehensive export** - Full package with profile, exemptions, documents (coming soon)
-- ✅ **100% offline functionality** - No internet required
-- ✅ **Installable PWA** - Add to home screen as native app
-- ✅ **Privacy-first** - All data stays on your device
+No accounts. No cloud sync. No analytics that track your personal information. Just a tool that helps you stay organized.
 
-## Tech Stack
-
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Material-UI v5** - Component library
-- **Dexie.js** - IndexedDB wrapper for local storage
-- **next-pwa** - Progressive Web App capabilities
-- **date-fns** - Date manipulation
+---
 
 ## Getting Started
 
-### Prerequisites
+### Requirements
 
-- Node.js 18 or higher
-- npm or yarn
+- Node.js 18+
+- npm
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/naretakis/hourkeep.git
 cd hourkeep
-
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the app.
+Open http://localhost:3000 in your browser.
 
-### Configuration
-
-If you fork this repository, update the GitHub repository URLs in two places:
-
-1. **package.json** - Update the `repository`, `bugs`, and `homepage` fields:
-
-   ```json
-   "repository": {
-     "type": "git",
-     "url": "https://github.com/YOUR_USERNAME/hourkeep.git"
-   },
-   "bugs": {
-     "url": "https://github.com/YOUR_USERNAME/hourkeep/issues"
-   },
-   "homepage": "https://github.com/YOUR_USERNAME/hourkeep#readme"
-   ```
-
-2. **src/config/app.ts** - Update the repository URLs:
-   ```typescript
-   repository: {
-     url: "https://github.com/YOUR_USERNAME/hourkeep",
-     issuesUrl: "https://github.com/YOUR_USERNAME/hourkeep/issues",
-   }
-   ```
-
-The app version is automatically read from `package.json` and displayed in the Settings page.
-
-### Building for Production
+### Production Build
 
 ```bash
-# Create production build
 npm run build
-
-# Start production server
 npm start
 ```
 
-### Deploying to GitHub Pages
+### Deployment
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+HourKeep deploys to GitHub Pages via GitHub Actions. See [DEPLOYMENT.md](DEPLOYMENT.md) for details.
+
+---
 
 ## Project Structure
 
 ```
-hourkeep/
-├── src/
-│   ├── app/              # Next.js app routes
-│   │   ├── onboarding/   # Initial profile setup
-│   │   ├── tracking/     # Main activity tracking page
-│   │   ├── exemptions/   # Exemption screening
-│   │   └── settings/     # Settings and export
-│   ├── components/       # React components
-│   │   ├── exemptions/   # Exemption screening components
-│   │   ├── documents/    # Document management components
-│   │   ├── Calendar.tsx
-│   │   ├── ActivityForm.tsx
-│   │   ├── Dashboard.tsx
-│   │   └── ...
-│   ├── lib/              # Utilities and database
-│   │   ├── exemptions/   # Exemption logic and definitions
-│   │   ├── storage/      # Database operations
-│   │   ├── db.ts         # Dexie database setup
-│   │   └── calculations.ts
-│   ├── types/            # TypeScript type definitions
-│   └── theme/            # Material-UI theme
-├── public/               # Static assets
-│   ├── manifest.json     # PWA manifest
-│   └── icons/            # App icons
-└── .github/workflows/    # GitHub Actions for deployment
+src/
+├── app/                 # Next.js App Router pages
+│   ├── onboarding/      # Privacy notice and profile setup
+│   ├── how-to-hourkeep/ # Assessment flow
+│   ├── tracking/        # Activity and income logging
+│   ├── exemptions/      # Exemption screening
+│   ├── export/          # Data export
+│   └── settings/        # Configuration and profile management
+├── components/          # React components organized by feature
+├── lib/                 # Business logic, database, utilities
+│   ├── storage/         # Dexie database operations
+│   ├── exemptions/      # Exemption logic and definitions
+│   └── assessment/      # Recommendation engine
+├── types/               # TypeScript interfaces
+└── theme/               # Material-UI customization
 ```
+
+---
+
+## Tech Stack
+
+| Layer      | Technology              |
+| ---------- | ----------------------- |
+| Framework  | Next.js 16 (App Router) |
+| Language   | TypeScript              |
+| UI         | Material-UI v7          |
+| Storage    | Dexie.js (IndexedDB)    |
+| PWA        | next-pwa                |
+| Dates      | date-fns                |
+| Validation | Zod                     |
+
+---
+
+## Configuration
+
+If you fork this repository, update these files with your own URLs:
+
+**package.json**
+
+```json
+{
+  "repository": {
+    "url": "https://github.com/YOUR_USERNAME/hourkeep.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/hourkeep/issues"
+  },
+  "homepage": "https://YOUR_USERNAME.github.io/hourkeep"
+}
+```
+
+**src/config/app.ts**
+
+```typescript
+repository: {
+  url: "https://github.com/YOUR_USERNAME/hourkeep",
+  issuesUrl: "https://github.com/YOUR_USERNAME/hourkeep/issues",
+}
+```
+
+---
 
 ## Usage
 
-### First Time Setup
+### First Time
 
-1. Open the app
-2. Read and acknowledge the privacy notice
-3. Enter your profile information (name, state, date of birth)
-4. Optionally add Medicaid ID and contact information
-5. Check if you're exempt (recommended - you might not need to track!)
-6. Start tracking your hours (if not exempt)!
+1. Read and acknowledge the privacy notice
+2. Enter basic profile information
+3. Take the "How to HourKeep" assessment to get personalized guidance
+4. Start tracking (if not exempt)
 
-### Checking Exemptions
+### Logging Hours
 
-1. Go to the dashboard or settings
-2. Click "Check Exemptions" or "Start Screening"
-3. Answer simple questions about your situation
-4. Get immediate results - exempt or need to track
-5. See which exemption applies to you
-6. Rescreen anytime your circumstances change
+Select a date, choose an activity type (work, volunteer, education), enter hours, and optionally attach documents.
 
-### Logging Activities (Hours Mode)
+### Logging Income
 
-1. Go to the tracking page
-2. Ensure you're in "Track Hours" mode
-3. Click the "+" button (floating action button)
-4. Select a date
-5. Select activity type (work, volunteer, or education)
-6. Enter hours worked
-7. Optionally add organization name
-8. Optionally capture or upload verification documents
-9. Save
-
-### Logging Income (Income Mode)
-
-1. Go to the tracking page
-2. Switch to "Track Income" mode
-3. Click "Add Income" + button
-4. Enter amount and select date
-5. Choose pay period (daily, weekly, bi-weekly, monthly)
-6. Optionally add source/employer name
-7. Optionally capture or upload pay stubs or other income documents
-8. See automatic monthly equivalent calculation
-9. Save
-
-### Seasonal Worker Income
-
-1. Switch to "Track Income" mode
-2. Toggle "Seasonal Worker" for the current month
-3. Add income entries for the month
-4. View 6-month income history and rolling average
-5. Compliance determined by 6-month average instead of single month
-
-### Viewing Progress
-
-**Hours Mode:**
-
-- Your monthly total is displayed at the top of the tracking page
-- Green "Compliant" badge shows when you've met the 80-hour requirement
-- Calendar shows visual indicators for dates with logged activities
-- Document icons show which activities have attached verification documents
-
-**Income Mode:**
-
-- Your total monthly income is displayed with progress toward $580
-- Green "Compliant" badge shows when you've met the income threshold
-- Income breakdown by source shows where your income comes from
-- Seasonal worker view shows 6-month history and average (if enabled)
+Enter the amount, select the pay period, and the app calculates your monthly equivalent automatically.
 
 ### Exporting Data
 
-1. Go to Settings
-2. Click "Export Data"
-3. Choose format (JSON or Text)
-4. Save the file to submit to your agency
+Go to Settings and export your records as JSON or plain text for agency submission.
 
-## Privacy & Data
-
-- **All data stays on your device** - Nothing is sent to any server
-- **No account required** - No sign-up, no login
-- **Anonymous usage analytics** - We collect anonymous usage statistics (page views, device types, states) to understand where this tool is needed most. This does NOT include any personal information, activity logs, or documents. Respects "Do Not Track" browser settings.
-- **You control exports** - Only you decide when to share your data
-
-### What Analytics We Collect
-
-We use [Plausible Analytics](https://plausible.io/) (privacy-first, open-source, lightweight) to collect:
-
-- ✅ Page views (which pages you visit)
-- ✅ Device type (mobile, desktop, tablet)
-- ✅ Browser and operating system
-- ✅ State/region (e.g., "California", "Texas")
-- ✅ Screen size
-
-We do NOT collect:
-
-- ❌ Your profile information (name, state, DOB, Medicaid ID)
-- ❌ Your activity logs (hours worked, organizations)
-- ❌ Your documents (pay stubs, verification letters)
-- ❌ Your exemption screening results
-- ❌ IP addresses or persistent identifiers
-- ❌ Cookies or tracking across websites
-- ❌ City-level or more granular location data
-
-**Opt Out:** Enable "Do Not Track" in your browser settings to opt out of analytics.
-
-Learn more: [Plausible Privacy Policy](https://plausible.io/privacy)
+---
 
 ## Browser Support
 
-- Chrome/Edge (recommended)
-- Firefox
-- Safari (limited PWA support)
+| Browser     | Support              |
+| ----------- | -------------------- |
+| Chrome/Edge | Full                 |
+| Firefox     | Full                 |
+| Safari      | Limited PWA features |
 
-## Contributing
+---
 
-This is a learning project and personal tool. Feel free to fork and customize for your needs!
+## Privacy
 
-## License
+HourKeep collects anonymous usage statistics (page views, device types, regions) via Plausible Analytics to understand where the tool is needed most. This does not include any personal information, activity logs, or documents.
 
-GNU General Public License v3.0 - See LICENSE file for details
+To opt out, enable "Do Not Track" in your browser settings.
 
-Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+What we collect:
 
-## Acknowledgments
+- Page views, device type, browser, screen size, state/region
 
-Built as an MVP learning project to understand:
+What we never collect:
 
-- Progressive Web Apps
-- Next.js App Router
-- IndexedDB and offline-first architecture
-- Material-UI component library
+- Names, dates of birth, Medicaid IDs
+- Activity logs or hours worked
+- Documents or images
+- IP addresses or cross-site tracking
+
+---
 
 ## Documentation
 
-- [CHANGELOG.md](CHANGELOG.md) - Version history and release notes
-- [ROADMAP.md](ROADMAP.md) - Product roadmap and future features
-- [DEPLOYMENT.md](DEPLOYMENT.md) - How to deploy to GitHub Pages
-- [PWA-TESTING.md](PWA-TESTING.md) - Testing PWA features
-- [BRANDING.md](BRANDING.md) - Brand guidelines and messaging
+- [CHANGELOG.md](CHANGELOG.md) — Version history
+- [ROADMAP.md](ROADMAP.md) — Current and planned features
+- [DEPLOYMENT.md](DEPLOYMENT.md) — Deployment instructions
+- [BRANDING.md](BRANDING.md) — Brand guidelines
+- [PWA-TESTING.md](PWA-TESTING.md) — Testing PWA functionality
 
-## What's Next?
+---
 
-HourKeep is actively evolving. See our [ROADMAP.md](ROADMAP.md) to learn about:
+## Contributing
 
-- ✅ **Now** - What's available today (exemption screening, document management, activity tracking)
-- 🚧 **Next** - Coming soon (income tracking, hardship reporting, exemption documents, export overhaul)
-- 💭 **Later** - Future considerations (SNAP support, state integration, compliance alerts)
-- ❌ **Not Planned** - What we're explicitly not building (and why)
+HourKeep is an open-source project. Feel free to fork, customize, or submit issues.
+
+---
+
+## License
+
+GNU General Public License v3.0
+
+This copyleft license requires that derivative works be distributed under the same license. See [LICENSE](LICENSE) for details.
+
+---
 
 ## Support
 
-For questions or issues, please open an issue on GitHub.
+Questions or issues? [Open an issue on GitHub](https://github.com/naretakis/hourkeep/issues).

@@ -10,7 +10,10 @@ import { PrivacyNotice } from "@/components/onboarding/PrivacyNotice";
 import { ProfileForm } from "@/components/onboarding/ProfileForm";
 import { AssessmentFlow } from "@/components/assessment/AssessmentFlow";
 import { saveAssessmentResult } from "@/lib/storage/assessment";
-import { setComplianceMode, setSeasonalWorkerStatus } from "@/lib/storage/income";
+import {
+  setComplianceMode,
+  setSeasonalWorkerStatus,
+} from "@/lib/storage/income";
 import { format } from "date-fns";
 
 type OnboardingStep = "privacy" | "profile" | "assessment";
@@ -24,10 +27,13 @@ interface ProfileData {
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState<OnboardingStep>("privacy");
-  const [privacyAcknowledgedAt, setPrivacyAcknowledgedAt] = useState<Date | null>(null);
+  const [privacyAcknowledgedAt, setPrivacyAcknowledgedAt] =
+    useState<Date | null>(null);
   const [redirecting, setRedirecting] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [initialResponses, setInitialResponses] = useState<Partial<AssessmentResponses>>({ exemption: {} });
+  const [initialResponses, setInitialResponses] = useState<
+    Partial<AssessmentResponses>
+  >({ exemption: {} });
 
   const handlePrivacyAcknowledge = () => {
     setPrivacyAcknowledgedAt(new Date());
@@ -35,7 +41,7 @@ export default function OnboardingPage() {
   };
 
   const handleProfileSave = async (
-    profile: Omit<UserProfile, "id" | "createdAt" | "updatedAt">
+    profile: Omit<UserProfile, "id" | "createdAt" | "updatedAt">,
   ) => {
     try {
       const now = new Date();
@@ -63,7 +69,11 @@ export default function OnboardingPage() {
   const handleAssessmentComplete = async (
     responses: AssessmentResponses,
     recommendation: Recommendation,
-    noticeContext: { hasNotice: boolean; monthsRequired?: number; deadline?: string }
+    noticeContext: {
+      hasNotice: boolean;
+      monthsRequired?: number;
+      deadline?: string;
+    },
   ) => {
     if (!profileData) return;
 
@@ -76,7 +86,9 @@ export default function OnboardingPage() {
       const onboardingContext: OnboardingContext = {
         hasNotice: noticeContext.hasNotice,
         monthsRequired: noticeContext.monthsRequired,
-        deadline: noticeContext.deadline ? new Date(noticeContext.deadline) : undefined,
+        deadline: noticeContext.deadline
+          ? new Date(noticeContext.deadline)
+          : undefined,
         completedAt: now,
       };
 

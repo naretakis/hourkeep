@@ -8,7 +8,10 @@ import { getProfile, updateProfile } from "@/lib/storage/profile";
 import { AssessmentFlow } from "@/components/assessment/AssessmentFlow";
 import { AssessmentResponses, Recommendation } from "@/types/assessment";
 import { getLatestAssessmentResult } from "@/lib/storage/assessment";
-import { setComplianceMode, setSeasonalWorkerStatus } from "@/lib/storage/income";
+import {
+  setComplianceMode,
+  setSeasonalWorkerStatus,
+} from "@/lib/storage/income";
 import { format } from "date-fns";
 import { OnboardingContext } from "@/types";
 
@@ -16,7 +19,9 @@ export default function HowToHourKeepPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string>("");
-  const [initialResponses, setInitialResponses] = useState<Partial<AssessmentResponses>>({ exemption: {} });
+  const [initialResponses, setInitialResponses] = useState<
+    Partial<AssessmentResponses>
+  >({ exemption: {} });
   const [initialNoticeContext, setInitialNoticeContext] = useState<{
     hasNotice?: boolean;
     monthsRequired?: number;
@@ -59,15 +64,21 @@ export default function HowToHourKeepPage() {
           setInitialResponses({
             ...responses,
             ...latestResult.responses,
-            exemption: { ...responses.exemption, ...latestResult.responses.exemption },
+            exemption: {
+              ...responses.exemption,
+              ...latestResult.responses.exemption,
+            },
           });
 
           // Pre-populate notice context if available
           if (latestResult.responses.noticeContext) {
             setInitialNoticeContext({
               hasNotice: true,
-              monthsRequired: latestResult.responses.noticeContext.monthsRequired,
-              deadline: latestResult.responses.noticeContext.deadline?.toISOString().split("T")[0],
+              monthsRequired:
+                latestResult.responses.noticeContext.monthsRequired,
+              deadline: latestResult.responses.noticeContext.deadline
+                ?.toISOString()
+                .split("T")[0],
             });
           }
         } else {
@@ -87,7 +98,11 @@ export default function HowToHourKeepPage() {
   const handleComplete = async (
     responses: AssessmentResponses,
     recommendation: Recommendation,
-    noticeContext: { hasNotice: boolean; monthsRequired?: number; deadline?: string }
+    noticeContext: {
+      hasNotice: boolean;
+      monthsRequired?: number;
+      deadline?: string;
+    },
   ) => {
     try {
       // Configure dashboard based on recommendation
@@ -107,21 +122,26 @@ export default function HowToHourKeepPage() {
       // Update profile's onboarding context with notice details
       const profile = await getProfile(userId);
       if (profile) {
-        const updatedOnboardingContext: OnboardingContext = noticeContext.hasNotice
-          ? {
-              hasNotice: noticeContext.hasNotice,
-              monthsRequired: noticeContext.monthsRequired,
-              deadline: noticeContext.deadline ? new Date(noticeContext.deadline) : undefined,
-              completedAt: new Date(),
-            }
-          : {
-              hasNotice: false,
-              monthsRequired: profile.onboardingContext?.monthsRequired,
-              deadline: profile.onboardingContext?.deadline,
-              completedAt: new Date(),
-            };
+        const updatedOnboardingContext: OnboardingContext =
+          noticeContext.hasNotice
+            ? {
+                hasNotice: noticeContext.hasNotice,
+                monthsRequired: noticeContext.monthsRequired,
+                deadline: noticeContext.deadline
+                  ? new Date(noticeContext.deadline)
+                  : undefined,
+                completedAt: new Date(),
+              }
+            : {
+                hasNotice: false,
+                monthsRequired: profile.onboardingContext?.monthsRequired,
+                deadline: profile.onboardingContext?.deadline,
+                completedAt: new Date(),
+              };
 
-        await updateProfile(userId, { onboardingContext: updatedOnboardingContext });
+        await updateProfile(userId, {
+          onboardingContext: updatedOnboardingContext,
+        });
       }
 
       // Dispatch event to notify dashboard of assessment completion
@@ -140,7 +160,14 @@ export default function HowToHourKeepPage() {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );

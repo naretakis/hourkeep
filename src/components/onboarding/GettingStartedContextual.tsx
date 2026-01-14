@@ -56,6 +56,56 @@ export function GettingStartedContextual({
   const daysRemaining = calculateDaysRemaining();
   const isExempt = recommendation?.primaryMethod === "exemption";
 
+  const getMethodMessage = (method: string, isAlternative: boolean): string => {
+    if (method === "income-tracking") {
+      if (isAlternative) {
+        return "This also works for you, but we recommended hour tracking based on your situation.";
+      }
+      const income = responses?.monthlyIncome || 0;
+      const needed = 580 - income;
+      if (needed <= 0) {
+        return `You're earning $${income}/month, which already meets the $580 threshold. You could use this method instead.`;
+      } else if (income > 0 && needed <= 100) {
+        return `You're at $${income}/month — just $${needed} away from the $580 threshold. A small income increase would let you use this easier method.`;
+      } else if (income > 0) {
+        return `You're at $${income}/month. If your income increases to $580 or more, you can switch to this easier method.`;
+      }
+      return "You're not currently earning $580/month. If your income increases, you can switch to this easier method.";
+    }
+    if (method === "seasonal-income-tracking") {
+      if (isAlternative) {
+        return "This also works for you, but we recommended a simpler option.";
+      }
+      return "This method is for people with seasonal work that averages $580/month over 6 months.";
+    }
+    if (method === "hour-tracking") {
+      if (isAlternative) {
+        if (recommendation?.primaryMethod === "income-tracking") {
+          return "This also works, but income tracking is easier—just submit one paystub each month.";
+        }
+        if (recommendation?.primaryMethod === "seasonal-income-tracking") {
+          return "This also works, but seasonal income tracking might be easier for your situation.";
+        }
+        return "This also works for you.";
+      }
+      const totalHours =
+        (responses?.monthlyWorkHours || 0) +
+        (responses?.volunteerHoursPerMonth || 0) +
+        (responses?.schoolHoursPerMonth || 0) +
+        (responses?.workProgramHoursPerMonth || 0);
+      const needed = 80 - totalHours;
+      if (needed <= 0) {
+        return `You're at ${totalHours} hours/month, which already meets the 80-hour requirement. You could use this method instead.`;
+      } else if (totalHours > 0 && needed <= 20) {
+        return `You're at ${totalHours} hours/month — just ${needed} more hours to reach 80. Adding a bit more work, volunteering, or school time would get you there.`;
+      } else if (totalHours > 0) {
+        return `You're at ${totalHours} hours/month. If you add more activities to reach 80/month, you can use this method.`;
+      }
+      return "You're not currently at 80 hours/month. If you add more activities, you can use this method.";
+    }
+    return "";
+  };
+
   return (
     <Box
       sx={{
@@ -94,7 +144,7 @@ export function GettingStartedContextual({
       {hasNotice && deadline && daysRemaining !== null && (
         <Alert severity="warning" sx={{ mb: 2 }}>
           <Typography variant="body2" fontWeight={600}>
-            ⏰ Deadline: {deadline.toLocaleDateString()}
+            Deadline: {deadline.toLocaleDateString()}
           </Typography>
           <Typography variant="body2">
             You have {daysRemaining} day{daysRemaining !== 1 ? "s" : ""} to
@@ -161,13 +211,13 @@ export function GettingStartedContextual({
       {!hasNotice && (
         <Alert severity="info">
           <Typography variant="body2">
-            💡 You&apos;ll need to show proof every 6 months for renewal.
-            Keeping HourKeep updated makes renewals easy!
+            You&apos;ll need to show proof every 6 months for renewal. Keeping
+            HourKeep updated makes renewals easy!
           </Typography>
         </Alert>
       )}
 
-      {/* Alternative Methods - Show if we have a recommendation */}
+      {/* Alternative Methods - Show if we have a recommendation and not exempt */}
       {recommendation && !isExempt && (
         <Accordion
           sx={{
@@ -178,12 +228,7 @@ export function GettingStartedContextual({
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            sx={{
-              bgcolor: "grey.50",
-              "&:hover": {
-                bgcolor: "grey.100",
-              },
-            }}
+            sx={{ bgcolor: "grey.50", "&:hover": { bgcolor: "grey.100" } }}
           >
             <Typography variant="body2" fontWeight={600}>
               See all compliance methods
@@ -276,59 +321,13 @@ export function GettingStartedContextual({
                       {getComplianceMethodDescription(method)}
                     </Typography>
 
-                    {/* Explain why this method is or isn't the easiest */}
                     {!isRecommended && (
                       <Alert
                         severity={isAlternative ? "info" : "warning"}
                         sx={{ mt: 1 }}
                       >
                         <Typography variant="caption">
-                          {method === "income-tracking" &&
-                            !isAvailable &&
-                            (() => {
-                              const income = responses?.monthlyIncome || 0;
-                              const needed = 580 - income;
-                              if (income > 0 && needed <= 100) {
-                                return `You're at $${income}/month — just $${needed} away from the $580 threshold. A small income increase would let you use this easier method.`;
-                              } else if (income > 0) {
-                                return `You're at $${income}/month. If your income increases to $580 or more, you can switch to this easier method.`;
-                              }
-                              return "You're not currently earning $580/month. If your income increases, you can switch to this easier method.";
-                            })()}
-                          {method === "income-tracking" &&
-                            isAlternative &&
-                            "This also works for you, but we recommended hour tracking based on your situation."}
-                          {method === "seasonal-income-tracking" &&
-                            !isAvailable &&
-                            "This method is for people with seasonal work that averages $580/month over 6 months."}
-                          {method === "seasonal-income-tracking" &&
-                            isAlternative &&
-                            "This also works for you, but we recommended a simpler option."}
-                          {method === "hour-tracking" &&
-                            !isAvailable &&
-                            (() => {
-                              const totalHours = (responses?.monthlyWorkHours || 0) +
-                                (responses?.volunteerHoursPerMonth || 0) +
-                                (responses?.schoolHoursPerMonth || 0) +
-                                (responses?.workProgramHoursPerMonth || 0);
-                              const needed = 80 - totalHours;
-                              if (totalHours > 0 && needed <= 20) {
-                                return `You're at ${totalHours} hours/month — just ${needed} more hours to reach 80. Adding a bit more work, volunteering, or school time would get you there.`;
-                              } else if (totalHours > 0) {
-                                return `You're at ${totalHours} hours/month. If you add more activities to reach 80/month, you can use this method.`;
-                              }
-                              return "You're not currently at 80 hours/month. If you add more activities, you can use this method.";
-                            })()}
-                          {method === "hour-tracking" &&
-                            isAlternative &&
-                            recommendation.primaryMethod ===
-                              "income-tracking" &&
-                            "This also works, but income tracking is easier—just submit one paystub each month."}
-                          {method === "hour-tracking" &&
-                            isAlternative &&
-                            recommendation.primaryMethod ===
-                              "seasonal-income-tracking" &&
-                            "This also works, but seasonal income tracking might be easier for your situation."}
+                          {getMethodMessage(method, isAlternative)}
                         </Typography>
                       </Alert>
                     )}
@@ -350,7 +349,7 @@ export function GettingStartedContextual({
       {/* Help Link */}
       <Box sx={{ textAlign: "center", mt: 2 }}>
         <Typography variant="body2" color="text.secondary">
-          💡 Need help? Tap the ? icon anytime for guidance
+          Need help? Tap the ? icon anytime for guidance
         </Typography>
       </Box>
 
