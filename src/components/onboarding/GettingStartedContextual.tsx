@@ -18,7 +18,6 @@ import {
 import {
   CheckCircle as CheckCircleIcon,
   ExpandMore as ExpandMoreIcon,
-  TrendingUp as TrendingUpIcon,
   Assessment as AssessmentIcon,
   FileDownload as FileDownloadIcon,
   Add as AddIcon,
@@ -40,7 +39,6 @@ interface GettingStartedContextualProps {
 
 export function GettingStartedContextual({
   hasNotice,
-  monthsRequired,
   deadline,
   recommendation,
   responses,
